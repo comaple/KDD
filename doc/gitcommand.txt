@@ -1,0 +1,37 @@
+参照远程创建一个分支到本地
+git checkout -b develop origin/develop
+查看远程项目
+git remote -v
+查看远程所有分支
+git branch -r
+
+当git add错了时可以通过这种方式删除掉这些文件，
+直接删除，从硬盘删除
+git rm -f *.dat
+从git中移除，但是不删除硬盘文件
+git rm --cached *.dat
+
+新建立一个工程从本地push一个项目：
+
+cd 到目录下
+git init
+git status
+git add .  添加全部文件
+git reset 重新添加
+vim .gitignore
+git add .
+git status 查看分支情况和文件
+git commit  本地提交
+
+git remote add origin git@git.op.ksyun.com:datacenter/uploadserver.git 提交一个分支到远程
+git push origin master  合并到主分支
+
+当你的代发提交错仓库时或者需要改变仓库地址时，需要以下命令：
+git remote set-url origin git@git.op.ksyun.com:datacenter/mahout-extends.git
+
+设置提交身份       --global 是设置全局的，不叫该参数就是每次提交生效
+git config --global user.name "xxx xxx"
+git config --global user.emal "zhangshengtao@kingsoft.com"
+
+
+
