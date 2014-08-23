@@ -1,0 +1,47 @@
+
+mogodb爬虫原始数据存储
+文章id，标题，关键词，摘要，正文，原文，url,发布时间，作者
+
+mogodb 爬虫后数据存储
+文章id，标题，关键词，摘要，正文，原文，url,发布时间，作者
+
+
+标签 - 文章
+
+tag名称，文章id, 权重
+${project}
+
+
+标签 - 标签
+
+tag名称， tag名称，权重
+
+步骤 - 标签
+
+步骤名称，tag名称，权重
+
+
+推荐数据存储接口：
+基于文章的：用户Id, 文章Id, 客户端Ip, 阅读时间
+${project}/recommend/article/    POST方式
+基于机构的：用户Id，机构Id, 客户端IP, 选择时间
+${project}/recommend/institution/  POST方式
+基于顾问的：用户Id, 顾问Id, 客户端IP, 留学时间
+${project}/recommend/counselor/   POST方式
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

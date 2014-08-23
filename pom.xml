@@ -15,9 +15,10 @@
     </properties>
 
     <modules>
-        <module>datamining</module>
+        <module>dataminning</module>
         <module>scrawler</module>
         <module>view</module>
+        <module>util</module>
     </modules>
 
     <dependencies>
