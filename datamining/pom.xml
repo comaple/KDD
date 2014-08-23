@@ -12,6 +12,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>datamining</artifactId>
+    <properties>
+        <mahout.version>0.9</mahout.version>
+    </properties>
 
+    <dependencies>
 
+        <dependency>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-core</artifactId>
+            <version>${mahout.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>
