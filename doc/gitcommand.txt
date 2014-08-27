@@ -16,15 +16,23 @@ git rm --cached *.dat
 cd 到目录下
 git init
 git status
-git add .  添加全部文件
-git reset 重新添加
+git add 目录  添加全部文件
+git reset 重新添加 回滚添加的文件
 vim .gitignore
-git add .
+git add --all .
 git status 查看分支情况和文件
 git commit  本地提交
+git push 提交到仓库
+git pull 从仓库下载
+
+
 
 git remote add origin git@git.op.ksyun.com:datacenter/uploadserver.git 提交一个分支到远程
 git push origin master  合并到主分支
+
+
+
+git commit 目录 -m 'message'
 
 当你的代发提交错仓库时或者需要改变仓库地址时，需要以下命令：
 git remote set-url origin git@git.op.ksyun.com:datacenter/mahout-extends.git
