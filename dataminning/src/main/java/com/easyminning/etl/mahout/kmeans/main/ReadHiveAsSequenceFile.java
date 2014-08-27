@@ -23,7 +23,6 @@ public class ReadHiveAsSequenceFile extends AbstractJob {
     public static String isRCFile = "isRCFile";
     public static String REDUCE_TASK = "reduce";
 
-
     public static void main(String[] args) throws Exception {
         ToolRunner.run(new ReadHiveAsSequenceFile(), args);
     }
