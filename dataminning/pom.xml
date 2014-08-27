@@ -10,8 +10,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>datamining</artifactId>
+    <artifactId>dataminning</artifactId>
+    <name>dataminning</name>
     <properties>
         <mahout.version>0.9</mahout.version>
     </properties>
