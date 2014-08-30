@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/jee
+        http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+                http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+        ">
+
+    <description>Spring公共配置文件</description>
+
+    <!-- springContextUtil config -->
+    <bean id="SpringContextUtil" class="com.easyminning.util.spring.SpringContextUtil"></bean>
+
+    <!--使用annotation自动注册bean,并检查@Required,@Autowired的属性  -->
+    <context:component-scan base-package="com.easyminning"/>
+
+    <!--开启这个配置，spring才能识别@Scheduled注解   -->
+    <task:annotation-driven/>
+
+    <!-- 定义受环境影响易变的变量 -->
+    <bean id="propertiesConfig" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:configuration-util.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- mongoDBDriver -->
+    <bean id="mongoDBDriver" class="com.easyminning.mongodbclient2.driver.MongoDBDriver" init-method="init"
+          destroy-method="close">
+        <property name="config">
+            <ref bean="propertiesConfig" />
+        </property>
+    </bean>
+
+
+
+
+
+</beans>
