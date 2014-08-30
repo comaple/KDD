@@ -1,0 +1,3 @@
+安装 ik jar包到本地maven库
+
+mvn install:install-file -DgroupId=com.xunlei.IKAnalyzer -DartifactId=IKAnalyzer -Dversion=1.0 -Dpackaging=jar -Dfile=IKAnalyzer2012FF_u1.jar
