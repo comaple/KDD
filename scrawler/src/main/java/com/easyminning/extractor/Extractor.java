@@ -1,8 +1,11 @@
 package com.easyminning.extractor;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
+import com.easyminning.conf.ConfLoader;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,25 +23,25 @@ public abstract class Extractor {
             return null;
         }
         //判断是否是文章页，是文章页才需要获取正文
-        if(!isArticlePage(page.html)){
+        if(!isArticlePage(page.url)){
             return null;
         }
 
         Extractor extractor = null;
         String comPath = getUrlCommonPath(page.url);
         //判断是否有缓存抽取器
-        if(pageExtrators.containsKey(comPath)){//
+        if(pageExtrators.containsKey(comPath)){
             extractor = pageExtrators.get(comPath);
         }
         if(null == extractor){
-            //判断page是否有对应的模式可以使用
-            boolean isUseTemplate = false;
-            if(!isUseTemplate) {
+            //判断page解析是否有对应的模式可以使用
+            String templateReg = isUseTemplate(page.url);
+            if(null == templateReg || templateReg.equals("")) {
                 extractor = new StatisticsExtractor();
             }else{
-                extractor = new TemplateExtractor();
+                extractor = new TemplateExtractor(templateReg);
             }
-            pageExtrators.put(comPath,extractor);//
+            pageExtrators.put(comPath,extractor);
         }
 
         Article article = null;
@@ -55,47 +58,35 @@ public abstract class Extractor {
     }
 
     public static String getUrlCommonPath(String url){
-        String comPath = "";
+        String comPath = url;
         comPath = url.substring(0,url.lastIndexOf('/'));
         return comPath;
     }
 
-    public static boolean isArticlePage(String html){
-        boolean isArticle = true;
-        int dateCount = 0;
-        int unCompleteDateCount = 0;
-        int h1Count = 0;
-        Pattern p = Pattern.compile(
-                "((\\d{4}|\\d{2})(\\\\|\\-|\\/)\\d{1,2}\\3\\d{1,2})(\\s?\\d{2}:\\d{2})?|(\\d{2,4}年\\d{1,2}月\\d{1,2}日)(\\s?\\d{2}:\\d{2})?",
-                Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(html);
-        while(m.find()){
-            dateCount++;
-        }
+    public static String isUseTemplate(String url){
+        String templateReg = null;
+        /*HashMap<String,String> templateMap = ConfLoader.templateMap;
+        for (Map.Entry<String,String> te : templateMap.entrySet()){
+            Pattern p = Pattern.compile(te.getKey());
+            Matcher m = p.matcher(url);
+            if(m.find()){
+                templateReg = te.getValue();
+                break;
+            }
+        }*/
+        return templateReg;
+    }
 
-        //匹配不完全的时间，往往导航页的链接后方居多
-        p = Pattern.compile(
-                "(\\d{2,4})?(\\\\|\\-|\\/)?(\\d{1,2})(\\\\|\\-|\\/)\\d{1,2}(\\s?\\d{2}:\\d{2})?|(\\d{2,4}?\\d{1,2}月\\d{1,2}日)(\\s?\\d{2}:\\d{2})?",
-                Pattern.CASE_INSENSITIVE);
-        m = p.matcher(html);
-        while(m.find()){
-            unCompleteDateCount++;
-        }
-
-        p = Pattern.compile("<h1.*?>.*?</h1>",Pattern.CASE_INSENSITIVE);
-        m = p.matcher(html);
-        while (m.find()){
-            h1Count++;
-        }
-
-        /*if(h1Count > 0 && (dateCount >= 1 && dateCount <= 5)){
-            isArticle = true;
-        }else*/
-
-        if(h1Count == 0 && dateCount == 0){
-            isArticle = false;
-        }else if(dateCount > 15 || unCompleteDateCount > 15){
-            isArticle = false;
+    public static boolean isArticlePage(String url){
+        boolean isArticle = false;
+        HashSet<String> topicRegexSet = ConfLoader.topicRegexSet;
+        for (String topicRegx : topicRegexSet){
+            Pattern p = Pattern.compile(topicRegx);
+            Matcher m = p.matcher(url);
+            if(m.find()){
+                isArticle = true;
+                break;
+            }
         }
         return isArticle;
     }
