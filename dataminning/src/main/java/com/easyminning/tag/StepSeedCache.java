@@ -29,6 +29,12 @@ public class StepSeedCache {
      */
     public static Map<String,Map<String,Double>> STEP_SEED_MAP = new HashMap<String,Map<String,Double>>();
 
+
+    /**
+     * 关键词(标签) -> 权重
+     */
+    public static Map<String,Double> SEED_MAP = new HashMap<String, Double>();
+
     protected static Log logger = LogFactory.getLog(StepSeedCache.class);
 
     private static String STEP_SEED_FILE_NAME = "stepseed.csv";
@@ -59,6 +65,7 @@ public class StepSeedCache {
                         STEP_SEED_MAP.put(step,seedMap);
                     }
                     seedMap.put(seed,Double.valueOf(weight));
+                    SEED_MAP.put(seed,Double.valueOf(weight));
                 } catch (Exception e) {
                     logger.warn("步骤种子解析行出错：" + line);
                     //e.printStackTrace();
