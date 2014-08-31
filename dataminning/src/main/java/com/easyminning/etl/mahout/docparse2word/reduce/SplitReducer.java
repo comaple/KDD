@@ -55,7 +55,7 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
             //写mongodb
             resultDocumentService.save(resultDocument);
             //写reduce 文件
-            context.write(key, doc.getResult());
+            context.write(doc.getDocId(), doc.getResult());
         }
 
     }

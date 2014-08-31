@@ -48,13 +48,13 @@ public class Doc2WordAndFilterJob extends AbstractJob {
     private int runMapReduce() throws Exception {
         Boolean scrawler = Boolean.getBoolean(getOption(isScrawler));
         if (scrawler) {
-            Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, Text.class, SplitReducer.class, Text.class, DocumentWritable.class, SequenceFileOutputFormat.class);
+            Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
             combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold));
             combineJob.getConfiguration().set(Constant.PATTERN_STR, getOption(pattern));
             combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
             return combineJob.waitForCompletion(true) == true ? 0 : -1;
         } else {
-            Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, Text.class, SplitReducer.class, Text.class, DocumentWritable.class, SequenceFileOutputFormat.class);
+            Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
             combineJob_1.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
             return combineJob_1.waitForCompletion(true) == true ? 0 : -1;
         }
