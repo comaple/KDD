@@ -1,5 +1,7 @@
 package com.easyminning.tag;
 
+import org.jcp.xml.dsig.internal.dom.DOMUtils;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xdx
@@ -29,6 +31,9 @@ public class ResultDocument {
     private String result = new String();
     //作者
     private String author = new String();
+
+    // 权重
+    private Double weight = 0.0;
 
     public String getDocId() {
         return docId;
@@ -108,5 +113,13 @@ public class ResultDocument {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 }
