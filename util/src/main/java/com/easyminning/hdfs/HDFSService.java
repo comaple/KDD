@@ -1,13 +1,16 @@
 package com.easyminning.hdfs;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.Date;
@@ -19,64 +22,71 @@ import java.util.Date;
  * Time: 下午3:33
  * To change this template use File | Settings | File Templates.
  */
-@Service
 public class HDFSService implements Runnable {
 
-    /**
-     *
-     */
-    public static String FS_DEFAULT_NAME = "http://db1:9000";
+    public static String DEST_PATH = "/kdd/scraw/";  // hdfs 存放目录
 
-    public static String DEST_PATH = "/kdd/scraw/";
+    public static String SRC_PATH = "/Volumes/study/test"; // 本地上传目录
+
+    public static String FS_DEFAULT_NAME = "";
 
     public static DateFormat DF = new SimpleDateFormat("yyyyMMdd");
 
-    // 队列大小
-    public static int QU_SIZE = 10000;
-
     public static Log log = LogFactory.getLog(HDFSService.class);
 
-    // 日志队列
-    public static BlockingDeque<String> logQueque = new LinkedBlockingDeque<String>(QU_SIZE);
+    private UpLoadUtil upLoadUtil; // 上传文件工具类
 
-    @PostConstruct
+
     public void startThread() {
+        try {
+            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(
+                    HDFSService.class.getClassLoader().getResource("configuration-util.properties"));
+            SRC_PATH = propertiesConfiguration.getString("hdfsupload.localpath");
+            DEST_PATH = propertiesConfiguration.getString("hdfsupload.hdfspath");
+            FS_DEFAULT_NAME = propertiesConfiguration.getString("hdfsupload.defaultname");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        upLoadUtil = new UpLoadUtil();
+        upLoadUtil.init(FS_DEFAULT_NAME);
+
         Thread thread = new Thread(this);
         thread.start();
-    }
-
-    public static void put(String filePath) {
-        try {
-            if (logQueque.size() < QU_SIZE) {
-                logQueque.put(filePath);
-            } else {
-                log.error("文件数过多，丢弃文件:" + filePath);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
     }
 
 
     @Override
     public void run() {
-        UpLoadUtil upLoadUtil = new UpLoadUtil();
-        upLoadUtil.init();
         while (true) {
             try {
-               String filePath = logQueque.take();
-               Date now = new Date();
-               String nowStr = DF.format(now);
-               log.info("上传文件：" + filePath + " 目标文件夹：" + DEST_PATH + nowStr);
-               upLoadUtil.UploadLocalFileToHdfs(filePath, DEST_PATH + nowStr);
+               File srcPath = new File(SRC_PATH);
+               String[] fileList = srcPath.list(); // 获取源目录文件夹下所有文件
+
+               for (String file : fileList) {
+                   if ("bak".equals(file)) continue;
+                   if (new File(srcPath+File.separator + file).isDirectory()) continue;
+                   Date now = new Date();
+                   String nowStr = DF.format(now);
+                   log.info("上传文件：" + srcPath + File.separator + file + " 目标文件夹：" + DEST_PATH + nowStr);
+                   upLoadUtil.UploadLocalFileToHdfs(srcPath + File.separator + file, DEST_PATH + nowStr + File.separator + file);
+               }
+               Thread.sleep(1000*5L); // 睡眠5秒
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    Thread.sleep(1000L);
+                    Thread.sleep(1000*5L);
                 } catch (Exception e1){
-                    e1.printStackTrace();
+                    log.error(e1.getMessage());
                 }
             }
         }
     }
+
+
+    public static void main(String[] args) {
+        HDFSService hdfsService = new HDFSService();
+        hdfsService.startThread();
+    }
+
 }
