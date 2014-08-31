@@ -20,4 +20,10 @@ public class Constant {
      * matrix flag for lda
      */
     public static String FLAG_MATRIX = "matrix";
+
+    public static String PATTERN_STR = "pattern";
+
+    public static String THRSHOLD = "doc.threshold";
+
+    public static String RESULT_NUM = "resultNum";
 }
