@@ -52,11 +52,13 @@ public class Doc2WordAndFilterJob extends AbstractJob {
             combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold));
             combineJob.getConfiguration().set(Constant.PATTERN_STR, getOption(pattern));
             combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
+            return combineJob.waitForCompletion(true) == true ? 0 : -1;
         } else {
-            Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, Text.class, SplitReducer.class, Text.class, DocumentWritable.class, SequenceFileOutputFormat.class);
-            combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
+            Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, Text.class, SplitReducer.class, Text.class, DocumentWritable.class, SequenceFileOutputFormat.class);
+            combineJob_1.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
+            return combineJob_1.waitForCompletion(true) == true ? 0 : -1;
         }
-        return 1;
+
     }
 
     /**
