@@ -1,7 +1,9 @@
 package com.easyminning.hdfs;
 
+import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -11,9 +13,11 @@ import org.apache.log4j.Logger;
 
 public class UpLoadUtil {
 
-    private static Logger log = Logger.getLogger(UpLoadUtil.class);
+    /**
+     *
+     */
 
-    private String hadoop_default_name;
+    private static Logger log = Logger.getLogger(UpLoadUtil.class);
 
     public boolean is_sucessfull = true;
 
@@ -24,7 +28,7 @@ public class UpLoadUtil {
 
     private FileSystem fs = null;
 
-    public int init() {
+    public int init(String fsdefaultName) {
         int ret = 1;
         Configuration con = null;
         try {
@@ -34,11 +38,11 @@ public class UpLoadUtil {
             e.printStackTrace();
             return 0;
         }
-        con.set("fs.default.name", "");
+        con.set("fs.default.name", fsdefaultName);
         con.set("fs.hdfs.impl.disable.cache", "false");
         con.set("dfs.replication", "1");
         try {
-            //fs = FileSystem.get(con);
+            fs = FileSystem.get(con);
         } catch (Exception e) {
             log.error("get FileSystem object failed");
             e.printStackTrace();
@@ -62,6 +66,8 @@ public class UpLoadUtil {
                 fs.copyFromLocalFile(p_src, p_dest);
                 fs.rename(p_dest, $p_dest);
             }
+            File srcFile = new File(localpath);
+            FileUtils.moveFileToDirectory(srcFile,new File(srcFile.getParentFile() + File.separator + "bak"),true);
         } catch (IOException e) {
             log.error("upload failed" + " fileName=" + localpath);
             log.error(e);
@@ -84,17 +90,6 @@ public class UpLoadUtil {
             }
         }
     }
-
-
-    public String getHadoop_default_name() {
-        return hadoop_default_name;
-    }
-
-
-    public void setHadoop_default_name(String hadoop_default_name) {
-        this.hadoop_default_name = hadoop_default_name;
-    }
-
 
     public String getDestPath() {
         return destPath;
