@@ -5,6 +5,8 @@ import cn.edu.hfut.dmic.webcollector.output.FileSystemOutput;
 import cn.edu.hfut.dmic.webcollector.util.Config;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
+import com.easyminning.conf.ConfConstant;
+import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Extractor;
 
 import java.io.IOException;
@@ -21,6 +23,29 @@ public class ArticleCrawler extends BreadthCrawler {
     protected void visit(Page page) {
         super.visit(page);
         Extractor.extract(page);
+    }
+
+    public static void exeute(){
+        Thread crawlthread = new Thread() {
+            @Override
+            public void run() {
+                BreadthCrawler crawler=new ArticleCrawler();
+                crawler.setRoot(ConfLoader.getProperty(ConfConstant.DOWNLOADPATH,"download"));
+                String resu = ConfLoader.getProperty(ConfConstant.RESUMABLE,"false");
+                crawler.setResumable(Boolean.parseBoolean(resu));
+                crawler.setCrawl_path(ConfLoader.getProperty(ConfConstant.CRAWLDBPATH,"crawl"));
+                String depth = ConfLoader.getProperty(ConfConstant.DEPTH,"3");
+                String threads = ConfLoader.getProperty(ConfConstant.THREADS,"10");
+                crawler.setThreads(Integer.parseInt(threads));
+
+                try {
+                    crawler.start(Integer.parseInt(depth));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        crawlthread.start();
     }
 
     public static void main(String[] args) throws IOException {

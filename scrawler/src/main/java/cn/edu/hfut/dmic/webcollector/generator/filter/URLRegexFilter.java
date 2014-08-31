@@ -8,6 +8,8 @@ package cn.edu.hfut.dmic.webcollector.generator.filter;
 
 import cn.edu.hfut.dmic.webcollector.generator.Generator;
 import cn.edu.hfut.dmic.webcollector.model.CrawlDatum;
+import com.easyminning.conf.ConfLoader;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -21,9 +23,11 @@ public class URLRegexFilter extends Filter{
 
     public URLRegexFilter(Generator generator,ArrayList<String> rules) {
         super(generator);
+        /*//leilongyan修改 为了支持修改配置文件自动加载功能
         for(String rule:rules){
             addRule(rule);
         }
+        */
     }
      
      public void addRule(String rule){
@@ -56,7 +60,8 @@ public class URLRegexFilter extends Filter{
             return null;
         }
         String url=crawldatum.url;
-        for(String nregex:negative){
+        //for(String nregex:negative){
+        for(String nregex: ConfLoader.negativeRegexSet){//leilongyan修改 为了支持修改配置文件自动加载功能
             if(Pattern.matches(nregex, url)){
                 return next();
             }
@@ -64,7 +69,8 @@ public class URLRegexFilter extends Filter{
         
         
         int count=0;
-        for(String pregex:positive){
+        //for(String pregex:positive){
+        for(String pregex: ConfLoader.positiveRegexSet){//leilongyan修改 为了支持修改配置文件自动加载功能
             if(Pattern.matches(pregex, url)){
                 count++;
             }

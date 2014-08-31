@@ -33,6 +33,8 @@ import cn.edu.hfut.dmic.webcollector.util.Config;
 import cn.edu.hfut.dmic.webcollector.util.ConnectionConfig;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
+import com.easyminning.conf.ConfLoader;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -132,7 +134,8 @@ public class BreadthCrawler {
             }
            
         }
-        if (regexs.isEmpty()) {
+        //if (regexs.isEmpty()) {
+        if(ConfLoader.positiveRegexSet.isEmpty()){//leilongyan修改 为了支持修改配置文件自动加载功能
                 Log.Infos("error:"+"Please add at least one regex rule");
                 return;
         }
