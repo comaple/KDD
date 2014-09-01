@@ -1,5 +1,6 @@
 package com.easyminning.extractor;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -34,6 +35,16 @@ public class FileWriter  {
 
 
     public FileWriter() {
+
+        try {
+            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(
+                    FileWriter.class.getClassLoader().getResource("configuration-util.properties"));
+            SRC_HOME = propertiesConfiguration.getString("hdfsupload.localpath");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.clearTmpFile();
     }
 
@@ -74,7 +85,7 @@ public class FileWriter  {
 
             // 定时检测以.tmp结尾的文件
             for (String tmp : files) {
-                if ("tmp".equals(tmp)) continue;
+                if ("bak".equals(tmp)) continue;
                 if (new File(file, tmp).isDirectory()) continue;
                 if (!tmp.endsWith(".tmp")) continue; //
                 new File(file, tmp).renameTo(new File(file, tmp.substring(0, tmp.indexOf(".tmp"))));
