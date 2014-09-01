@@ -33,6 +33,7 @@ import cn.edu.hfut.dmic.webcollector.util.Config;
 import cn.edu.hfut.dmic.webcollector.util.ConnectionConfig;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
+import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 
 import java.io.IOException;
@@ -141,7 +142,33 @@ public class BreadthCrawler {
         }
         inject();
         status=RUNNING;
-        for (int i = 0; i < depth; i++) {
+        //leilongyan修改 可以循环无限运行
+        int count = 0;
+        while(true){
+            count++;
+            Log.Infos("info","Number:"+count+" starting...");
+            for (int i = 0; i < depth; i++) {
+                if(status==STOPED){
+                    break;
+                }
+                Log.Infos("info","[Number:"+count+"] Starting depth "+(i+1));
+                Generator generator=getGenerator();
+                fetcher=getFecther();
+                fetcher.fetchAll(generator);
+            }
+            if(status==STOPED){
+                break;
+            }
+            try {
+                //睡眠一个interval时间 1小时
+                int interval = Integer.parseInt(ConfLoader.getProperty(ConfConstant.INTERVAL,"3600000"));
+                Log.Infos("info","sleep " + interval + " mills...");
+                Thread.sleep(interval);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        /*for (int i = 0; i < depth; i++) {
            if(status==STOPED){
                break;
            }
@@ -149,7 +176,7 @@ public class BreadthCrawler {
             Generator generator=getGenerator();
             fetcher=getFecther();
             fetcher.fetchAll(generator);
-        }
+        }*/
     }
     
     Fetcher fetcher;
@@ -167,7 +194,7 @@ public class BreadthCrawler {
         
         Injector injector = new Injector(crawl_path);     
         injector.inject(seeds,resumable);
-        
+
     }
 
     class CommonConnectionConfig implements ConnectionConfig{
@@ -224,7 +251,6 @@ public class BreadthCrawler {
     public static void main(String[] args) throws IOException {
         String crawl_path = "crawl";//  /home/hu/data/crawl_hfut1
         String root = "F:\\OwnerProjects\\KDD\\download";// /home/hu/data/hfut1
-        Config.topN=500;
         BreadthCrawler crawler=new BreadthCrawler();
         crawler.taskname=RandomUtils.getTimeString()+"hfut";
         //crawler.addSeed("http://news.hfut.edu.cn/");

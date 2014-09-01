@@ -16,6 +16,7 @@ import java.util.Properties;
  */
 public class ConfLoader {
     public static HashSet<String> seedSet = new HashSet<String>();
+    public static HashSet<String> repeatableRegexSet = new HashSet<String>();
     public static HashSet<String> positiveRegexSet = new HashSet<String>();
     public static HashSet<String> negativeRegexSet = new HashSet<String>();
     public static HashSet<String> topicRegexSet = new HashSet<String>();
@@ -50,6 +51,7 @@ public class ConfLoader {
     public static void reloadConf(){
         try {
             seedSet = analyzeConf(ConfConstant.SEEDS, ConfConstant.ObjectSplit, prop, seedSet);
+            repeatableRegexSet = analyzeConf(ConfConstant.REPEATABLEREGEX,ConfConstant.ObjectSplit,prop,repeatableRegexSet);
             positiveRegexSet = analyzeConf(ConfConstant.POSITIVEREGEX, ConfConstant.ObjectSplit, prop, positiveRegexSet);
             negativeRegexSet = analyzeConf(ConfConstant.NEGATIVEREGEX, ConfConstant.ObjectSplit, prop, negativeRegexSet);
             topicRegexSet = analyzeConf(ConfConstant.TOPICREGEX, ConfConstant.ObjectSplit, prop, topicRegexSet);

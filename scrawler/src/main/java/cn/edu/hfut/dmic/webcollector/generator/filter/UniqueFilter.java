@@ -33,7 +33,7 @@ public class UniqueFilter extends Filter{
     }
 
     @Override
-    public CrawlDatum next() {
+    public CrawlDatum next() {//只在同一depth中起唯一url的作用
         CrawlDatum crawldatum=generator.next();
         if(crawldatum==null){
             return null;

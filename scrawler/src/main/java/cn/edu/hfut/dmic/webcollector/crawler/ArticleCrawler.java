@@ -22,7 +22,7 @@ public class ArticleCrawler extends BreadthCrawler {
     @Override
     protected void visit(Page page) {
         super.visit(page);
-        Extractor.extract(page);
+        Extractor.extract(page); //文章抽取
     }
 
     public static void exeute(){
@@ -30,13 +30,18 @@ public class ArticleCrawler extends BreadthCrawler {
             @Override
             public void run() {
                 BreadthCrawler crawler=new ArticleCrawler();
+                //在此设定的参数都不支持配置文件动态自动更新
                 crawler.setRoot(ConfLoader.getProperty(ConfConstant.DOWNLOADPATH,"download"));
-                String resu = ConfLoader.getProperty(ConfConstant.RESUMABLE,"false");
+                String resu = ConfLoader.getProperty(ConfConstant.RESUMABLE,"true");
                 crawler.setResumable(Boolean.parseBoolean(resu));
                 crawler.setCrawl_path(ConfLoader.getProperty(ConfConstant.CRAWLDBPATH,"crawl"));
                 String depth = ConfLoader.getProperty(ConfConstant.DEPTH,"3");
                 String threads = ConfLoader.getProperty(ConfConstant.THREADS,"10");
+
                 crawler.setThreads(Integer.parseInt(threads));
+                for(String seed : ConfLoader.seedSet){
+                    crawler.addSeed(seed);
+                }
 
                 try {
                     crawler.start(Integer.parseInt(depth));
@@ -49,9 +54,10 @@ public class ArticleCrawler extends BreadthCrawler {
     }
 
     public static void main(String[] args) throws IOException {
-        String crawl_path = "crawl";//  /home/hu/data/crawl_hfut1
+        exeute();
+        /*String crawl_path = "crawl";//  /home/hu/data/crawl_hfut1
         String root = "F:\\OwnerProjects\\KDD\\download";// /home/hu/data/hfut1
-        Config.topN=500;
+        //Config.topN=500;
         BreadthCrawler crawler=new ArticleCrawler();
         crawler.setTaskname(RandomUtils.getTimeString()+"hfut");
         //crawler.addSeed("http://news.hfut.edu.cn/");
@@ -62,6 +68,6 @@ public class ArticleCrawler extends BreadthCrawler {
         crawler.setRoot(root);
         crawler.setCrawl_path(crawl_path);
         crawler.setResumable(true);
-        crawler.start(2);
+        crawler.start(2);*/
     }
 }

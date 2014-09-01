@@ -37,7 +37,7 @@ public class DbUpdater extends Task{
     public static  void backup(String backuppath) throws IOException {
         File oldfile = new File(backuppath, Config.old_info_path);
         File currentfile = new File(backuppath, Config.current_info_path);
-        FileUtils.copy(currentfile, oldfile);
+        FileUtils.copy(currentfile, oldfile);//把current_info_path的数据写到old_info_path中
     }
     
 
@@ -67,7 +67,7 @@ public class DbUpdater extends Task{
         if (!currentfile.getParentFile().exists()) {
             currentfile.getParentFile().mkdirs();
         }
-        DbWriter writer=new DbWriter(currentfile);       
+        DbWriter writer=new DbWriter(currentfile);  //重新写，以前的数据清除
         for(CrawlDatum crawldatum:datums){
             writer.write(crawldatum);                  
         }
@@ -98,7 +98,8 @@ public class DbUpdater extends Task{
     public void closeUpdater() throws IOException {
         updater_writer.close();
     }
-    
+
+    //合并current_info_path中的数据，使其url唯一
     public void merge() throws IOException{
         
         File currentfile=new File(crawl_path, Config.current_info_path);
@@ -113,7 +114,7 @@ public class DbUpdater extends Task{
             if(indexmap.containsKey(crawldatum.url)){
                 int preindex=indexmap.get(url);
                 CrawlDatum pre_datum=origin_datums.get(preindex);
-                if(crawldatum.status==Page.UNFETCHED){                    
+                if(crawldatum.status==Page.UNFETCHED){  //之前有的，现在的又是unfetched状态的是重复页面，不予继续抓取
                     continue;
                 }else if(pre_datum.fetchtime>=crawldatum.fetchtime){
                     continue;
