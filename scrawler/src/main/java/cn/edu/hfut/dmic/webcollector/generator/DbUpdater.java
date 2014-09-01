@@ -96,6 +96,7 @@ public class DbUpdater extends Task{
     }
 
     public void closeUpdater() throws IOException {
+        updater_writer.flush();//leilongyan添加
         updater_writer.close();
     }
 
@@ -116,7 +117,7 @@ public class DbUpdater extends Task{
                 CrawlDatum pre_datum=origin_datums.get(preindex);
                 if(crawldatum.status==Page.UNFETCHED){  //之前有的，现在的又是unfetched状态的是重复页面，不予继续抓取
                     continue;
-                }else if(pre_datum.fetchtime>=crawldatum.fetchtime){
+                }else if(pre_datum.fetchtime>crawldatum.fetchtime){//leilongyan修改去掉=
                     continue;
                 }else{
                     origin_datums.set(preindex, crawldatum);
