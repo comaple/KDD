@@ -12,16 +12,15 @@ public class EditDistance {
     /**
      * 步骤 -> 标签 -> 权重
      */
-    private static Map<String,Map<String,Double>> STEP_SEED_MAP = new HashMap<String,Map<String,Double>>();
 
     public static void main(String[] args) {
         String word2 = "中国";
 
         StepSeedCache stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
-        STEP_SEED_MAP = StepSeedCache.STEP_SEED_MAP;
+        Map<String,Map<String,Double>> STEP_SEED_MAP = StepSeedCache.STEP_SEED_MAP;
 
-        String step = getTagSimilarityStep("澳大利亚");
+        String step = getTagSimilarityStep("澳大利亚",STEP_SEED_MAP);
 
         System.out.println(step);
 
@@ -29,17 +28,19 @@ public class EditDistance {
 
     /**
      * 返回标签近似的步骤
+     * @param calTag 计算的标签
+     * @param stepSeedMap  步骤标签Map
      * @return
      */
-    public static String getTagSimilarityStep(String calTag) {
-        Set<String> stepSet = STEP_SEED_MAP.keySet();
+    public static String getTagSimilarityStep(String calTag, Map<String,Map<String,Double>> stepSeedMap) {
+        Set<String> stepSet = stepSeedMap.keySet();
 
         String selectStepName = "";
         int selectStepWeight = Integer.MAX_VALUE;
 
         for (String step : stepSet) {
 
-            Set<String> tagSet = STEP_SEED_MAP.get(step).keySet();
+            Set<String> tagSet = stepSeedMap.get(step).keySet();
             int currentStepWeight = getWordInstance(calTag,tagSet);
 
             if (currentStepWeight < selectStepWeight) {
