@@ -28,14 +28,14 @@ public class Log {
         sends(ERROR, infos);
     }
 
-    public static Logger defaultLogger;
+    public static Logger defaultLogger = Logger.getLogger(Log.class);
 
     static {
-        defaultLogger = org.apache.log4j.Logger.getLogger("default");
-        ConsoleAppender ca = new ConsoleAppender();
-        ca.setWriter(new PrintWriter(System.out));
-        ca.setLayout(new PatternLayout("%d{yyyy-MM-dd HH:mm:ss} %p %c %x - %m%n "));
-        defaultLogger.addAppender(ca);
+//        defaultLogger = org.apache.log4j.Logger.getLogger("default");
+//        ConsoleAppender ca = new ConsoleAppender();
+//        ca.setWriter(new PrintWriter(System.out));
+//        ca.setLayout(new PatternLayout("%d{yyyy-MM-dd HH:mm:ss} %p %c %x - %m%n "));
+//        defaultLogger.addAppender(ca);
     }
 
     public static final int INFO = 1;
