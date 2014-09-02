@@ -48,14 +48,15 @@ public class WorkQueue
     
     public void killALl(){
         for(int i=0;i<threads.length;i++){
-            threads[i].stop();
+            //threads[i].stop();
+            threads[i].interrupt();//leilongyan修改
         }
     }
     
     public void execute(Runnable r) {
         synchronized(queue) {
             queue.addLast(r);
-            queue.notify();
+            queue.notifyAll();
         }
     }
     private class PoolWorker extends Thread {
@@ -65,12 +66,10 @@ public class WorkQueue
             while (true) {
                 synchronized(queue) {
                     while (queue.isEmpty()) {
-                        try
-                        {
+                        try{
                             queue.wait();
-                        }
-                        catch (InterruptedException ignored)
-                        {
+                        }catch (InterruptedException e){
+                            //e.printStackTrace();
                         }
                     }
                     r = (Runnable) queue.removeFirst();
@@ -80,8 +79,7 @@ public class WorkQueue
                 // the pool could leak threads
                 try {
                     r.run();
-                }
-                catch (Exception e) {
+                }catch (Exception e) {
                   e.printStackTrace();
                 }finally{
                     status=0;

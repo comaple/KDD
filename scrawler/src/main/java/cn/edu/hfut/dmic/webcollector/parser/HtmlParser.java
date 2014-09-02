@@ -37,7 +37,8 @@ public class HtmlParser extends Parser {
         page.html = new String(page.content, charset);
         page.doc = Jsoup.parse(page.html);
         page.doc.setBaseUri(page.url);
-        ArrayList<Link> links = topNFilter(LinkUtils.getAll(page));
+        //ArrayList<Link> links = topNFilter(LinkUtils.getAll(page));//getAll会将a img css都抓下来
+        ArrayList<Link> links = topNFilter(LinkUtils.getLinks(page));//leilongyan修改
         ParseResult parseresult = new ParseResult(page.doc.title(), links);
         return parseresult;
     }

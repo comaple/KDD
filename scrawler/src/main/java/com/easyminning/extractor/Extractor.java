@@ -50,6 +50,19 @@ public abstract class Extractor {
         if(null != extractor) {
             article = extractor.extractArticle(page);
         }
+        //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
+        if((article.context == null || article.context.equals("")) &&
+                extractor instanceof TemplateExtractor){
+            extractor = new StatisticsExtractor();
+            article = extractor.extractArticle(page);
+            if(article.context != null && !article.context.equals("")) {
+                pageExtrators.put(comPath, extractor);
+            }
+        }
+        if(article.context != null && !article.context.equals("")){
+            
+        }
+
         System.out.println("----------------标题-----------------");
         System.out.println(article.title);
         System.out.println("----------------发布时间-----------------");
