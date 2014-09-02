@@ -2,12 +2,16 @@ package com.easyminning.extractor;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +20,7 @@ import java.util.Date;
  * Time: 下午5:21
  * To change this template use File | Settings | File Templates.
  */
-public class FileWriter  {
+public class FileWriter  implements Runnable {
 
     // 标题,发布时间,url,作者，抽取正文，原文
     private static String FILE_HEAD = "title||==||publishDate||==||url||==||author||==||context||==||contextWithTag";
@@ -27,25 +31,65 @@ public class FileWriter  {
 
     private static String SRC_HOME = "/home/bigdata/program/hdfsupload/data";
 
+    // 队列大小
+    private static int QU_SIZE = 10000;
+
+
+    // 日志队列
+    private  BlockingDeque<Article> ARTICLE_QUEUE = new LinkedBlockingDeque<Article>(QU_SIZE);
+
 
     private File currentFile;
     private String currentFileName;
 
     private static Integer FILE_LINE_NUM = 100;
 
+    private static FileWriter fileWriter = new FileWriter();
 
-    public FileWriter() {
+    public static FileWriter getInstance() {
+       return fileWriter;
+    }
 
+
+    private FileWriter() {
         try {
             PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(
                     FileWriter.class.getClassLoader().getResource("configuration-util.properties"));
             SRC_HOME = propertiesConfiguration.getString("hdfsupload.localpath");
 
+            Thread thread = new Thread(this);
+            thread.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         this.clearTmpFile();
+    }
+
+    public void writeArticle(Article article) {
+        try {
+            if (ARTICLE_QUEUE.size() < QU_SIZE) {
+                ARTICLE_QUEUE.put(article);
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Article article = ARTICLE_QUEUE.take();
+                this.writeLine(article);
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    Thread.sleep(1000L);
+                } catch (Exception e1){
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -54,7 +98,7 @@ public class FileWriter  {
      *
      * @param article
      */
-    public void writeLine(Article article) {
+    private void writeLine(Article article) {
         try {
             if (currentFile == null) {
                 currentFileName = SRC_HOME + File.separator + "craw_" + new Date().getTime() + ".csv.tmp";
@@ -77,7 +121,7 @@ public class FileWriter  {
     }
 
 
-    public void clearTmpFile() {
+    private void clearTmpFile() {
         try {
             // 启动自动检测.tmp结尾文件
             File file = new File(SRC_HOME);
@@ -133,11 +177,11 @@ public class FileWriter  {
 
 
     public static void main(String[] args) {
-        FileWriter fileWriter = new FileWriter();
+        FileWriter fileWriter = FileWriter.getInstance();
         for (int i=0;i<200;i++) {
             Article article = new Article();
             article.context = "dd"+i;
-            fileWriter.writeLine(article);
+            fileWriter.writeArticle(article);
         }
     }
 
