@@ -36,9 +36,9 @@ public class SplitMapper extends Mapper<LongWritable, Text, Text, DocumentWritab
         IKSegmenter segmenter = new IKSegmenter(reader, true);
 //        System.err.println("-----------");
 //        System.err.println(value.toString().length());
-        while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1) {
+        while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1 && !lexeme.getLexemeText().equals("nbsp")) {
 
-            stringBuilder.append(lexeme.getLexemeText() + " ");
+            stringBuilder.append(lexeme.getLexemeText().trim().replaceAll("nbsp", "") + " ");
         }
 //        System.err.println(stringBuilder.toString());
         documentWritable.setDocId(new Text(fileName));
