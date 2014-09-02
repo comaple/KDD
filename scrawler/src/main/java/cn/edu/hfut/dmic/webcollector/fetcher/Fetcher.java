@@ -29,8 +29,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
+import com.easyminning.conf.ConfConstant;
+import com.easyminning.conf.ConfLoader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.reflect.ReflectDatumWriter;
@@ -158,22 +163,47 @@ public class Fetcher extends Task {
 
                         if (contenttype.contains("text/html")) {
 
-                            HtmlParser htmlparser = new HtmlParser(Config.topN);
-                            ParseResult parseresult = htmlparser.getParse(page);
+                            //HtmlParser htmlparser = new HtmlParser(Config.topN);
+                            HtmlParser htmlparser = new HtmlParser(Integer.parseInt(ConfLoader.getProperty(ConfConstant.TOPN,"500")));//leilongyan修改
+                            ParseResult parseresult = htmlparser.getParse(page);//该方法中已将url做了过滤
                             ArrayList<Link> links = parseresult.links;
 
-                            for (Link link : links) {
-                                CrawlDatum link_crawldatum = new CrawlDatum();
-                                link_crawldatum.url = link.url;
-                                link_crawldatum.status = Page.UNFETCHED;
-                                dbUpdater.append(link_crawldatum);
+                            /*for (Link link : links) {
+                                //leilongyan修改 不满足正则的url不序列化进文件
+                                String newUrl = link.url;
+                                boolean isAdd = false;
+                                for(String pregex: ConfLoader.positiveRegexSet){
+                                    if(Pattern.matches(pregex,newUrl)){
+                                        isAdd = true;
+                                        break;
+                                    }
+                                }
+                                if(isAdd == true) {
+                                    for (String nregex : ConfLoader.negativeRegexSet) {
+                                        if (Pattern.matches(nregex, newUrl)) {
+                                            isAdd = false;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if(isAdd) {
+                                    CrawlDatum link_crawldatum = new CrawlDatum();
+                                    link_crawldatum.url = link.url;
+                                    link_crawldatum.status = Page.UNFETCHED;
+                                    dbUpdater.append(link_crawldatum);
+                                }*/
+                                for(Link link : links) {
+                                    CrawlDatum link_crawldatum = new CrawlDatum();
+                                    link_crawldatum.url = link.url;
+                                    link_crawldatum.status = Page.UNFETCHED;
+                                    dbUpdater.append(link_crawldatum);
+                                }
                             }
 
                         } else {
                             //System.out.println(page.headers.get("Content-Type"));
                         }
-
-                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

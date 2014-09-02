@@ -8,6 +8,9 @@ package cn.edu.hfut.dmic.webcollector.parser;
 
 import cn.edu.hfut.dmic.webcollector.model.Link;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+import com.easyminning.conf.ConfLoader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,9 +27,28 @@ public class LinkUtils {
         ArrayList<Link> links = new ArrayList<Link>();
         Elements link_elements = doc.select("a[href]");
         for (Element link : link_elements) {
-                String anchor=link.text();
-                String href=link.attr("abs:href");
+            String anchor=link.text();
+            //String href=link.attr("abs:href");
+            String href=link.attr("href");//leilongyan修改
+            //System.out.println("***anchor:"+anchor+" href:"+href+"***");
+            boolean isAdd = false;
+            for(String pregex: ConfLoader.positiveRegexSet){
+                if(Pattern.matches(pregex, href)){
+                    isAdd = true;
+                    break;
+                }
+            }
+            if(isAdd == true) {
+                for (String nregex : ConfLoader.negativeRegexSet) {
+                    if (Pattern.matches(nregex, href)) {
+                        isAdd = false;
+                        break;
+                    }
+                }
+            }
+            if(isAdd) {
                 links.add(new Link(anchor, href));
+            }
         }
         return links;
     }

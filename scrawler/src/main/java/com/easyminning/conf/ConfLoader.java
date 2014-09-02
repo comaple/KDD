@@ -16,7 +16,9 @@ import java.util.Properties;
  */
 public class ConfLoader {
     public static HashSet<String> seedSet = new HashSet<String>();
-    public static HashSet<String> filterRegexSet = new HashSet<String>();
+    public static HashSet<String> repeatableRegexSet = new HashSet<String>();
+    public static HashSet<String> positiveRegexSet = new HashSet<String>();
+    public static HashSet<String> negativeRegexSet = new HashSet<String>();
     public static HashSet<String> topicRegexSet = new HashSet<String>();
     //<使用模板的url正则,模板文件>
     public static HashMap<String,HashMap<String,String>> templateMap = new HashMap<String, HashMap<String,String>>();
@@ -49,7 +51,9 @@ public class ConfLoader {
     public static void reloadConf(){
         try {
             seedSet = analyzeConf(ConfConstant.SEEDS, ConfConstant.ObjectSplit, prop, seedSet);
-            filterRegexSet = analyzeConf(ConfConstant.FILTERREGEX, ConfConstant.ObjectSplit, prop, filterRegexSet);
+            repeatableRegexSet = analyzeConf(ConfConstant.REPEATABLEREGEX,ConfConstant.ObjectSplit,prop,repeatableRegexSet);
+            positiveRegexSet = analyzeConf(ConfConstant.POSITIVEREGEX, ConfConstant.ObjectSplit, prop, positiveRegexSet);
+            negativeRegexSet = analyzeConf(ConfConstant.NEGATIVEREGEX, ConfConstant.ObjectSplit, prop, negativeRegexSet);
             topicRegexSet = analyzeConf(ConfConstant.TOPICREGEX, ConfConstant.ObjectSplit, prop, topicRegexSet);
 
             HashSet<String> templateSet = new HashSet<String>();
@@ -81,9 +85,9 @@ public class ConfLoader {
             return propSet;
         }
         propSet.clear();
-        Object proValue = prop.getProperty(proKey);
+        String proValue = getProperty(proKey,null);
         if(proValue != null) {
-            String[] values = proValue.toString().split(objectSplit);
+            String[] values = proValue.split(objectSplit);
             for (String value : values) {
                 propSet.add(value.trim());
             }
@@ -91,9 +95,21 @@ public class ConfLoader {
         return propSet;
     }
 
+    public static String getProperty(String key, String defaultValue){
+        if(prop == null){
+            return defaultValue;
+        }
+        Object proValue = prop.getProperty(key);
+        if(null != proValue){
+            return proValue.toString();
+        }
+        return defaultValue;
+    }
+
     public static void main(String []args){
         System.out.println(ConfLoader.seedSet);
-        System.out.println(ConfLoader.filterRegexSet);
+        System.out.println(ConfLoader.positiveRegexSet);
+        System.out.println(ConfLoader.negativeRegexSet);
         System.out.println(ConfLoader.topicRegexSet);
         System.out.println(ConfLoader.templateMap);
         String s = "author=<span class=\"author\">.*?</span>";

@@ -27,7 +27,7 @@ public class TagTagController extends BaseController {
      */
     @RequestMapping(value = "/tagtag", method = RequestMethod.GET)
     public void test(String tag,Integer size) {
-        if (tag == null || "".equals(tag.trim())) renderJson(new ArrayList<Map>());
+        if (tag == null || "".equals(tag.trim())) {renderJson(new ArrayList<Map>());return;};
         if (size == null || size < 0) size = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);

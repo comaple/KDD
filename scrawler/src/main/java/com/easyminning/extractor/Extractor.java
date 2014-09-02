@@ -35,10 +35,12 @@ public abstract class Extractor {
         }
         if(null == extractor){
             //判断page解析是否有对应的模式可以使用
-            String templateReg = isUseTemplate(page.url);
-            if(null == templateReg || templateReg.equals("")) {
+            HashMap<String,String> templateReg = useTemplate(page.url);
+            if(null == templateReg || templateReg.size() <= 0) {
+                System.out.println("###############StatisticsExtractor###############");
                 extractor = new StatisticsExtractor();
             }else{
+                System.out.println("###############TemplateExtractor###############");
                 extractor = new TemplateExtractor(templateReg);
             }
             pageExtrators.put(comPath,extractor);
@@ -48,11 +50,27 @@ public abstract class Extractor {
         if(null != extractor) {
             article = extractor.extractArticle(page);
         }
-        System.out.println("----------------华丽分割线-----------------");
+        //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
+        if((article.context == null || article.context.equals("")) &&
+                extractor instanceof TemplateExtractor){
+            extractor = new StatisticsExtractor();
+            article = extractor.extractArticle(page);
+            if(article.context != null && !article.context.equals("")) {
+                pageExtrators.put(comPath, extractor);
+            }
+        }
+        if(article == null){
+            return null;
+        }
+        if(article.context != null && !article.context.equals("")){
+            FileWriter.getInstance().writeArticle(article);
+        }
+
+        System.out.println("----------------标题-----------------");
         System.out.println(article.title);
-        System.out.println("----------------华丽分割线-----------------");
+        System.out.println("----------------发布时间-----------------");
         System.out.println(article.publishDate);
-        System.out.println("----------------华丽分割线-----------------");
+        System.out.println("----------------内容-----------------");
         System.out.println(article.context);
         return article;
     }
@@ -63,24 +81,29 @@ public abstract class Extractor {
         return comPath;
     }
 
-    public static String isUseTemplate(String url){
-        String templateReg = null;
-        /*HashMap<String,String> templateMap = ConfLoader.templateMap;
-        for (Map.Entry<String,String> te : templateMap.entrySet()){
+    //使用最长的正则匹配，如果某域名有个模板匹配，当需要为该域名下某些网页定制模板时
+    //可以直接配置该子模板，虽然该url能匹配域名模板和子模板，但是它会选择最长正则匹配
+    public static HashMap<String,String> useTemplate(String url){
+        HashMap<String,String> templateReg = null;
+        HashMap<String,HashMap<String,String>> templateMap = ConfLoader.templateMap;
+        int maxMatchLen = 0;
+        for (Map.Entry<String,HashMap<String,String>> te : templateMap.entrySet()){
             Pattern p = Pattern.compile(te.getKey());
             Matcher m = p.matcher(url);
             if(m.find()){
-                templateReg = te.getValue();
-                break;
+                int len = m.group().length();
+                if(maxMatchLen < len){ //url使用最长的正则匹配
+                    maxMatchLen = len;
+                    templateReg = te.getValue();
+                }
             }
-        }*/
+        }
         return templateReg;
     }
 
     public static boolean isArticlePage(String url){
         boolean isArticle = false;
-        HashSet<String> topicRegexSet = ConfLoader.topicRegexSet;
-        for (String topicRegx : topicRegexSet){
+        for (String topicRegx : ConfLoader.topicRegexSet){
             Pattern p = Pattern.compile(topicRegx);
             Matcher m = p.matcher(url);
             if(m.find()){

@@ -28,7 +28,7 @@ public class StepTagController extends BaseController {
      */
     @RequestMapping(value = "/steptag", method = RequestMethod.GET)
     public void test(String step,Integer size) {
-        if (step == null || "".equals(step.trim())) renderJson(new ArrayList<Map>());
+        if (step == null || "".equals(step.trim())) {renderJson(new ArrayList<Map>());return;};
         if (size == null || size < 0) size = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("step").is(step);
