@@ -59,8 +59,11 @@ public abstract class Extractor {
                 pageExtrators.put(comPath, extractor);
             }
         }
+        if(article == null){
+            return null;
+        }
         if(article.context != null && !article.context.equals("")){
-            
+            FileWriter.getInstance().writeArticle(article);
         }
 
         System.out.println("----------------标题-----------------");
