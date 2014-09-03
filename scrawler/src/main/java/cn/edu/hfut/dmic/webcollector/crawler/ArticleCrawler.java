@@ -53,7 +53,7 @@ public class ArticleCrawler extends BreadthCrawler {
         crawlthread.start();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         exeute();
         /*String crawl_path = "crawl";//  /home/hu/data/crawl_hfut1
         String root = "F:\\OwnerProjects\\KDD\\download";// /home/hu/data/hfut1
