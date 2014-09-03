@@ -1,7 +1,8 @@
 <assembly>
     <id>package</id>
     <formats>
-        <format>jar</format>
+        <format>dir</format>
+        <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
 
@@ -14,7 +15,8 @@
             <directory>src/main/resources</directory>
             <outputDirectory>conf</outputDirectory>
         </fileSet>
-    </fileSets>
+      </fileSets>
+
     <dependencySets>
         <dependencySet>
             <outputDirectory>lib</outputDirectory>
