@@ -20,7 +20,7 @@ public class FileUploadController extends BaseController {
 
     @RequestMapping(value = "/fileToHdfs", method = RequestMethod.GET)
     public void test(String filepath) {
-        HDFSService.put("/Volumes/study/test/1.csv");
+      //  HDFSService.put("/Volumes/study/test/1.csv");
     }
 
 }
