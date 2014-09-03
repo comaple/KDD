@@ -1,5 +1,7 @@
 package com.easyminning.hdfs;
 
+import org.apache.hadoop.mapreduce.Job;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xdx
@@ -8,4 +10,13 @@ package com.easyminning.hdfs;
  * To change this template use File | Settings | File Templates.
  */
 public class JobAfterDoingAbs {
+    protected Job job = null;
+
+    public void init(Job job){
+        this.job = job;
+    }
+
+    public void doing(){
+
+    }
 }
