@@ -22,24 +22,19 @@ import java.util.Date;
 public class SplitMapper extends Mapper<LongWritable, Text, Text, DocumentWritable> {
     private static Lexeme lexeme = null;
     private static Text docId = new Text();
-    private StringBuilder stringBuilder = new StringBuilder();
 
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         DocumentWritable documentWritable = new DocumentWritable();
         FileSplit fileSplit = (FileSplit) context.getInputSplit();
-//        DocumentWritable documentWritable = new DocumentWritable();
+        StringBuilder stringBuilder = new StringBuilder();
         String fileName = fileSplit.getPath().getName();
-//        String name = fileName.substring(fileName.lastIndexOf(File.separator), fileName.length() - 1);
         StringReader reader = new StringReader(value.toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
-//        System.err.println("-----------");
-//        System.err.println(value.toString().length());
         while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1 && !lexeme.getLexemeText().equals("nbsp")) {
             stringBuilder.append(lexeme.getLexemeText().trim().replaceAll("nbsp", "") + " ");
         }
-//        System.err.println(stringBuilder.toString());
         docId.set(fileName);
         documentWritable.setDocId(new Text(fileName));
         documentWritable.setDocContent(value);
