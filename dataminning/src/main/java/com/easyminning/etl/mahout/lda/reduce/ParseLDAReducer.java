@@ -43,7 +43,12 @@ public class ParseLDAReducer extends Reducer<Text, UidPrefWritable, LongWritable
                 if (kv1.length != kv2.length || kv1.length != 2 || kv2.length != 2) {
                     return -1;
                 }
-                return (int) (Double.parseDouble(kv2[1]) - Double.parseDouble(kv1[1]));
+                double res = (Double.parseDouble(kv2[1]) - Double.parseDouble(kv1[1]));
+                if (res > 0) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
         });
         System.err.println("-------------------------------");
