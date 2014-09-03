@@ -21,13 +21,13 @@ import java.util.Date;
  */
 public class SplitMapper extends Mapper<LongWritable, Text, Text, DocumentWritable> {
     private static Lexeme lexeme = null;
-    private static Text docId = new Text("1");
+    private static Text docId = new Text();
     private StringBuilder stringBuilder = new StringBuilder();
-    private DocumentWritable documentWritable = new DocumentWritable();
 
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        DocumentWritable documentWritable = new DocumentWritable();
         FileSplit fileSplit = (FileSplit) context.getInputSplit();
 //        DocumentWritable documentWritable = new DocumentWritable();
         String fileName = fileSplit.getPath().getName();
@@ -37,22 +37,17 @@ public class SplitMapper extends Mapper<LongWritable, Text, Text, DocumentWritab
 //        System.err.println("-----------");
 //        System.err.println(value.toString().length());
         while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1 && !lexeme.getLexemeText().equals("nbsp")) {
-
             stringBuilder.append(lexeme.getLexemeText().trim().replaceAll("nbsp", "") + " ");
         }
 //        System.err.println(stringBuilder.toString());
+        docId.set(fileName);
         documentWritable.setDocId(new Text(fileName));
         documentWritable.setDocContent(value);
         documentWritable.setResult(new Text(stringBuilder.toString()));
         documentWritable.setIssue(new Text(DateUtil.format(new Date(), DateUtil.YYYYMMDD)));
         documentWritable.setWeihgt(new DoubleWritable(1));
-//        context.write(docId, documentWritable);
-
-    }
-
-    @Override
-    protected void cleanup(Context context) throws IOException, InterruptedException {
         context.write(docId, documentWritable);
-
     }
+
+
 }
