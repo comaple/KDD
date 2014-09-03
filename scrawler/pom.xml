@@ -51,6 +51,47 @@
 
 
     <build>
+
+        <resources>
+            <!--资源过滤*.properties到target/classes下-->
+            <resource>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.template</include>
+                </includes>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <!--复制除 *.properties 到target/classes/assembly-conf下，不做资源过滤-->
+            <resource>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <targetPath>assembly-conf</targetPath>
+            </resource>
+            <!--复制除 *.properties 到target/classes/下，不做资源过滤-->
+            <resource>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <!--资源过滤*.properties,log4j.xml到assembly-conf，最终由assembly插件复制到conf目录下-->
+            <resource>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>log4j.xml</include>
+                </includes>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <targetPath>assembly-conf</targetPath>
+            </resource>
+
+        </resources>
+
         <plugins>
 
             <plugin>
