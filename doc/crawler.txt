@@ -23,3 +23,9 @@ interval，topN。如果具体的.template和.dat文件更新后也可以自动�
 6）建议只抓取较新的新闻，一是老新闻并没有多大意义，二是对爬虫的性能将必然造成一定
 影响。可通过配置中的repeatableregex和positiveregex定义只抓取频道的前两页url的正则
 达到只抓取较新新闻的目的。
+
+7）crawl.properties中的配置seeds，repeatableregex，positiveregex，negativeregex，
+topicregex，templates一般都是对应一个具体的配置文件，如果有多个文件，可在后面加入
+文件名，以三个分号隔开“;;;”，具体的配置文件一般以.dat开头，一行一个正则表达式。
+templates.dat中每行为“使用模板的正则%%%具体的模板文件名”，其中具体的模板文件名
+一般以.template格式结尾

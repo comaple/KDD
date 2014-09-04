@@ -71,7 +71,7 @@ public class ConfLoader {
                 HashMap<String,String> regs = new HashMap<String,String>();
                 while ((line = reader.readLine()) != null) {
                     int index = line.indexOf('=');
-                    regs.put(line.substring(0,index),line.substring(index + 1));
+                    regs.put(line.substring(0,index).trim(),line.substring(index + 1).trim());
                 }
                 templateMap.put(regFiles[0], regs);
                 reader.close();
