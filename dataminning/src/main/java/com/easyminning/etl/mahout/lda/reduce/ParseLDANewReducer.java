@@ -26,8 +26,8 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
     @Override
 
     protected void setup(Context context) throws IOException, InterruptedException {
-
         //读取分布式缓存中得数据
+
 
     }
 

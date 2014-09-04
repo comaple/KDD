@@ -26,4 +26,9 @@ public class Constant {
     public static String THRSHOLD = "doc.threshold";
 
     public static String RESULT_NUM = "resultNum";
+
+    public static String TOPIC_K = "topicK";
+
+    public static String TOPIC_PATH = "topicPath";
+
 }
