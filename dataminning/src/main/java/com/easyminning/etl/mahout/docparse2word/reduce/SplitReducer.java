@@ -33,30 +33,33 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<DocumentWritable> values, Context context) throws IOException, InterruptedException {
-        List<DocumentWritable> list = new LinkedList<DocumentWritable>();
+        StringBuilder stringBuilder = new StringBuilder();
+        DocumentWritable doc = new DocumentWritable();
         for (DocumentWritable documentWritable : values) {
-            list.add(documentWritable);
+            stringBuilder.append(documentWritable.getResult().toString() + " ");
+            doc = documentWritable;
         }
-        Collections.sort(list, new Comparator<DocumentWritable>() {
-            @Override
-            public int compare(DocumentWritable o, DocumentWritable o2) {
-                double result = o.getWeihgt().get() - o2.getWeihgt().get();
-                if (result > 0) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
+        doc.setResult(new Text(stringBuilder.toString()));
+//        Collections.sort(list, new Comparator<DocumentWritable>() {
+//            @Override
+//            public int compare(DocumentWritable o, DocumentWritable o2) {
+//                double result = o.getWeihgt().get() - o2.getWeihgt().get();
+//                if (result > 0) {
+//                    return 1;
+//                } else {
+//                    return -1;
+//                }
+//            }
+//        });
+//
+//        list = list.subList(0, list.size() <= (resultNum) ? list.size() - 1 : resultNum - 1);
 
-        list = list.subList(0, resultNum - 1);
-        for (DocumentWritable doc : list) {
-            ResultDocument resultDocument = constructDoc(doc);
-            //写mongodb
-            resultDocumentService.save(resultDocument);
-            //写reduce 文件
-            context.write(doc.getDocId(), doc.getResult());
-        }
+        ResultDocument resultDocument = constructDoc(doc);
+        //写mongodb
+        resultDocumentService.save(resultDocument);
+        //写reduce 文件
+        context.write(doc.getDocId(), doc.getResult());
+
 
     }
 
