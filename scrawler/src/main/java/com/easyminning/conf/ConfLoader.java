@@ -38,6 +38,7 @@ public class ConfLoader {
                 public void reloadingPerformed(){
                     super.reloadingPerformed();
                     reloadConf();
+                    Log.Infos("info", "properties file reloading...");
                 }
             };
             prop.setReloadingStrategy(strategy);
