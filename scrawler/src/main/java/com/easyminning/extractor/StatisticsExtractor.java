@@ -29,7 +29,7 @@ public class StatisticsExtractor extends Extractor {
     };
 
     public StatisticsExtractor(){
-        appendMode = true;
+        appendMode = false;
         depth = 3;
         limitCount = 150;
         headEmptyLines = 2;
