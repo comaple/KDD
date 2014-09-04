@@ -29,7 +29,7 @@ public class LinkUtils {
         for (Element link : link_elements) {
             String anchor=link.text();
             //String href=link.attr("abs:href");
-            String href=link.attr("href");//leilongyan修改
+            String href=link.attr("href");//leilongyan修改 并在此加入正则过滤 下载的时候不需要重新正则过滤
             //System.out.println("***anchor:"+anchor+" href:"+href+"***");
             boolean isAdd = false;
             for(String pregex: ConfLoader.positiveRegexSet){

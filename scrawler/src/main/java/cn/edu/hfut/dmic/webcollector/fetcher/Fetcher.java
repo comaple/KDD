@@ -81,7 +81,9 @@ public class Fetcher extends Task {
         start();
         CrawlDatum crawlDatum = null;
         while ((crawlDatum = generator.next()) != null) {
-            addFetcherThread(crawlDatum.url);
+            if(crawlDatum.needFetch) {//leilongyan修改，加这个判断设计使去掉递归设计，避免栈溢出
+                addFetcherThread(crawlDatum.url);
+            }
         }
         end();
 

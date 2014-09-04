@@ -25,7 +25,7 @@ public class ArticleCrawler extends BreadthCrawler {
         Extractor.extract(page); //文章抽取
     }
 
-    public static void exeute(){
+    public static void execute(){
         Thread crawlthread = new Thread() {
             @Override
             public void run() {
@@ -54,7 +54,7 @@ public class ArticleCrawler extends BreadthCrawler {
     }
 
     public static void main(String[] args) throws IOException {
-        exeute();
+        execute();
         /*String crawl_path = "crawl";//  /home/hu/data/crawl_hfut1
         String root = "F:\\OwnerProjects\\KDD\\download";// /home/hu/data/hfut1
         //Config.topN=500;

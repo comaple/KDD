@@ -240,7 +240,8 @@ public class BreadthCrawler {
     private Generator getGenerator(){
 
         Generator generator = new StandardGenerator(crawl_path);
-        generator=new UniqueFilter(new IntervalFilter(new URLRegexFilter(generator, regexs)));
+        //generator=new UniqueFilter(new IntervalFilter(new URLRegexFilter(generator, regexs)));
+        generator=new UniqueFilter(new IntervalFilter(generator));//leilongyan修改 不需要URLRegexFilter了
         generator.setTaskname(taskname);
         return generator;
     }

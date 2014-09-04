@@ -63,7 +63,9 @@ public class URLRegexFilter extends Filter{
         //for(String nregex:negative){
         for(String nregex: ConfLoader.negativeRegexSet){//leilongyan修改 为了支持修改配置文件自动加载功能
             if(Pattern.matches(nregex, url)){
-                return next();
+                //return next();leilongyan修改 深度递归将导致栈溢出
+                crawldatum.needFetch = false;
+                return crawldatum;
             }
         }
         
@@ -76,7 +78,9 @@ public class URLRegexFilter extends Filter{
             }
         }
         if(count==0){
-            return next();
+            //return next();leilongyan修改 深度递归将导致栈溢出
+            crawldatum.needFetch = false;
+            return crawldatum;
         }
         else{
             return crawldatum;

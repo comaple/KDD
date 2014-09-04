@@ -40,7 +40,9 @@ public class UniqueFilter extends Filter{
         }
         String url=crawldatum.url;
         if(hashset.contains(url)){
-            return next();
+            //return next();leilongyan修改 深度递归将导致栈溢出
+            crawldatum.needFetch = false;
+            return crawldatum;
         }
         else{
             addUrl(url);
