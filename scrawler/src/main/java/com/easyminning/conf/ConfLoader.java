@@ -4,11 +4,12 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.configuration.reloading.ReloadingStrategy;
 import org.apache.commons.io.FileUtils;
-import org.mortbay.log.Log;
-
+import cn.edu.hfut.dmic.webcollector.util.Log;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -30,7 +31,7 @@ public class ConfLoader {
     }
 
     public static void loadConf(){
-        Log.info("loading crawler conf...");
+        Log.Infos("info", "loading crawler conf...");
         try {
             prop = new PropertiesConfiguration("crawl.properties");
             FileChangedReloadingStrategy strategy  =new FileChangedReloadingStrategy(){
@@ -62,6 +63,7 @@ public class ConfLoader {
                 String[] regFiles = template.split(ConfConstant.TemplateSplit);
                 InputStream inputStream = ConfLoader.class.getClassLoader().getResourceAsStream(regFiles[1]);
                 if (inputStream == null) {
+                    Log.Infos("info", "file:" + regFiles[1] + " not exists");
                     continue;
                 }
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -80,7 +82,7 @@ public class ConfLoader {
     }
 
     public static HashSet<String> analyzeConf(String proKey,String objectSplit,
-                        PropertiesConfiguration prop, HashSet<String> propSet){
+                        PropertiesConfiguration prop, HashSet<String> propSet) throws IOException, URISyntaxException {
         if(prop == null){
             return propSet;
         }
@@ -89,7 +91,16 @@ public class ConfLoader {
         if(proValue != null) {
             String[] values = proValue.split(objectSplit);
             for (String value : values) {
-                propSet.add(value.trim());
+                //propSet.add(value.trim());
+                File file = new File(ConfLoader.class.getClassLoader().getResource(value).toURI());
+                if(!file.exists()){
+                    Log.Infos("info", "file:" + value + " not exists");
+                    continue;
+                }
+                List<String> confs = FileUtils.readLines(file);
+                for(String conf : confs){
+                    propSet.add(conf.trim());
+                }
             }
         }
         return propSet;

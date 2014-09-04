@@ -63,6 +63,7 @@
                 <excludes>
                     <exclude>**/*.properties</exclude>
                     <exclude>**/*.template</exclude>
+                    <exclude>**/*.dat</exclude>
                 </excludes>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
