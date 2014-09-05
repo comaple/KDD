@@ -1,8 +1,8 @@
 package com.easyminning.etl.mahout.lda.reduce;
 
 import com.easyminning.etl.mahout.util.Constant;
-import com.easyminning.tag.DocWordWeightModel;
-import com.easyminning.tag.DocWordWeightService;
+import com.easyminning.tag.TagDocWeight;
+import com.easyminning.tag.TagDocService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
 import org.apache.hadoop.io.NullWritable;
@@ -22,7 +22,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
     //默认是10个主题
     private int k = 0;
     // mongo db service
-    DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
+    TagDocService tagDocService = TagDocService.getInstance();
     private int topN = 0;
 
     @Override
@@ -53,7 +53,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         if (topicWeights == null || topicWeights.length != k) {
             return;
         }
-        List<DocWordWeightModel> wordWeightModels = new LinkedList<DocWordWeightModel>();
+        List<TagDocWeight> wordWeightModels = new LinkedList<TagDocWeight>();
         StringBuilder stringBuilder = new StringBuilder();
         for (String topic : topicWeights) {
             String[] topicKV = topic.split(":");
@@ -62,7 +62,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             }
             Map<String, Double> words = topicKeyVlues.get(topicKV[0]);
             for (String k : words.keySet()) {
-                DocWordWeightModel model = new DocWordWeightModel(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
+                TagDocWeight model = new TagDocWeight(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
                 wordWeightModels.add(model);
 //                stringBuilder.append(k + ",");
             }
@@ -72,8 +72,8 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
 
         int index = 0;
         //插入mongodb
-        for (DocWordWeightModel docWordWeightModel : wordWeightModels) {
-            docWordWeightService.save(docWordWeightModel);
+        for (TagDocWeight tagDocWeight : wordWeightModels) {
+            tagDocService.save(tagDocWeight);
             index++;
         }
 

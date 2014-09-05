@@ -1,7 +1,7 @@
 package com.easyminning.view.web;
 
-import com.easyminning.tag.DocWordWeightModel;
-import com.easyminning.tag.DocWordWeightService;
+import com.easyminning.tag.TagDocWeight;
+import com.easyminning.tag.TagDocService;
 import com.mongodb.QueryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,19 +14,19 @@ import java.util.Map;
 
 @Controller
 public class TagDocController extends BaseController {
-    private DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
+    private TagDocService tagDocService = TagDocService.getInstance();
 
     /**
      * 传tag名称，例如美国
      * @param tag
      */
-    @RequestMapping(value = "/tagdoc", method = RequestMethod.GET)
-    public void test(String tag, Integer size) {
+    @RequestMapping(value = "/worddoc", method = RequestMethod.GET)
+    public void test(String tag, Integer pageNo, Integer pageSize) {
         if (tag == null || "".equals(tag.trim())) {renderJson(new ArrayList<Map>());return;};
-        if (size == null || size < 0) size = 20;
+        if (pageSize == null || pageSize < 0) pageSize = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);
-        List<DocWordWeightModel> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
+        List<TagDocWeight> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
         List<Map> result = new ArrayList<Map>();
         Map<String,String> map1 = new HashMap<String,String>();
         map1.put("title", "标题1");

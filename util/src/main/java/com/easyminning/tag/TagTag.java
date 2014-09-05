@@ -9,11 +9,19 @@ package com.easyminning.tag;
  */
 public class TagTag extends BaseModel {
 
+    private String tagItem;
+
     private String tagItem1;
 
-    private String tagItem2;
-
     private Double weight;
+
+    public String getTagItem() {
+        return tagItem;
+    }
+
+    public void setTagItem(String tagItem) {
+        this.tagItem = tagItem;
+    }
 
     public String getTagItem1() {
         return tagItem1;
@@ -21,14 +29,6 @@ public class TagTag extends BaseModel {
 
     public void setTagItem1(String tagItem1) {
         this.tagItem1 = tagItem1;
-    }
-
-    public String getTagItme2() {
-        return tagItem2;
-    }
-
-    public void setTagItme2(String tagItem2) {
-        this.tagItem2 = tagItem2;
     }
 
     public Double getWeight() {

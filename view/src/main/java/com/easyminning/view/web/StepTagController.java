@@ -19,8 +19,7 @@ import java.util.HashMap;
 @Scope("prototype")
 public class StepTagController extends BaseController {
 
-    @Autowired
-    private StepTagService stepTagService;
+    private StepTagService stepTagService = StepTagService.getInstance();
 
     /**
      * 传步骤编号，例如1，2，3，4，5，6

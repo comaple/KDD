@@ -3,15 +3,15 @@ package com.easyminning.tag;
 /**
  * Created by comaple on 14-9-4.
  */
-public class DocWordWeightModel extends BaseModel implements Comparable {
+public class TagDocWeight extends BaseModel implements Comparable {
     private String docname;
     private String word;
     private Double weight;
 
-    public DocWordWeightModel() {
+    public TagDocWeight() {
     }
 
-    public DocWordWeightModel(String docname, String word, Double weight) {
+    public TagDocWeight(String docname, String word, Double weight) {
         this.docname = docname;
         this.word = word;
         this.weight = weight;
@@ -46,9 +46,9 @@ public class DocWordWeightModel extends BaseModel implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        DocWordWeightModel other = null;
-        if (o instanceof DocWordWeightModel) {
-            other = (DocWordWeightModel) o;
+        TagDocWeight other = null;
+        if (o instanceof TagDocWeight) {
+            other = (TagDocWeight) o;
 
         } else {
             return -65536;

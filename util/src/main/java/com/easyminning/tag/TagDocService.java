@@ -9,24 +9,24 @@ import java.util.List;
  * Time: 下午2:23
  * To change this template use File | Settings | File Templates.
  */
-public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
+public class TagDocService extends AbstractService<TagDocWeight> {
 
-    private static DocWordWeightService docWordWeightService = new DocWordWeightService();
+    private static TagDocService tagDocService = new TagDocService();
 
-    private DocWordWeightService() {
+    private TagDocService() {
         this.init();
     }
 
-    public static DocWordWeightService getInstance() {
-        return docWordWeightService;
+    public static TagDocService getInstance() {
+        return tagDocService;
     }
 
     public void setCollectionName(String collectionName) {
         this.collectionName = "docwordweight";
     }
 
-    public void save(DocWordWeightModel docWordWeightModel) {
-        simpleMongoDBClient2.insert(docWordWeightModel);
+    public void save(TagDocWeight tagDocWeight) {
+        simpleMongoDBClient2.insert(tagDocWeight);
     }
 
     public List<String> findWordAll() {
@@ -37,12 +37,12 @@ public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
 
 
     public static void main(String[] args) {
-        DocWordWeightService docWordWeightService = new DocWordWeightService();
+        TagDocService tagDocService = new TagDocService();
 
-        docWordWeightService.init();
+        tagDocService.init();
 
       // docWordWeightService.save(new DocWordWeightModel());
-       List<String> models = docWordWeightService.findWordAll();
+       List<String> models = tagDocService.findWordAll();
 
     }
 

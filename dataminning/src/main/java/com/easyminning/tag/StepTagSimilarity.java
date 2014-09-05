@@ -11,7 +11,7 @@ import java.util.List;
 public class StepTagSimilarity {
     private static StepTagSimilarity stepTagSimilarity = new StepTagSimilarity();
 
-    private DocWordWeightService docWordWeightService;
+    private TagDocService tagDocService;
     private EditDistance editDistance;
     private StepTagService stepTagService;
 
@@ -20,14 +20,14 @@ public class StepTagSimilarity {
     }
 
     private StepTagSimilarity() {
-        docWordWeightService = DocWordWeightService.getInstance();
+        tagDocService = TagDocService.getInstance();
         editDistance = EditDistance.getIntance();
         stepTagService = StepTagService.getInstance();
     }
 
 
     public void analysis() {
-        List<String> words = docWordWeightService.findWordAll();
+        List<String> words = tagDocService.findWordAll();
         List<StepTag> stepTagList = new ArrayList<StepTag>();
         for (String word : words) {
             if (word == null || "".equals(word.trim())) continue;
