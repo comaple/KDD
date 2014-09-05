@@ -16,19 +16,8 @@ import javax.annotation.PostConstruct;
  * Time: 下午3:14
  * To change this template use File | Settings | File Templates.
  */
-@Service
-public class StepTagService extends SimpleMongoDBClient2<StepTag> {
-
-    @PostConstruct
-    public void init() {
-        super.setDataBaseName("kdd");
-        super.setCollectionName("steptag");
-        super.init();
+public class StepTagService extends AbstractService<StepTag> {
+    public void setCollectionName(String collectionName) {
+        this.collectionName = "steptag";
     }
-
-    @Autowired
-    public void setDriver(MongoDBDriver driver) {
-        super.setDriver(driver);
-    }
-
 }

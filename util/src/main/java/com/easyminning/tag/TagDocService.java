@@ -16,19 +16,8 @@ import javax.annotation.PostConstruct;
  * Time: 下午3:14
  * To change this template use File | Settings | File Templates.
  */
-@Service
-public class TagDocService extends SimpleMongoDBClient2<TagDoc> {
-
-    @PostConstruct
-    public void init() {
-        super.setDataBaseName("kdd");
-        super.setCollectionName("tagdoc");
-        super.init();
+public class TagDocService extends AbstractService<TagDoc> {
+    public void setCollectionName(String collectionName) {
+        this.collectionName = "tagdoc";
     }
-
-    @Autowired
-    public void setDriver(MongoDBDriver driver) {
-        super.setDriver(driver);
-    }
-
 }

@@ -2,6 +2,7 @@ package com.easyminning.etl.mahout.writable;
 
 import com.easyminning.mongodbclient2.driver.MongoDBDriver;
 import com.easyminning.mongodbclient2.sample.SimpleMongoDBClient2;
+import com.easyminning.tag.AbstractService;
 import com.easyminning.tag.ResultDocument;
 import com.mongodb.QueryBuilder;
 
@@ -12,24 +13,12 @@ import com.mongodb.QueryBuilder;
  * Time: 下午2:23
  * To change this template use File | Settings | File Templates.
  */
-public class DocWordWeightService {
+public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
 
-    private static String DATABASE_NEME = "kdd";
-    private static String COLLECTION_NAME = "docwordweight";
-
-    public SimpleMongoDBClient2<DocWordWeightModel> simpleMongoDBClient2;
-
-    public void init() {
-        MongoDBDriver mongoDBDriver = new MongoDBDriver();
-        mongoDBDriver.setConfigFile("configuration-util.properties");
-        mongoDBDriver.init();
-
-        simpleMongoDBClient2 = new SimpleMongoDBClient2<DocWordWeightModel>();
-        simpleMongoDBClient2.setDriver(mongoDBDriver);
-        simpleMongoDBClient2.setDataBaseName(DATABASE_NEME);
-        simpleMongoDBClient2.setCollectionName(COLLECTION_NAME);
-        simpleMongoDBClient2.init();
+    public void setCollectionName(String collectionName) {
+        this.collectionName = "docwordweight";
     }
+
 
     public void save(DocWordWeightModel docWordWeightModel) {
         simpleMongoDBClient2.save(QueryBuilder.start(), docWordWeightModel);
