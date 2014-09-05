@@ -15,7 +15,9 @@ public class DocWordWeightModel implements Comparable {
         this.docname = docname;
         this.word = word;
         this.weight = weight;
+
     }
+
 
     public String getDocname() {
         return docname;

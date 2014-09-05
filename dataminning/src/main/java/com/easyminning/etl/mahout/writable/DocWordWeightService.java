@@ -33,6 +33,7 @@ public class DocWordWeightService {
 
     public void save(DocWordWeightModel docWordWeightModel) {
         simpleMongoDBClient2.save(QueryBuilder.start(), docWordWeightModel);
+
     }
 
 
