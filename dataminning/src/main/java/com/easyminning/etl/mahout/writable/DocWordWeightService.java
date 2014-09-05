@@ -21,7 +21,7 @@ public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
 
 
     public void save(DocWordWeightModel docWordWeightModel) {
-        simpleMongoDBClient2.save(QueryBuilder.start(), docWordWeightModel);
+        simpleMongoDBClient2.insert(docWordWeightModel);
     }
 
 
