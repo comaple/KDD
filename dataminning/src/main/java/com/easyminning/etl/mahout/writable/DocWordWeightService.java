@@ -6,6 +6,8 @@ import com.easyminning.tag.AbstractService;
 import com.easyminning.tag.ResultDocument;
 import com.mongodb.QueryBuilder;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xdx
@@ -19,20 +21,24 @@ public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
         this.collectionName = "docwordweight";
     }
 
-
     public void save(DocWordWeightModel docWordWeightModel) {
         simpleMongoDBClient2.insert(docWordWeightModel);
     }
 
+    public List<DocWordWeightModel> findAll() {
+        List<DocWordWeightModel> docWordWeightModelList = simpleMongoDBClient2.select(QueryBuilder.start(),
+                1,Integer.MAX_VALUE, DocWordWeightModel.class);
+        return docWordWeightModelList;
+    }
+
 
     public static void main(String[] args) {
-        DocWordWeightService resultDocumentService = new DocWordWeightService();
-        resultDocumentService.init();
+        DocWordWeightService docWordWeightService = new DocWordWeightService();
 
+        docWordWeightService.init();
 
-        DocWordWeightModel docWordWeightModel = new DocWordWeightModel();
-        docWordWeightModel.setDocname("");
-        resultDocumentService.save(docWordWeightModel);
+       docWordWeightService.save(new DocWordWeightModel());
+       List<DocWordWeightModel> models = docWordWeightService.findAll();
     }
 
 }
