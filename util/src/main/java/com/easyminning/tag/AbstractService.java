@@ -12,7 +12,7 @@ public abstract class AbstractService<E> {
 
     protected SimpleMongoDBClient2<E> simpleMongoDBClient2;
 
-    protected void init() {
+    public void init() {
         MongoDBDriver mongoDBDriver = new MongoDBDriver();
         mongoDBDriver.setConfigFile("configuration-util.properties");
         mongoDBDriver.init();
