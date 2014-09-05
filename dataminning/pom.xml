@@ -69,8 +69,8 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <!--<mainClass>com.easyminning.etl.mahout.docparse2word.Doc2WordAndFilterJob</mainClass>-->
-                            <mainClass>com.easyminning.etl.mahout.lda.ParseLDAJob</mainClass>
+                            <mainClass>com.easyminning.etl.mahout.docparse2word.Doc2WordAndFilterJob</mainClass>
+                            <!--<mainClass>com.easyminning.etl.mahout.lda.ParseLDAJob</mainClass>-->
                             <!--<mainClass>com.easyminning.algorithm.fpm.pfpgrowth.FPGrowthDriver</mainClass>-->
                         </manifest>
                     </archive>
