@@ -25,7 +25,7 @@ public class MongoDBTest {
         tagTag.setTagItem1("美国");
         tagTag.setTagItme2("哈弗");
         tagTag.setWeight(0.9);
-        tagDAO.save(QueryBuilder.start(),tagTag);
+       // tagDAO.save(QueryBuilder.start(),tagTag);
     }
 
     static class User implements Serializable {
