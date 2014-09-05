@@ -30,19 +30,16 @@ public class TagTagController extends BaseController {
         if (tagItem == null || "".equals(tagItem.trim())) {renderJson(new ArrayList<Map>());return;};
         if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
         if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
+        List<TagTag> tagTagList = tagTagService.findTagByTag(tagItem,pageNo,pageSize);
 
-        QueryBuilder queryBuilder;// = QueryBuilder.start("tagItem1").is(tag);
-        List<TagTag> tagTagList;// = tagTagService.select(queryBuilder,1,size,TagTag.class);
         List<Map> result = new ArrayList<Map>();
-        Map<String,String> map1 = new HashMap<String,String>();
-        map1.put("tag", "标签1");
-        map1.put("weight", "10");
-        result.add(map1);
-
-        Map<String,String> map2 = new HashMap<String, String>();
-        map2.put("tag", "标签2");
-        map2.put("weight", "9");
-        result.add(map2);
+        for (TagTag tagTag : tagTagList) {
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("tagItem", tagTag.getTagItem());
+            map.put("tagItem1", tagTag.getTagItem1());
+            map.put("weight", tagTag.getWeight().toString());
+            result.add(map);
+        }
         renderJson(result);
     }
 

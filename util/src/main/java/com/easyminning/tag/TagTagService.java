@@ -3,6 +3,7 @@ package com.easyminning.tag;
 import com.easyminning.mongodbclient2.driver.MongoDBDriver;
 import com.easyminning.mongodbclient2.sample.SimpleMongoDBClient2;
 import com.easyminning.tag.TagTag;
+import com.mongodb.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class TagTagService extends AbstractService<TagTag> {
 
-    private static TagTagService tagTagService = new TagTagService();
+    private static TagTagService tagTagService = TagTagService.getInstance();
 
     private TagTagService() {
         this.init();
@@ -41,4 +42,13 @@ public class TagTagService extends AbstractService<TagTag> {
     public void saveTagTagList(List<TagTag> tagTagList) {
         this.simpleMongoDBClient2.insert(tagTagList);
     }
+
+    public List<TagTag> findTagByTag(String tagItem, Integer pageNo, Integer pageSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
+        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
+        return tagTagList;
+    }
 }
+
+

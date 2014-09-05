@@ -22,8 +22,8 @@ public class MongoDBTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-util.xml");
         TagTagService tagDAO = context.getBean(TagTagService.class);
         TagTag tagTag = new TagTag();
-        tagTag.setTagItem1("美国");
-        tagTag.setTagItme2("哈弗");
+        tagTag.setTagItem("美国");
+        tagTag.setTagItem1("哈弗");
         tagTag.setWeight(0.9);
        // tagDAO.save(QueryBuilder.start(),tagTag);
     }
