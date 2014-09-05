@@ -25,7 +25,7 @@ public abstract class AbstractService<E> {
         simpleMongoDBClient2.init();
     }
 
-    public abstract void setCollectionName(String collectionName);
+    protected abstract void setCollectionName(String collectionName);
 
     public void setDataBaseName(String dataBaseName) {
         //

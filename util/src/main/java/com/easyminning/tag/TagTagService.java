@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +18,27 @@ import javax.annotation.PostConstruct;
  * To change this template use File | Settings | File Templates.
  */
 public class TagTagService extends AbstractService<TagTag> {
-    public void setCollectionName(String collectionName) {
+
+    private static TagTagService tagTagService = new TagTagService();
+
+    private TagTagService() {
+        this.init();
+    }
+
+    public static TagTagService getInstance() {
+        return tagTagService;
+    }
+
+    @Override
+    protected void setCollectionName(String collectionName) {
         this.collectionName = "tagtag";
+    }
+
+    public void saveTagTag(TagTag tagTag) {
+        this.simpleMongoDBClient2.insert(tagTag);
+    }
+
+    public void saveTagTagList(List<TagTag> tagTagList) {
+        this.simpleMongoDBClient2.insert(tagTagList);
     }
 }
