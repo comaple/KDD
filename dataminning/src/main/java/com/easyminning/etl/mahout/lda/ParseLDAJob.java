@@ -58,7 +58,7 @@ public class ParseLDAJob extends AbstractJob {
         Configuration conf = getConf();
         Path indexPath = new Path(getOption(MATRIX));
         System.out.println("topic path is :" + topicPath.toString());
-
+        int topn = Integer.parseInt(getOption(Constant.TOP_N));
         DistributedCache.createSymlink(conf);
         DistributedCache.addCacheFile(new URI(topicPath.toUri().toString() + "#" + Constant.TOPIC_PATH), conf);
         Job ldaParseJob = new Job(conf);
@@ -74,6 +74,8 @@ public class ParseLDAJob extends AbstractJob {
         MultipleInputs.addInputPath(ldaParseJob, indexPath, SequenceFileInputFormat.class, MatrixMapper.class);
         ldaParseJob.setJarByClass(ParseLDAJob.class);
         ldaParseJob.getConfiguration().setInt(Constant.TOPIC_K, k);
+        ldaParseJob.getConfiguration().setInt(Constant.TOP_N, topn);
+
         boolean phrase_1 = ldaParseJob.waitForCompletion(true);
         if (phrase_1) {
             return 0;
@@ -88,6 +90,7 @@ public class ParseLDAJob extends AbstractJob {
         addOption(MATRIX, "mx", "the input of matrix for lda.");
         addOption(TOPIC_K, "tk", "the input num of topic");
         addOption(TOPIC_PATH, "tp", "the input path of topic");
+        addOption(Constant.TOP_N, "tn", "top n result to get");
         addOption(DefaultOptionCreator.overwriteOption().create());
 
     }
