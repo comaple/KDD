@@ -1,7 +1,7 @@
 package com.easyminning.etl.mahout.lda.reduce;
 
 import com.easyminning.etl.mahout.util.Constant;
-import com.easyminning.tag.TagDocWeight;
+import com.easyminning.tag.TagDoc;
 import com.easyminning.tag.TagDocService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
@@ -53,7 +53,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         if (topicWeights == null || topicWeights.length != k) {
             return;
         }
-        List<TagDocWeight> wordWeightModels = new LinkedList<TagDocWeight>();
+        List<TagDoc> wordWeightModels = new LinkedList<TagDoc>();
         StringBuilder stringBuilder = new StringBuilder();
         for (String topic : topicWeights) {
             String[] topicKV = topic.split(":");
@@ -62,7 +62,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             }
             Map<String, Double> words = topicKeyVlues.get(topicKV[0]);
             for (String k : words.keySet()) {
-                TagDocWeight model = new TagDocWeight(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
+                TagDoc model = new TagDoc(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
                 wordWeightModels.add(model);
 //                stringBuilder.append(k + ",");
             }
@@ -72,12 +72,12 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
 
         int index = 0;
         //插入mongodb
-        for (TagDocWeight tagDocWeight : wordWeightModels) {
+        for (TagDoc tagDoc : wordWeightModels) {
             if (index > topN) {
                 break;
             }
-            tagDocService.save(tagDocWeight);
-            stringBuilder.append(tagDocWeight.getWord() + ",");
+            tagDocService.save(tagDoc);
+            stringBuilder.append(tagDoc.getWord() + ",");
             index++;
         }
         String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
