@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
 
-    private ResultDocumentService resultDocumentService = null;
+    private ResultDocumentService resultDocumentService = ResultDocumentService.getInstance();
     private int resultNum = 1000;
 
     @Override
@@ -26,9 +26,6 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
         super.setup(context);
         resultNum = Integer.parseInt(context.getConfiguration().get(Constant.RESULT_NUM) == null ? "1000" : context.getConfiguration().get(Constant.RESULT_NUM));
         //初始化mogodb
-        resultDocumentService = new ResultDocumentService();
-        resultDocumentService.init();
-
     }
 
     @Override

@@ -17,6 +17,16 @@ import java.util.List;
  */
 public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
 
+    private static DocWordWeightService docWordWeightService = new DocWordWeightService();
+
+    private DocWordWeightService() {
+        this.init();
+    }
+
+    public static DocWordWeightService getInstance() {
+        return docWordWeightService;
+    }
+
     public void setCollectionName(String collectionName) {
         this.collectionName = "docwordweight";
     }

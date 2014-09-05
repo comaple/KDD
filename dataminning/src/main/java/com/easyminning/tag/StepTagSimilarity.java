@@ -13,8 +13,7 @@ import java.util.Map;
 public class StepTagSimilarity {
 
     public void analysis() {
-        DocWordWeightService docWordWeightService = new DocWordWeightService();
-        docWordWeightService.init();
+        DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
 
         List<String> words = docWordWeightService.findWordAll();
 

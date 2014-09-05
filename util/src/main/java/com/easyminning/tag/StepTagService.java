@@ -30,5 +30,11 @@ public class StepTagService extends AbstractService<StepTag> {
         this.collectionName = "steptag";
     }
 
+    public List<StepTag> findAll() {
+        return null;
+    }
+
+
+
 
 }
