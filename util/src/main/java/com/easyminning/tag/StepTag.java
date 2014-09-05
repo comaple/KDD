@@ -1,5 +1,7 @@
 package com.easyminning.tag;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xdx
@@ -7,7 +9,7 @@ package com.easyminning.tag;
  * Time: 下午4:48
  * To change this template use File | Settings | File Templates.
  */
-public class StepTag {
+public class StepTag extends BaseModel {
 
     private String stepItem;
 
@@ -38,4 +40,6 @@ public class StepTag {
     public void setWeight(Double weight) {
         this.weight = weight;
     }
+
+
 }

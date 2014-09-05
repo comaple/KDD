@@ -7,7 +7,7 @@ package com.easyminning.tag;
  * Time: 下午3:11
  * To change this template use File | Settings | File Templates.
  */
-public class TagTag {
+public class TagTag extends BaseModel {
 
     private String tagItem1;
 

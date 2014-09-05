@@ -1,9 +1,11 @@
 package com.easyminning.etl.mahout.writable;
 
+import com.easyminning.tag.BaseModel;
+
 /**
  * Created by comaple on 14-9-4.
  */
-public class DocWordWeightModel implements Comparable {
+public class DocWordWeightModel extends BaseModel implements Comparable {
     private String docname;
     private String word;
     private Double weight;
