@@ -5,6 +5,7 @@ import com.easyminning.tag.TagDoc;
 import com.easyminning.tag.TagDocService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -62,6 +63,9 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             }
             Map<String, Double> words = topicKeyVlues.get(topicKV[0]);
             for (String k : words.keySet()) {
+                if (NumberUtils.isNumber(k)) {
+                    continue;
+                }
                 TagDoc model = new TagDoc(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
                 wordWeightModels.add(model);
 //                stringBuilder.append(k + ",");
@@ -77,7 +81,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
                 break;
             }
             tagDocService.save(tagDoc);
-            stringBuilder.append(tagDoc.getWord() + ",");
+            stringBuilder.append(tagDoc.getTagItem() + ",");
             index++;
         }
         String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
