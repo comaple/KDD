@@ -273,7 +273,7 @@ public class SimpleMongoDBClient2<E> implements MongoDBClient<E> {
   private String dataBaseName;
   
   
-  private DBCollection collection;
+  public DBCollection collection;
   private DB dataBase;
   public static final Log logger = LogFactory.getLog(MongoConstants.COMMON_MONGO);
   /**

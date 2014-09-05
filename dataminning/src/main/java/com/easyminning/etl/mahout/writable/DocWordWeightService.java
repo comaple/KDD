@@ -25,11 +25,11 @@ public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
         simpleMongoDBClient2.insert(docWordWeightModel);
     }
 
-    public List<DocWordWeightModel> findAll() {
-        List<DocWordWeightModel> docWordWeightModelList = simpleMongoDBClient2.select(QueryBuilder.start(),
-                1,Integer.MAX_VALUE, DocWordWeightModel.class);
-        return docWordWeightModelList;
+    public List<String> findWordAll() {
+        List<String> res = simpleMongoDBClient2.collection.distinct("word");
+        return res;
     }
+
 
 
     public static void main(String[] args) {
@@ -37,8 +37,9 @@ public class DocWordWeightService extends AbstractService<DocWordWeightModel> {
 
         docWordWeightService.init();
 
-       docWordWeightService.save(new DocWordWeightModel());
-       List<DocWordWeightModel> models = docWordWeightService.findAll();
+      // docWordWeightService.save(new DocWordWeightModel());
+       List<String> models = docWordWeightService.findWordAll();
+
     }
 
 }

@@ -2,12 +2,17 @@ package com.easyminning.etl.mahout.util.distance;
 
 
 import com.easyminning.tag.StepSeedCache;
+import com.easyminning.tag.StepTag;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class EditDistance {
+
+    private static EditDistance editDistance = new EditDistance();
+
+    private  Map<String,Map<String,Double>> stepSeedMap;
 
     /**
      * 步骤 -> 标签 -> 权重
@@ -19,36 +24,44 @@ public class EditDistance {
         StepSeedCache stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
         Map<String,Map<String,Double>> STEP_SEED_MAP = StepSeedCache.STEP_SEED_MAP;
+      //  String step = getTagSimilarityStep("澳大利亚");
+      //  System.out.println(step);
+    }
 
-        String step = getTagSimilarityStep("澳大利亚",STEP_SEED_MAP);
+    private EditDistance() {
+        StepSeedCache stepSeedCache = new StepSeedCache();
+        stepSeedCache.init();
+        this.stepSeedMap = StepSeedCache.STEP_SEED_MAP;
+    }
 
-        System.out.println(step);
-
+    public static EditDistance getIntance() {
+        return editDistance;
     }
 
     /**
      * 返回标签近似的步骤
      * @param calTag 计算的标签
-     * @param stepSeedMap  步骤标签Map
      * @return
      */
-    public static String getTagSimilarityStep(String calTag, Map<String,Map<String,Double>> stepSeedMap) {
+    public  StepTag getTagSimilarityStep(String calTag) {
         Set<String> stepSet = stepSeedMap.keySet();
-
         String selectStepName = "";
-        int selectStepWeight = Integer.MAX_VALUE;
+        Double selectStepWeight = Integer.MAX_VALUE + 0.0;
 
         for (String step : stepSet) {
-
             Set<String> tagSet = stepSeedMap.get(step).keySet();
             int currentStepWeight = getWordInstance(calTag,tagSet);
-
             if (currentStepWeight < selectStepWeight) {
-                selectStepWeight = currentStepWeight;
+                selectStepWeight = currentStepWeight + 0.0;
                 selectStepName = step;
             }
         }
-        return selectStepName;
+
+        StepTag stepTag = new StepTag();
+        stepTag.setStepItem(selectStepName);
+        stepTag.setTagItem(calTag);
+        stepTag.setWeight(selectStepWeight);
+        return stepTag;
     }
 
 
