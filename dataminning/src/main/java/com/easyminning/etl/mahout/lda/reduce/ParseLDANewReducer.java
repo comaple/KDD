@@ -34,7 +34,6 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
         topicKeyVlues = LDAResultParser.getMap(Constant.TOPIC_PATH);
         k = context.getConfiguration().getInt(Constant.TOPIC_K, 10);
         docWordWeightService.init();
-
     }
 
     @Override
