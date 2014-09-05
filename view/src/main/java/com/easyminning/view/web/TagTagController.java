@@ -18,8 +18,7 @@ import java.util.Map;
 @Scope("prototype")
 public class TagTagController extends BaseController {
 
-    @Autowired
-    private TagTagService tagTagService;
+    private TagTagService tagTagService = TagTagService.getInstance();
 
     /**
      * 传tag名称
