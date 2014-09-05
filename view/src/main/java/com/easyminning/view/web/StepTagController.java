@@ -32,7 +32,7 @@ public class StepTagController extends BaseController {
         if (size == null || size < 0) size = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("step").is(step);
-        List<StepTag> stepTagList = stepTagService.select(queryBuilder, 1, size, StepTag.class);
+        List<StepTag> stepTagList;// = stepTagService.select(queryBuilder, 1, size, StepTag.class);
         List<Map> result = new ArrayList<Map>();
         Map<String,String> map1 = new HashMap<String,String>();
         map1.put("tag", "标签1");

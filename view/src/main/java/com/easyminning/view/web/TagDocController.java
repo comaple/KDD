@@ -31,7 +31,7 @@ public class TagDocController extends BaseController {
         if (size == null || size < 0) size = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);
-        List<TagDoc> tagDocList = tagDocService.select(queryBuilder,1,size,TagDoc.class);
+        List<TagDoc> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
         List<Map> result = new ArrayList<Map>();
         Map<String,String> map1 = new HashMap<String,String>();
         map1.put("title", "标题1");
