@@ -24,15 +24,14 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
     private Map<String, Map<String, Double>> topicKeyVlues = new HashMap<String, Map<String, Double>>();
     //默认是10个主题
     private int k = 0;
-
+    // mongo db service
     DocWordWeightService docWordWeightService = new DocWordWeightService();
 
     @Override
 
     protected void setup(Context context) throws IOException, InterruptedException {
         //读取分布式缓存中得数据
-        String topicPath = context.getConfiguration().get(Constant.TOPIC_PATH);
-        topicKeyVlues = LDAResultParser.getMap(topicPath);
+        topicKeyVlues = LDAResultParser.getMap(Constant.TOPIC_PATH);
         k = context.getConfiguration().getInt(Constant.TOPIC_K, 10);
         docWordWeightService.init();
 

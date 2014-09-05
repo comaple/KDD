@@ -69,7 +69,8 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.easyminning.etl.mahout.docparse2word.Doc2WordAndFilterJob</mainClass>
+                            <!--<mainClass>com.easyminning.etl.mahout.docparse2word.Doc2WordAndFilterJob</mainClass>-->
+                            <mainClass>com.easyminning.etl.mahout.lda.ParseLDAJob</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

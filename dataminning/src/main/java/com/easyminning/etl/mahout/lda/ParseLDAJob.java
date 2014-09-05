@@ -15,6 +15,7 @@ import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.mahout.common.AbstractJob;
 import org.apache.mahout.common.commandline.DefaultOptionCreator;
@@ -53,17 +54,19 @@ public class ParseLDAJob extends AbstractJob {
         Path output = getOutputPath();
         int k = Integer.parseInt(getOption(TOPIC_K));
         Path topicPath = new Path(getOption(TOPIC_PATH));
-        Configuration conf=getConf();
+        Configuration conf = getConf();
         Path indexPath = new Path(getOption(MATRIX));
-        Job ldaParseJob = new Job(conf);
+        System.out.println("topic path is :" + topicPath.toString());
+
         DistributedCache.createSymlink(conf);
         DistributedCache.addCacheFile(new URI(topicPath.toUri().toString() + "#" + Constant.TOPIC_PATH), conf);
+        Job ldaParseJob = new Job(conf);
         ldaParseJob.setReducerClass(ParseLDANewReducer.class);
         ldaParseJob.setMapOutputKeyClass(Text.class);
         ldaParseJob.setMapOutputValueClass(UidPrefWritable.class);
-        ldaParseJob.setOutputKeyClass(LongWritable.class);
+        ldaParseJob.setOutputKeyClass(Text.class);
         ldaParseJob.setOutputValueClass(Text.class);
-        ldaParseJob.setOutputFormatClass(SequenceFileOutputFormat.class);
+        ldaParseJob.setOutputFormatClass(TextOutputFormat.class);
         ldaParseJob.setJobName("PARSE-LDA-JOB-I");
         FileOutputFormat.setOutputPath(ldaParseJob, output);
         MultipleInputs.addInputPath(ldaParseJob, input, SequenceFileInputFormat.class, LDADocMapper.class);
@@ -71,7 +74,11 @@ public class ParseLDAJob extends AbstractJob {
         ldaParseJob.setJarByClass(ParseLDAJob.class);
         ldaParseJob.getConfiguration().setInt(Constant.TOPIC_K, k);
         boolean phrase_1 = ldaParseJob.waitForCompletion(true);
-        return 0;
+        if (phrase_1) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
     private void addOptions() {

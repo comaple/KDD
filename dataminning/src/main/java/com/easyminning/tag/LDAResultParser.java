@@ -2,7 +2,9 @@ package com.easyminning.tag;
 
 import org.apache.commons.io.FileUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,28 +20,29 @@ import java.util.Map;
 public class LDAResultParser {
 
     /**
-     *
      * @param path
      * @return
      */
-    public static Map<String,Map<String,Double>> getMap(String path) {
-        Map<String,Map<String,Double>> res = new HashMap<String, Map<String, Double>>();
+    public static Map<String, Map<String, Double>> getMap(String path) {
+        Map<String, Map<String, Double>> res = new HashMap<String, Map<String, Double>>();
         try {
-            File file = new File(path);
-            List<String> lines = FileUtils.readLines(file);
+            // add by comaple.zhang 20140905
+            FileReader reader = new FileReader(path);
+            BufferedReader br = new BufferedReader(reader);
+            String line = br.readLine();
 
-            for (String line : lines) {
-                String topicId = line.substring(0,line.indexOf("\t"));
+            while (line != null) {
+                String topicId = line.substring(0, line.indexOf("\t"));
                 String value = line.substring(line.indexOf("{"));
-                value = value.substring(1,value.length()-1);
+                value = value.substring(1, value.length() - 1);
                 String[] wordWeightArray = value.split(",");
 
-                Map<String,Double> wordWeightMap = new HashMap<String, Double>();
+                Map<String, Double> wordWeightMap = new HashMap<String, Double>();
                 res.put(topicId, wordWeightMap);
                 for (String wordWeight : wordWeightArray) {
-                    wordWeightMap.put(wordWeight.split(":")[0],Double.valueOf(wordWeight.split(":")[1]));
+                    wordWeightMap.put(wordWeight.split(":")[0], Double.valueOf(wordWeight.split(":")[1]));
                 }
-
+                line = br.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
