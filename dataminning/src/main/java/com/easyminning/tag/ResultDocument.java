@@ -7,7 +7,7 @@ package com.easyminning.tag;
  * Time: 下午12:54
  * To change this template use File | Settings | File Templates.
  */
-public class ResultDocument {
+public class ResultDocument  extends BaseModel {
 
     private String docId = new String();
 

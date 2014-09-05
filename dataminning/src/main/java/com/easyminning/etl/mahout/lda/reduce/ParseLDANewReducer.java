@@ -1,11 +1,10 @@
 package com.easyminning.etl.mahout.lda.reduce;
 
 import com.easyminning.etl.mahout.util.Constant;
-import com.easyminning.etl.mahout.writable.DocWordWeightModel;
-import com.easyminning.etl.mahout.writable.DocWordWeightService;
+import com.easyminning.tag.DocWordWeightModel;
+import com.easyminning.tag.DocWordWeightService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

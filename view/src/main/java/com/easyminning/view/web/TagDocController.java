@@ -1,10 +1,8 @@
 package com.easyminning.view.web;
 
-import com.easyminning.tag.TagDoc;
-import com.easyminning.tag.TagDocService;
+import com.easyminning.tag.DocWordWeightModel;
+import com.easyminning.tag.DocWordWeightService;
 import com.mongodb.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@Scope("prototype")
 public class TagDocController extends BaseController {
-
-    @Autowired
-    private TagDocService tagDocService;
+    private DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
 
     /**
      * 传tag名称，例如美国
@@ -31,7 +26,7 @@ public class TagDocController extends BaseController {
         if (size == null || size < 0) size = 20;
 
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);
-        List<TagDoc> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
+        List<DocWordWeightModel> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
         List<Map> result = new ArrayList<Map>();
         Map<String,String> map1 = new HashMap<String,String>();
         map1.put("title", "标题1");

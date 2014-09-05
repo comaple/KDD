@@ -1,5 +1,7 @@
 package com.easyminning.tag;
 
+import com.mongodb.QueryBuilder;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,6 @@ public class StepTagService extends AbstractService<StepTag> {
         return stepTagService;
     }
 
-
     public void saveList(List<StepTag> stepTagList) {
         this.simpleMongoDBClient2.insert(stepTagList);
     }
@@ -31,7 +32,21 @@ public class StepTagService extends AbstractService<StepTag> {
     }
 
     public List<StepTag> findAll() {
-        return null;
+        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(QueryBuilder.start(),1,10,StepTag.class);
+        return stepTagList;
+    }
+
+
+    public List<StepTag> findStepTagByStep(String stepItem, Integer pageNo, Integer pageSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start("step").is(stepItem);
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
+        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,StepTag.class);
+        return stepTagList;
+    }
+
+
+    public static void main(String[] args) {
+        stepTagService.findAll();
     }
 
 
