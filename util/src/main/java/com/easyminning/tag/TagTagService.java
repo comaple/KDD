@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class TagTagService extends AbstractService<TagTag> {
 
-    private static TagTagService tagTagService = TagTagService.getInstance();
+    private static TagTagService tagTagService = new TagTagService();
 
     private TagTagService() {
         this.init();

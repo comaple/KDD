@@ -1,6 +1,6 @@
 package com.easyminning.view.web;
 
-import com.easyminning.tag.TagDocWeight;
+import com.easyminning.tag.TagDoc;
 import com.easyminning.tag.TagDocService;
 import com.mongodb.QueryBuilder;
 import org.springframework.stereotype.Controller;
@@ -20,13 +20,14 @@ public class TagDocController extends BaseController {
      * 传tag名称，例如美国
      * @param tag
      */
-    @RequestMapping(value = "/worddoc", method = RequestMethod.GET)
+    @RequestMapping(value = "/tagDoc", method = RequestMethod.GET)
     public void test(String tag, Integer pageNo, Integer pageSize) {
         if (tag == null || "".equals(tag.trim())) {renderJson(new ArrayList<Map>());return;};
-        if (pageSize == null || pageSize < 0) pageSize = 20;
+        if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
+        if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
 
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);
-        List<TagDocWeight> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
+        List<TagDoc> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
         List<Map> result = new ArrayList<Map>();
         Map<String,String> map1 = new HashMap<String,String>();
         map1.put("title", "标题1");
