@@ -6,6 +6,7 @@ import com.easyminning.etl.mahout.writable.DocWordWeightService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Created by comaple on 14-9-3.
  */
-public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Text> {
+public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, NullWritable> {
 
     // topic 和 word的对应关系
     private Map<String, Map<String, Double>> topicKeyVlues = new HashMap<String, Map<String, Double>>();
@@ -74,7 +75,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
             docWordWeightService.save(docWordWeightModel);
         }
 
-        context.write(new Text(docname), new Text(stringBuilder.toString()));
+        context.write(new Text(stringBuilder.toString()), NullWritable.get());
 
     }
 }

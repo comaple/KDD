@@ -9,6 +9,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
@@ -65,7 +66,7 @@ public class ParseLDAJob extends AbstractJob {
         ldaParseJob.setMapOutputKeyClass(Text.class);
         ldaParseJob.setMapOutputValueClass(UidPrefWritable.class);
         ldaParseJob.setOutputKeyClass(Text.class);
-        ldaParseJob.setOutputValueClass(Text.class);
+        ldaParseJob.setOutputValueClass(NullWritable.class);
         ldaParseJob.setOutputFormatClass(TextOutputFormat.class);
         ldaParseJob.setJobName("PARSE-LDA-JOB-I");
         FileOutputFormat.setOutputPath(ldaParseJob, output);
