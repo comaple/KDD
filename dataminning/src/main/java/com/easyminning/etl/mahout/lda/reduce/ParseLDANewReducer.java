@@ -73,11 +73,15 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         int index = 0;
         //插入mongodb
         for (TagDocWeight tagDocWeight : wordWeightModels) {
+            if (index > topN) {
+                break;
+            }
             tagDocService.save(tagDocWeight);
+            stringBuilder.append(tagDocWeight.getWord() + ",");
             index++;
         }
-
-        context.write(new Text(stringBuilder.toString()), NullWritable.get());
+        String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
+        context.write(new Text(content), NullWritable.get());
 
     }
 }
