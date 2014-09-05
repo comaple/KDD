@@ -11,27 +11,29 @@ import com.mongodb.QueryBuilder;
  * Time: 下午2:23
  * To change this template use File | Settings | File Templates.
  */
-public class ResultDocumentService {
+public class ResultDocumentService extends AbstractService<ResultDocument> {
 
-    private static String DATABASE_NEME = "kdd";
-    private static String COLLECTION_NAME = "resultdocument";
+    private static ResultDocumentService resultDocumentService = new ResultDocumentService();
+
+    private ResultDocumentService() {
+        this.init();
+    }
+
+    public static ResultDocumentService getInstance() {
+        return resultDocumentService;
+    }
+
 
     public SimpleMongoDBClient2<ResultDocument> simpleMongoDBClient2;
 
-    public void init() {
-        MongoDBDriver mongoDBDriver = new MongoDBDriver();
-        mongoDBDriver.setConfigFile("configuration-util.properties");
-        mongoDBDriver.init();
-
-        simpleMongoDBClient2 = new SimpleMongoDBClient2<ResultDocument>();
-        simpleMongoDBClient2.setDriver(mongoDBDriver);
-        simpleMongoDBClient2.setDataBaseName(DATABASE_NEME);
-        simpleMongoDBClient2.setCollectionName(COLLECTION_NAME);
-        simpleMongoDBClient2.init();
+    public void setCollectionName(String collectionName) {
+        this.collectionName = "resultdocument";
     }
 
+
+
     public void save(ResultDocument resultDocument) {
-        simpleMongoDBClient2.save(QueryBuilder.start(), resultDocument);
+        simpleMongoDBClient2.insert(resultDocument);
     }
 
 

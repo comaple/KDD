@@ -20,8 +20,7 @@ public class StepTagSimilarity {
 
         EditDistance editDistance = EditDistance.getIntance();
 
-        StepTagService stepTagService = new StepTagService();
-        stepTagService.init();
+        StepTagService stepTagService = StepTagService.getInstance();
 
         List<StepTag> stepTagList = new ArrayList<StepTag>();
         for (String word : words) {

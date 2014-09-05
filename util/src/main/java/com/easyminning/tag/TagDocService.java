@@ -17,6 +17,17 @@ import javax.annotation.PostConstruct;
  * To change this template use File | Settings | File Templates.
  */
 public class TagDocService extends AbstractService<TagDoc> {
+
+    private static TagDocService tagDocService = new TagDocService();
+
+    private TagDocService() {
+        this.init();
+    }
+
+    public static TagDocService getInstance() {
+        return tagDocService;
+    }
+
     public void setCollectionName(String collectionName) {
         this.collectionName = "tagdoc";
     }
