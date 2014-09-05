@@ -34,9 +34,9 @@ public class TagTagController extends BaseController {
         List<Map> result = new ArrayList<Map>();
         for (TagTag tagTag : tagTagList) {
             Map<String,String> map = new HashMap<String,String>();
-            map.put("tagItem", tagTag.getTagItem());
-            map.put("tagItem1", tagTag.getTagItem1());
-            map.put("weight", tagTag.getWeight().toString());
+            map.put("tagItem", tagTag.getTagItem() == null ? "":tagTag.getTagItem());
+            map.put("tagItem1", tagTag.getTagItem1() == null ? "":tagTag.getTagItem1());
+            map.put("weight", tagTag.getWeight() == null ? "":tagTag.getWeight().toString());
             result.add(map);
         }
         renderJson(result);

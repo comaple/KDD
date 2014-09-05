@@ -1,5 +1,7 @@
 package com.easyminning.view.web;
 
+import com.easyminning.tag.ResultDocument;
+import com.easyminning.tag.ResultDocumentService;
 import com.easyminning.tag.TagDoc;
 import com.easyminning.tag.TagDocService;
 import com.mongodb.QueryBuilder;
@@ -15,6 +17,7 @@ import java.util.Map;
 @Controller
 public class TagDocController extends BaseController {
     private TagDocService tagDocService = TagDocService.getInstance();
+    private ResultDocumentService resultDocumentService = ResultDocumentService.getInstance();
 
     /**
      * 传tag名称，例如美国
@@ -30,10 +33,18 @@ public class TagDocController extends BaseController {
         List<Map> result = new ArrayList<Map>();
 
         for (TagDoc tagDoc : tagDocList) {
+            ResultDocument resultDocument = resultDocumentService.getDocumentByDocId(tagDoc.getDocItem());
             Map<String, String> map = new HashMap<String, String>();
-            map.put("tagItem", tagDoc.getTagItem());
-            map.put("docItem", tagDoc.getDocItem());
-            map.put("weight", tagDoc.getWeight().toString());
+            map.put("tagItem", tagDoc.getTagItem() == null ? "" : tagDoc.getTagItem());
+            map.put("docItem", tagDoc.getDocItem() == null ? "" : tagDoc.getDocItem());
+            map.put("weight", tagDoc.getWeight() == null ? "" : tagDoc.getWeight().toString());
+            if (resultDocument == null) continue;
+            map.put("sourceContent",resultDocument.getSourceContent() == null ? "" : resultDocument.getSourceContent());
+            map.put("title",resultDocument.getTitle() == null ? "" : resultDocument.getTitle());
+            map.put("url", resultDocument.getUrl() == null ? "" :resultDocument.getUrl());
+            map.put("keyWord",resultDocument.getKeyWord() == null ? "" : resultDocument.getKeyWord());
+            map.put("author", resultDocument.getUrl() == null ? "" : resultDocument.getAuthor());
+            result.add(map);
         }
         renderJson(result);
     }

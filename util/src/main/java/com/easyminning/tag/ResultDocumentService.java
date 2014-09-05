@@ -36,6 +36,9 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         simpleMongoDBClient2.insert(resultDocument);
     }
 
+    public ResultDocument getDocumentByDocId(String docId) {
+        return simpleMongoDBClient2.selectOne(QueryBuilder.start("docId").is(docId),ResultDocument.class);
+    }
 
     public static void main(String[] args) {
         ResultDocumentService resultDocumentService = new ResultDocumentService();
