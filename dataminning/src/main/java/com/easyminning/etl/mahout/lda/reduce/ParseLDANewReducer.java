@@ -2,7 +2,9 @@ package com.easyminning.etl.mahout.lda.reduce;
 
 import com.easyminning.etl.mahout.util.Constant;
 import com.easyminning.etl.mahout.writable.DocWordWeightModel;
+import com.easyminning.etl.mahout.writable.DocWordWeightService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
+import com.easyminning.tag.LDAResultParser;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -21,13 +23,18 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
     // topic 和 word的对应关系
     private Map<String, Map<String, Double>> topicKeyVlues = new HashMap<String, Map<String, Double>>();
     //默认是10个主题
-    private int k = 10;
+    private int k = 0;
+
+    DocWordWeightService docWordWeightService = new DocWordWeightService();
 
     @Override
 
     protected void setup(Context context) throws IOException, InterruptedException {
         //读取分布式缓存中得数据
-
+        String topicPath = context.getConfiguration().get(Constant.TOPIC_PATH);
+        topicKeyVlues = LDAResultParser.getMap(topicPath);
+        k = context.getConfiguration().getInt(Constant.TOPIC_K, 10);
+        docWordWeightService.init();
 
     }
 
@@ -67,6 +74,9 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
         }
 
         //插入mongodb
+        for (DocWordWeightModel docWordWeightModel : wordWeightModels) {
+            docWordWeightService.save(docWordWeightModel);
+        }
 
         context.write(new Text(docname), new Text(stringBuilder.toString()));
 
