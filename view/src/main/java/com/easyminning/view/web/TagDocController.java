@@ -18,28 +18,23 @@ public class TagDocController extends BaseController {
 
     /**
      * 传tag名称，例如美国
-     * @param tag
+     * @param tagItem
      */
     @RequestMapping(value = "/tagDoc", method = RequestMethod.GET)
-    public void test(String tag, Integer pageNo, Integer pageSize) {
-        if (tag == null || "".equals(tag.trim())) {renderJson(new ArrayList<Map>());return;};
+    public void test(String tagItem, Integer pageNo, Integer pageSize) {
+        if (tagItem == null || "".equals(tagItem.trim())) {renderJson(new ArrayList<Map>());return;};
         if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
         if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
 
-        QueryBuilder queryBuilder = QueryBuilder.start("tagItem1").is(tag);
-        List<TagDoc> tagDocList ;//= tagDocService.select(queryBuilder,1,size,TagDoc.class);
+        List<TagDoc> tagDocList = tagDocService.findDocByTag(tagItem,pageNo,pageSize);
         List<Map> result = new ArrayList<Map>();
-        Map<String,String> map1 = new HashMap<String,String>();
-        map1.put("title", "标题1");
-        map1.put("abstract", "摘要1");
-        map1.put("body", "正文1");
-        map1.put("weight", "10");
-        result.add(map1);
 
-        Map<String,String> map2 = new HashMap<String, String>();
-        map2.put("abstract", "摘要1");
-        map2.put("body", "正文1");
-        map2.put("weight", "10");
+        for (TagDoc tagDoc : tagDocList) {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("tagItem", tagDoc.getTagItem());
+            map.put("docItem", tagDoc.getDocItem());
+            map.put("weight", tagDoc.getWeight().toString());
+        }
         renderJson(result);
     }
 
