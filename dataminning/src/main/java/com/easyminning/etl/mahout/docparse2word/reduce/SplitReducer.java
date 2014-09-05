@@ -4,6 +4,7 @@ import com.easyminning.etl.mahout.util.Constant;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
 import com.easyminning.tag.ResultDocument;
 import com.easyminning.tag.ResultDocumentService;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.wltea.analyzer.core.IKSegmenter;
@@ -56,6 +57,8 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
         resultDocumentService.save(resultDocument);
         //写reduce 文件
         context.write(doc.getDocId(), doc.getResult());
+
+//        context.write(doc.getResult(), new Text());
 
 
     }

@@ -10,10 +10,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by comaple on 14-9-3.
@@ -26,6 +23,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
     private int k = 0;
     // mongo db service
     DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
+    private int topN = 0;
 
     @Override
 
@@ -33,11 +31,12 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         //读取分布式缓存中得数据
         topicKeyVlues = LDAResultParser.getMap(Constant.TOPIC_PATH);
         k = context.getConfiguration().getInt(Constant.TOPIC_K, 10);
+        topN = context.getConfiguration().getInt(Constant.TOP_N, 100);
+
     }
 
     @Override
     protected void reduce(Text key, Iterable<UidPrefWritable> values, Context context) throws IOException, InterruptedException {
-        String docId = key.toString();
         String docname = "";
         Text vector = new Text();
         String vectorStr = "";
@@ -65,13 +64,17 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             for (String k : words.keySet()) {
                 DocWordWeightModel model = new DocWordWeightModel(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
                 wordWeightModels.add(model);
-                stringBuilder.append(k + ",");
+//                stringBuilder.append(k + ",");
             }
         }
 
+        Collections.sort(wordWeightModels);
+
+        int index = 0;
         //插入mongodb
         for (DocWordWeightModel docWordWeightModel : wordWeightModels) {
             docWordWeightService.save(docWordWeightModel);
+            index++;
         }
 
         context.write(new Text(stringBuilder.toString()), NullWritable.get());

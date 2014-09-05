@@ -31,4 +31,5 @@ public class Constant {
 
     public static String TOPIC_PATH = "topicPath";
 
+    public static String TOP_N="topn";
 }
