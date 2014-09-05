@@ -48,7 +48,6 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Tex
             if (uidPrefWritable.getFlage().toString().equals(Constant.FLAG_DOC)) {
                 vector = uidPrefWritable.getVectorWritable();
                 vectorStr = vector.toString().replace("{", "").replace("}", "");
-                System.err.println(vector.toString());
             } else if (uidPrefWritable.getFlage().toString().equals(Constant.FLAG_MATRIX)) {
                 docname = uidPrefWritable.getUidValue().toString();
             }
