@@ -20,6 +20,7 @@ public abstract class AbstractService<E> {
         simpleMongoDBClient2 = new SimpleMongoDBClient2<E>();
         simpleMongoDBClient2.setDriver(mongoDBDriver);
         simpleMongoDBClient2.setDataBaseName(dataBaseName);
+        this.setCollectionName("");
         simpleMongoDBClient2.setCollectionName(collectionName);
         simpleMongoDBClient2.init();
     }
