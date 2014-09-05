@@ -1,11 +1,9 @@
 package com.easyminning.tag;
 
 import com.easyminning.etl.mahout.util.distance.EditDistance;
-import com.easyminning.etl.mahout.writable.DocWordWeightService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2014/9/5.

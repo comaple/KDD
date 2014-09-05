@@ -24,25 +24,23 @@ public class StepTagController extends BaseController {
 
     /**
      * 传步骤编号，例如1，2，3，4，5，6
-     * @param step
+     * @param stepItem
      */
     @RequestMapping(value = "/steptag", method = RequestMethod.GET)
-    public void test(String step,Integer size) {
-        if (step == null || "".equals(step.trim())) {renderJson(new ArrayList<Map>());return;};
-        if (size == null || size < 0) size = 20;
+    public void test(String stepItem,Integer pageNo, Integer pageSize) {
+        if (stepItem == null || "".equals(stepItem.trim())) {renderJson(new ArrayList<Map>());return;};
+        if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
+        if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
 
-        QueryBuilder queryBuilder = QueryBuilder.start("step").is(step);
-        List<StepTag> stepTagList;// = stepTagService.select(queryBuilder, 1, size, StepTag.class);
+        List<StepTag> stepTagList = stepTagService.findStepTagByStep(stepItem, pageNo, pageSize);
         List<Map> result = new ArrayList<Map>();
-        Map<String,String> map1 = new HashMap<String,String>();
-        map1.put("tag", "标签1");
-        map1.put("weight", "10");
-        result.add(map1);
-
-        Map<String,String> map2 = new HashMap<String, String>();
-        map2.put("tag", "标签2");
-        map2.put("weight", "9");
-        result.add(map2);
+        for (StepTag stepTag : stepTagList) {
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("stepItem", stepTag.getStepItem() == null ? "" : stepTag.getStepItem());
+            map.put("tagItem", stepTag.getTagItem() == null ? "" : stepTag.getTagItem());
+            map.put("weight", stepTag.getWeight() == null ? "" : stepTag.getWeight().toString());
+            result.add(map);
+        }
         renderJson(result);
     }
 

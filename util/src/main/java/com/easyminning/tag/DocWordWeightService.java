@@ -1,10 +1,4 @@
-package com.easyminning.etl.mahout.writable;
-
-import com.easyminning.mongodbclient2.driver.MongoDBDriver;
-import com.easyminning.mongodbclient2.sample.SimpleMongoDBClient2;
-import com.easyminning.tag.AbstractService;
-import com.easyminning.tag.ResultDocument;
-import com.mongodb.QueryBuilder;
+package com.easyminning.tag;
 
 import java.util.List;
 

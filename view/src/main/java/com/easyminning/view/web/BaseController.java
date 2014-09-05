@@ -42,6 +42,9 @@ public class BaseController {
     protected HttpServletResponse response;
     protected HttpSession session;
 
+    protected Integer DEFAULT_PAGE_NO = 1;
+    protected Integer DEFAULT_PAGE_SIZE = 10;
+
     public static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     public  static DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

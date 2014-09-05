@@ -1,6 +1,4 @@
-package com.easyminning.etl.mahout.writable;
-
-import com.easyminning.tag.BaseModel;
+package com.easyminning.tag;
 
 /**
  * Created by comaple on 14-9-4.
