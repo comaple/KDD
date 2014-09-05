@@ -11,16 +11,25 @@ import java.util.Map;
  * Created by Administrator on 2014/9/5.
  */
 public class StepTagSimilarity {
+    private static StepTagSimilarity stepTagSimilarity = new StepTagSimilarity();
+
+    private DocWordWeightService docWordWeightService;
+    private EditDistance editDistance;
+    private StepTagService stepTagService;
+
+    public static StepTagSimilarity getInstance() {
+        return stepTagSimilarity;
+    }
+
+    private StepTagSimilarity() {
+        docWordWeightService = DocWordWeightService.getInstance();
+        editDistance = EditDistance.getIntance();
+        stepTagService = StepTagService.getInstance();
+    }
+
 
     public void analysis() {
-        DocWordWeightService docWordWeightService = DocWordWeightService.getInstance();
-
         List<String> words = docWordWeightService.findWordAll();
-
-        EditDistance editDistance = EditDistance.getIntance();
-
-        StepTagService stepTagService = StepTagService.getInstance();
-
         List<StepTag> stepTagList = new ArrayList<StepTag>();
         for (String word : words) {
             if (word == null || "".equals(word.trim())) continue;
