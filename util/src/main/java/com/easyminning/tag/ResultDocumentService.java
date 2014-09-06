@@ -24,8 +24,6 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
     }
 
 
-    public SimpleMongoDBClient2<ResultDocument> simpleMongoDBClient2;
-
     public void setCollectionName(String collectionName) {
         this.collectionName = "resultdocument";
     }
