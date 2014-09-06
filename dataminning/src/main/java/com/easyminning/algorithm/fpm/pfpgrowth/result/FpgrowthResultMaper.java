@@ -32,6 +32,7 @@ public class FpgrowthResultMaper extends Mapper<Text,TopKStringPatterns,Text,Top
             Long weight = pair.getSecond();
            for (String word : words) {
                if (tagTagMap.containsKey(word)) continue;
+               if (word.equals(key.toString())) continue;
                TagTag tagTag = new TagTag();
                tagTag.setTagItem(key.toString());
                tagTag.setTagItem1(word);
@@ -53,7 +54,8 @@ public class FpgrowthResultMaper extends Mapper<Text,TopKStringPatterns,Text,Top
         for (TagTag tag : collection) {
             tagTagList.add(tag);
         }
-        tagTagService.saveTagTagList(tagTagList);
+        if (tagTagList.size() > 0)
+            tagTagService.saveTagTagList(tagTagList);
     }
 
     @Override
