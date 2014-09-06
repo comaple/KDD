@@ -34,6 +34,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
         String patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
+        //设置默认值为-1，代表不用根据默认值，出权重。
         threshold = Double.parseDouble(context.getConfiguration().get(Constant.THRSHOLD) == null ? "-1" : context.getConfiguration().get(Constant.THRSHOLD));
         pattern = Pattern.compile(patternStr);
         //初始化相似度度量程序
@@ -84,12 +85,12 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重
         documentWritable.setWeihgt(new DoubleWritable(weight));
+
         if (threshold != -1 && threshold <= weight) {
             context.write(docId, documentWritable);
         } else {
             context.write(docId, documentWritable);
         }
-
     }
 
 
@@ -113,7 +114,10 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         return documentWritable;
     }
 
+    //ik分词器
     private static Lexeme lexeme = null;
+
+    //参数，原始数据分隔符
     private static Pattern pattern = null;
 
 }

@@ -32,8 +32,8 @@ public class ParseLDAJob extends AbstractJob {
      * 处理matrix的输入
      */
     private String MATRIX = "matrix";
-    String TOPIC_K = "topicK";
-    String TOPIC_PATH = "topicPath";
+    private String TOPIC_K = "topicK";
+    private String TOPIC_PATH = "topicPath";
 
     public static void main(String[] args) throws Exception {
         ToolRunner.run(new ParseLDAJob(), args);
@@ -75,7 +75,7 @@ public class ParseLDAJob extends AbstractJob {
         ldaParseJob.setJarByClass(ParseLDAJob.class);
         ldaParseJob.getConfiguration().setInt(Constant.TOPIC_K, k);
         ldaParseJob.getConfiguration().setInt(Constant.TOP_N, topn);
-
+        //commit the job execute and get the result
         boolean phrase_1 = ldaParseJob.waitForCompletion(true);
         if (phrase_1) {
             return 0;
@@ -84,6 +84,9 @@ public class ParseLDAJob extends AbstractJob {
         }
     }
 
+    /**
+     * add the arguments for the job
+     */
     private void addOptions() {
         addInputOption();
         addOutputOption();
