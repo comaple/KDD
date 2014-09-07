@@ -3,6 +3,7 @@ package com.easyminning.tag;
 import com.easyminning.mongodbclient2.driver.MongoDBDriver;
 import com.easyminning.mongodbclient2.sample.SimpleMongoDBClient2;
 import com.easyminning.tag.TagTag;
+import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -49,7 +50,6 @@ public class TagTagService extends AbstractService<TagTag> {
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
         List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
 
-        System.out.println("=======");
         return tagTagList;
     }
 }
