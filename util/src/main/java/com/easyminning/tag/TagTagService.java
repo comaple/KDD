@@ -45,8 +45,11 @@ public class TagTagService extends AbstractService<TagTag> {
 
     public List<TagTag> findTagByTag(String tagItem, Integer pageNo, Integer pageSize) {
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
-        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
+
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
         List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
+
+        System.out.println("=======");
         return tagTagList;
     }
 }

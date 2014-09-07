@@ -23,7 +23,7 @@ public class TagDocController extends BaseController {
      * 传tag名称，例如美国
      * @param tagItem
      */
-    @RequestMapping(value = "/tagDoc", method = RequestMethod.GET)
+    @RequestMapping(value = "/tagdoc", method = RequestMethod.GET)
     public void test(String tagItem, Integer pageNo, Integer pageSize) {
         if (tagItem == null || "".equals(tagItem.trim())) {renderJson(new ArrayList<Map>());return;};
         if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
