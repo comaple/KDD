@@ -150,11 +150,12 @@ public class Fetcher extends Task {
             
             page=response;
 
-            CrawlDatum crawldatum = new CrawlDatum();
+            CrawlDatum crawldatum = new CrawlDatum();//新建的对象
             crawldatum.url=url;
             crawldatum.status = Page.FETCHED;
             page.fetchtime = System.currentTimeMillis();
             crawldatum.fetchtime = page.fetchtime;
+            crawldatum.needFetch = true;
             Log.Infos("fetch", Fetcher.this.taskname, page.url);
 
             if (needUpdateDb) {              
@@ -170,31 +171,6 @@ public class Fetcher extends Task {
                             ParseResult parseresult = htmlparser.getParse(page);//该方法中已将url做了过滤
                             ArrayList<Link> links = parseresult.links;
 
-                            /*for (Link link : links) {
-                                //leilongyan修改 不满足正则的url不序列化进文件
-                                String newUrl = link.url;
-                                boolean isAdd = false;
-                                for(String pregex: ConfLoader.positiveRegexSet){
-                                    if(Pattern.matches(pregex,newUrl)){
-                                        isAdd = true;
-                                        break;
-                                    }
-                                }
-                                if(isAdd == true) {
-                                    for (String nregex : ConfLoader.negativeRegexSet) {
-                                        if (Pattern.matches(nregex, newUrl)) {
-                                            isAdd = false;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if(isAdd) {
-                                    CrawlDatum link_crawldatum = new CrawlDatum();
-                                    link_crawldatum.url = link.url;
-                                    link_crawldatum.status = Page.UNFETCHED;
-                                    dbUpdater.append(link_crawldatum);
-                                }*/
                                 for(Link link : links) {
                                     CrawlDatum link_crawldatum = new CrawlDatum();
                                     link_crawldatum.url = link.url;

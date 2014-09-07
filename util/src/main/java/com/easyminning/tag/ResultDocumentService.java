@@ -39,8 +39,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
     }
 
     public static void main(String[] args) {
-        ResultDocumentService resultDocumentService = new ResultDocumentService();
-        resultDocumentService.init();
+        ResultDocumentService resultDocumentService = ResultDocumentService.getInstance();
 
 
         ResultDocument resultDocument = new ResultDocument();
