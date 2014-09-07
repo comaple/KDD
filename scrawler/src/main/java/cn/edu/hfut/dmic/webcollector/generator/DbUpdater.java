@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.easyminning.conf.ConfLoader;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumReader;
@@ -129,6 +131,16 @@ public class DbUpdater extends Task{
                 indexmap.put(url, origin_datums.size()-1);
             }
             
+        }
+
+        //leilongyan修改，如果种子文件添加了新种子，动态及时更新新添加的种子
+        for(String seed : ConfLoader.seedSet){
+            if(indexmap.containsKey(seed)){
+                continue;
+            }
+            CrawlDatum seedDatum = new CrawlDatum();
+            seedDatum.url = seed;
+            origin_datums.add(seedDatum);
         }
        
         reader.close();
