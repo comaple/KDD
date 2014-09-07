@@ -32,12 +32,15 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
     @Override
     protected void reduce(Text key, Iterable<DocumentWritable> values, Context context) throws IOException, InterruptedException {
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder docContent = new StringBuilder();
         DocumentWritable doc = new DocumentWritable();
         for (DocumentWritable documentWritable : values) {
             stringBuilder.append(documentWritable.getResult().toString() + " ");
+            docContent.append(documentWritable.getDocContent().toString());
             doc = documentWritable;
         }
         doc.setResult(new Text(stringBuilder.toString()));
+        doc.setDocContent(new Text(docContent.toString()));
 //        Collections.sort(list, new Comparator<DocumentWritable>() {
 //            @Override
 //            public int compare(DocumentWritable o, DocumentWritable o2) {
