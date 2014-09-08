@@ -35,16 +35,16 @@ public class ArticleCrawler extends BreadthCrawler {
                 String resu = ConfLoader.getProperty(ConfConstant.RESUMABLE,"true");
                 crawler.setResumable(Boolean.parseBoolean(resu));
                 crawler.setCrawl_path(ConfLoader.getProperty(ConfConstant.CRAWLDBPATH,"crawl"));
-                String depth = ConfLoader.getProperty(ConfConstant.DEPTH,"3");
-                String threads = ConfLoader.getProperty(ConfConstant.THREADS,"10");
+                //String depth = ConfLoader.getProperty(ConfConstant.DEPTH,"3");
+                //String threads = ConfLoader.getProperty(ConfConstant.THREADS,"10");
 
-                crawler.setThreads(Integer.parseInt(threads));
+                //crawler.setThreads(Integer.parseInt(threads));
                 for(String seed : ConfLoader.seedSet){
                     crawler.addSeed(seed);
                 }
 
                 try {
-                    crawler.start(Integer.parseInt(depth));
+                    crawler.start(0);//Integer.parseInt(depth)
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

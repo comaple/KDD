@@ -158,4 +158,20 @@ public class DateUtil {
     SimpleDateFormat sdf = new SimpleDateFormat(format);
     return createDate(sdf.format(date),format);
   }
+
+    public static Date createDate(String dateString,String[] dateFormats)
+    {
+        Date d = null;
+        for(String format : dateFormats) {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            try {
+                d = sdf.parse(dateString);
+                if(null != d)
+                    return d;
+            } catch (ParseException e) {
+                //logger.error("字符串转化为Date失败,[string=" + dateString + "]", e);
+            }
+        }
+        return d;
+    }
 }

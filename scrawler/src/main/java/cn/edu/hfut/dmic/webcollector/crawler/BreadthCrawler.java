@@ -35,6 +35,7 @@ import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.extractor.Extractor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -147,7 +148,9 @@ public class BreadthCrawler {
         while(true){
             count++;
             Log.Infos("info","Number:"+count+" starting...");
-            for (int i = 0; i < depth; i++) {
+            int depths = Integer.parseInt(ConfLoader.getProperty(ConfConstant.DEPTH,"2"));//leilongyan修改
+            int maxArticleNum = Integer.parseInt(ConfLoader.getProperty(ConfConstant.MAXARTICLENUM,"5000"));//leilongyan修改
+            for (int i = 0; i < depths; i++) {
                 if(status==STOPED){
                     break;
                 }
@@ -155,7 +158,13 @@ public class BreadthCrawler {
                 Generator generator=getGenerator();
                 fetcher=getFecther();
                 fetcher.fetchAll(generator);
+                //一个周期内最大允许爬取的文章数
+                if(Extractor.ARTICLENUM >= maxArticleNum) {
+                    Extractor.ARTICLENUM = 0;
+                    break;
+                }
             }
+
             if(status==STOPED){
                 break;
             }
@@ -232,6 +241,7 @@ public class BreadthCrawler {
         fetcher.setHandler(fetch_handler);
         conconfig = new CommonConnectionConfig();
         fetcher.setTaskname(taskname);
+        int threads = Integer.parseInt(ConfLoader.getProperty(ConfConstant.THREADS,"10"));//leilongyan修改
         fetcher.setThreads(threads);
         fetcher.setConconfig(conconfig);
         return fetcher;

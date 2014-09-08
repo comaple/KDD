@@ -13,6 +13,8 @@ public class ConfConstant {
     public static final String DEPTH = "depth";
     public static final String RESUMABLE = "resumable";
     public static final String THREADS = "threads";
+    public static final String TIMESPAN = "timespan";
+    public static final String MAXARTICLENUM = "maxarticlenum";
 
     //从这以下的参数都是支持配置文件动态更新的
     public static final String REPEATABLEREGEX = "repeatableregex";
