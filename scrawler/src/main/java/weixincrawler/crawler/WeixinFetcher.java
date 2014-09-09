@@ -90,13 +90,14 @@ public class WeixinFetcher extends Fetcher{
                     String seedRegex = WeixinConfLoader.getProperty(WeixinConfConstant.SEEDREGEX, "href=\"\\?query=.*?type=2.*?page=2.*?\">");
                     int temInx = seedRegex.indexOf("query");
                     temInx = temInx == -1 ? 9 : temInx;
-                    seedRegex = "(?is)" + seedRegex.substring(temInx,temInx + 6);//.replace("href=\"\\\\?","").replace("page=2.*?","");
-                    if(Pattern.matches(seedRegex,url)) {
-                        if (page.headers.containsKey("Content-Type")) {
-                            String contenttype = page.headers.get("Content-Type").toString();
+                    seedRegex = ".*?" + seedRegex.substring(temInx,temInx + 6) + ".*?";//.replace("href=\"\\\\?","").replace("page=2.*?","");
 
-                            if (contenttype.contains("text/html")) {
-                                WeixinHtmlParser htmlparser = new WeixinHtmlParser();
+                    if (page.headers.containsKey("Content-Type")) {
+                        String contenttype = page.headers.get("Content-Type").toString();
+                        if (contenttype.contains("text/html")) {
+                            WeixinHtmlParser htmlparser = new WeixinHtmlParser();
+
+                            if(Pattern.matches(seedRegex,url)) {
                                 ParseResult parseresult = htmlparser.getParse(page);
                                 ArrayList<Link> links = parseresult.links;
 
@@ -106,6 +107,8 @@ public class WeixinFetcher extends Fetcher{
                                     link_crawldatum.status = Page.UNFETCHED;
                                     dbUpdater.append(link_crawldatum);
                                 }
+                            }else{
+                                page = htmlparser.getParsedPage(page);
                             }
                         }
                     }

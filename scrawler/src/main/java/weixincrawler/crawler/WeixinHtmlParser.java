@@ -15,6 +15,8 @@ import org.jsoup.select.Elements;
 import weixincrawler.conf.WeixinConfLoader;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -35,6 +37,7 @@ public class WeixinHtmlParser  extends Parser {
 
     private static ArrayList<Link> getLinks(Document doc){
         ArrayList<Link> links = new ArrayList<Link>();
+        Set<String> urls = new HashSet<String>();
         Elements link_elements = doc.select("a[href]");
         String topicRegex = WeixinConfLoader.getProperty(ConfConstant.TOPICREGEX,"");
         for (Element link : link_elements) {
@@ -42,9 +45,18 @@ public class WeixinHtmlParser  extends Parser {
             //String href=link.attr("abs:href");
             String href=link.attr("href");//leilongyan修改 并在此加入正则过滤 下载的时候不需要重新正则过滤
             if(Pattern.matches(topicRegex, href)){
-                links.add(new Link(anchor, href));
+                if(!urls.contains(href)) {
+                    urls.add(href);
+                    links.add(new Link(anchor, href));
+                }
             }
         }
         return links;
+    }
+
+    public Page getParsedPage(Page page) throws Exception {
+        String charset = CharsetDetector.guessEncoding(page.content);
+        page.html = new String(page.content, charset);
+        return page;
     }
 }

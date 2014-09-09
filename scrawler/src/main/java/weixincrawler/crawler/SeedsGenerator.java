@@ -81,7 +81,7 @@ public class SeedsGenerator {
         Pattern p = Pattern.compile(seedRegex);
         Matcher m = p.matcher(body);
         if(m.find()){
-            String urlStr = m.group(0);
+            String urlStr = m.group();
             pagerUrl = urlStr.replace("href=\"","").replace("\">","");
         }
         return url + pagerUrl;
