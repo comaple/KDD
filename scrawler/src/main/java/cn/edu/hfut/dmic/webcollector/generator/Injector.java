@@ -52,8 +52,6 @@ public class Injector extends Task{
         return inject_file.exists();
     }
     
-    
-    
     public void inject(ArrayList<String> urls,boolean append) throws UnsupportedEncodingException, IOException{
          Schema schema = AvroModel.getPageSchema();
         
@@ -74,14 +72,7 @@ public class Injector extends Task{
             writer.write(crawldatum);                    
         }
         writer.close();
-        
-        
-        
-        
-        
     }
-    
-    
     
     public static void main(String[] args) throws IOException{
         Injector inject=new Injector("/home/hu/data/crawl_avro");

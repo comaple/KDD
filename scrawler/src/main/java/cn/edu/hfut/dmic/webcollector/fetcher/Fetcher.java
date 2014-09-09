@@ -46,15 +46,13 @@ import org.apache.avro.reflect.ReflectDatumWriter;
  * @author hu
  */
 public class Fetcher extends Task {
-    
     public int retry=3;
-    
 
     public static final int FETCH_SUCCESS = 1;
     public static final int FETCH_FAILED = 2;
 
-    int threads = 10;
-    String crawl_path;
+    protected int threads = 10;
+    protected String crawl_path;
 
     public Fetcher(String crawl_path) {
         this.crawl_path = crawl_path;
@@ -66,16 +64,15 @@ public class Fetcher extends Task {
     }
     
     public DbUpdater dbUpdater = null;
+    protected WorkQueue workqueue;
 
-
-    private void start() throws IOException {
+    protected void start() throws IOException {
         if (needUpdateDb) {
             this.dbUpdater = new DbUpdater(crawl_path);
             dbUpdater.initUpdater();
             dbUpdater.lock();
         }
         workqueue = new WorkQueue(threads);
-
     }
 
     public void fetchAll(Generator generator) throws IOException {
@@ -92,7 +89,6 @@ public class Fetcher extends Task {
             }
         }
         end();
-
     }
 
     public void stop() throws IOException {
@@ -104,9 +100,7 @@ public class Fetcher extends Task {
         }
     }
 
-    WorkQueue workqueue;
-
-    private void end() throws IOException {
+    protected void end() throws IOException {
         try {
             while (workqueue.isAlive()) {
                 Thread.sleep(5000);
@@ -128,7 +122,7 @@ public class Fetcher extends Task {
         workqueue.execute(fetcherthread);
     }
 
-    ConnectionConfig conconfig = null;
+    protected ConnectionConfig conconfig = null;
 
     public Handler handler = null;
 

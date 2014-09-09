@@ -29,6 +29,10 @@ public abstract class Extractor {
             return null;
         }
 
+        if(ARTICLENUM == 0){
+            pageExtrators.clear();//某个周期清空一次，可使得最新的模板及时得到更新
+        }
+
         Extractor extractor = null;
         String comPath = getUrlCommonPath(page.url);
         //判断是否有缓存抽取器

@@ -31,7 +31,7 @@ import org.apache.avro.reflect.ReflectDatumWriter;
  * @author hu
  */
 public class DbUpdater extends Task{
-    String crawl_path;
+    protected String crawl_path;
     public DbUpdater(String crawl_path){
         this.crawl_path=crawl_path;
     }
