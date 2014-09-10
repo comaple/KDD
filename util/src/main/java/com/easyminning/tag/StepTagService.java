@@ -40,6 +40,10 @@ public class StepTagService extends AbstractService<StepTag> {
     public List<StepTag> findStepTagByStep(String stepItem, Integer pageNo, Integer pageSize) {
         QueryBuilder queryBuilder = QueryBuilder.start("stepItem").is(stepItem);
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
+        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        if (versionStamp != null) {
+            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        }
         List<StepTag> stepTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,StepTag.class);
         return stepTagList;
     }

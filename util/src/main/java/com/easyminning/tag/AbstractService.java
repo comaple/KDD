@@ -12,6 +12,8 @@ public abstract class AbstractService<E> {
 
     protected SimpleMongoDBClient2<E> simpleMongoDBClient2;
 
+    protected VersionStampService versionStampService = VersionStampService.getInstance();
+
     protected void init() {
         MongoDBDriver mongoDBDriver = new MongoDBDriver();
         mongoDBDriver.setConfigFile("configuration-util.properties");

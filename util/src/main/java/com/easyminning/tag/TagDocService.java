@@ -39,6 +39,10 @@ public class TagDocService extends AbstractService<TagDoc> {
     public List<TagDoc> findDocByTag(String tagItem, Integer pageNo, Integer pageSize) {
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
+        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        if (versionStamp != null) {
+            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        }
         List<TagDoc> tagDocList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagDoc.class);
         return tagDocList;
     }

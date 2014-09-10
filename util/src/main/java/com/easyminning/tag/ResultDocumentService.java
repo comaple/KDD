@@ -35,7 +35,12 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
     }
 
     public ResultDocument getDocumentByDocId(String docId) {
-        return simpleMongoDBClient2.selectOne(QueryBuilder.start("docId").is(docId),ResultDocument.class);
+        QueryBuilder queryBuilder = QueryBuilder.start("docId").is(docId);
+        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        if (versionStamp != null) {
+            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        }
+        return simpleMongoDBClient2.selectOne(queryBuilder,ResultDocument.class);
     }
 
     public static void main(String[] args) {
