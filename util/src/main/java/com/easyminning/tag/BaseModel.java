@@ -17,5 +17,13 @@ public class BaseModel {
         this._id = _id;
     }
 
+    private String versionStamp; // 版本时间戳
 
+    public String getVersionStamp() {
+        return versionStamp;
+    }
+
+    public void setVersionStamp(String versionStamp) {
+        this.versionStamp = versionStamp;
+    }
 }
