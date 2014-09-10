@@ -2,6 +2,9 @@ package com.easyminning.tag;
 
 import com.mongodb.QueryBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +37,44 @@ public class VersionStampService extends AbstractService<VersionStamp> {
     }
 
 
-    public void save(VersionStamp versionStamp) {
+    /**
+     * 第一个任务开始执行时，生成新的版本号
+     * @return
+     */
+    public VersionStamp genUnFinshedVersionStamp() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        VersionStamp versionStamp = new VersionStamp();
+        versionStamp.setFinshedVersion(0);
+        versionStamp.setVersionStamp(dateFormat.format(new Date()));
+        simpleMongoDBClient2.delete(QueryBuilder.start("finshedVersion").is(0));
         simpleMongoDBClient2.insert(versionStamp);
+        return versionStamp;
     }
 
-    public VersionStamp getLatestVersionStamp() {
+    /**
+     *  中间任务获取第一个任务生成的版本号
+     * @return
+     */
+    public VersionStamp getUnFinshedVersionStamp() {
+        VersionStamp versionStamp = null;
+
+        //
+        List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder.start("finshedVersion").is(0),QueryBuilder.start().is(1),1,1,VersionStamp.class);
+        return list.get(0);
+    }
+
+
+    /**
+     * 最后一个任务执行后，修改版本号为已完成版本号
+     */
+    public void updateUnFishedVersion() {
+        VersionStamp versionStamp = this.getUnFinshedVersionStamp();
+        simpleMongoDBClient2.delete(QueryBuilder.start("finshedVersion").is(0));
+        simpleMongoDBClient2.insert(versionStamp);
+
+    }
+
+    public VersionStamp getLatestFinshedVersionStamp() {
         VersionStamp versionStamp = null;
         if (lastestVersion.size() == 0) {
             List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder.start(),QueryBuilder.start().is(1),1,1,VersionStamp.class);
