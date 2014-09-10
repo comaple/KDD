@@ -25,28 +25,25 @@ public class FpgrowthResultMaper extends Mapper<Text,TopKStringPatterns,Text,Top
         List<Pair<List<String>,Long>> pairs =  value.getPatterns();
         Map<String,TagTag> tagTagMap = new HashMap<String, TagTag>();
 
-        boolean isEnough = false;
-
         for (Pair<List<String>,Long> pair : pairs) {
             List<String> words = pair.getFirst();
             Long weight = pair.getSecond();
            for (String word : words) {
-               if (tagTagMap.containsKey(word)) continue;
                if (word.equals(key.toString())) continue;
-               TagTag tagTag = new TagTag();
-               tagTag.setTagItem(key.toString());
-               tagTag.setTagItem1(word);
-               tagTag.setWeight(weight + 0.0);
-               tagTagMap.put(word, tagTag);
+               TagTag tagTag = null;
 
-               if (tagTagMap.size() > TOP_K) {
-                   isEnough = true;
-                   break;
+               // 存在，更新权重
+               if (tagTagMap.containsKey(word)) {
+                   tagTag = tagTagMap.get(word);
+                   tagTag.setWeight(weight + tagTag.getWeight());
+               } else { // 不存在，新建
+                   tagTag = new TagTag();
+                   tagTag.setWeight(weight + 0.0);
+                   tagTag.setTagItem(key.toString());
+                   tagTag.setTagItem1(word);
                }
+               tagTagMap.put(word, tagTag);
            }
-            if (isEnough) {
-                break;
-            }
         }
 
         Collection<TagTag> collection = tagTagMap.values();
