@@ -73,7 +73,7 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
                 int interval = Integer.parseInt(WeixinConfLoader.getProperty(WeixinConfConstant.INTERVALDAY,"10"));
                 long intervaltime = interval * 24 * 3600 * 1000;
                 Log.Infos("info","sleep " + intervaltime + " mills...");
-                Thread.sleep(20000);//intervaltime
+                Thread.sleep(intervaltime);//intervaltime
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
