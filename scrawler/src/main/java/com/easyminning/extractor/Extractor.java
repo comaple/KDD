@@ -1,11 +1,11 @@
 package com.easyminning.extractor;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
+import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.mongodbclient2.util.DateUtil;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 public abstract class Extractor {
     //页面html的前缀 对应的 抽取器
     public static HashMap<String,Extractor> pageExtrators = new HashMap<String,Extractor>();
+    public static String []formats = {"yyyy年MM月dd日","yyyy/MM/dd","yyyy-MM-dd","yyyy\\MM\\dd"};
+    public static int ARTICLENUM = 0;
 
     public abstract Article extractArticle(Page page);
 
@@ -25,6 +27,10 @@ public abstract class Extractor {
         //判断是否是文章页，是文章页才需要获取正文
         if(!isArticlePage(page.url)){
             return null;
+        }
+
+        if(ARTICLENUM == 0){
+            pageExtrators.clear();//某个周期清空一次，可使得最新的模板及时得到更新
         }
 
         Extractor extractor = null;
@@ -51,7 +57,7 @@ public abstract class Extractor {
             article = extractor.extractArticle(page);
         }
         //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
-        if((article.context == null || article.context.equals("")) &&
+        if((article == null || (article.context == null || article.context.equals(""))) &&
                 extractor instanceof TemplateExtractor){
             extractor = new StatisticsExtractor();
             article = extractor.extractArticle(page);
@@ -62,7 +68,27 @@ public abstract class Extractor {
         if(article == null){
             return null;
         }
+        if(article.publishDate != null){
+            Date publishDate = DateUtil.createDate(article.publishDate,formats);
+            if(null == publishDate){
+                return null;
+            }
+            int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN,"3"));
+            Calendar now = Calendar.getInstance();
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.DATE,-span);
+            Date nowD = DateUtil.formatToDate(now.getTime(),"yyyy-MM-dd");
+            Date endD = DateUtil.formatToDate(end.getTime(),"yyyy-MM-dd");
+
+            //不在时间范围内的文章过滤掉
+            if(nowD.compareTo(publishDate) < 0 ||
+                    endD.compareTo(publishDate) > 0){
+                return null;
+            }
+
+        }
         if(article.context != null && !article.context.equals("")){
+            ARTICLENUM++;
             FileWriter.getInstance().writeArticle(article);
         }
 

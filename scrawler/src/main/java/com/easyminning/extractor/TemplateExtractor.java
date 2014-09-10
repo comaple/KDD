@@ -38,26 +38,27 @@ public class TemplateExtractor extends Extractor {
         }
 
         Article article = new Article();
+        article.url = page.url;
         //匹配作者
         Pattern p = Pattern.compile(templateRex.get(ConfConstant.AUTHOR));
         Matcher m = p.matcher(html);
         if(m.find()){
             String authorHtml = m.group();
-            article.author = authorHtml.replaceAll("<.*?>","");
+            article.author = authorHtml.replaceAll("<.*?>","").trim();
         }
         //发布时间
         p = Pattern.compile(templateRex.get(ConfConstant.PUBLISHDATE));
         m = p.matcher(html);
         if(m.find()){
             String dateHtml = m.group();
-            article.publishDate = dateHtml.replaceAll("<.*?>","");
+            article.publishDate = dateHtml.replaceAll("<.*?>","").trim();
         }
         //标题
         p = Pattern.compile(templateRex.get(ConfConstant.TITLE));
         m = p.matcher(html);
         if(m.find()){
             String titleHtml = m.group();
-            article.title = titleHtml.replaceAll("<.*?>","");
+            article.title = titleHtml.replaceAll("<.*?>","").trim();
         }
         //正文
         p = Pattern.compile(templateRex.get(ConfConstant.MAINCONTENT));

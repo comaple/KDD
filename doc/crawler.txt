@@ -1,7 +1,8 @@
 1）配置文件crawl.properties的某些配置更新后可自动加载，支持自动加载的有：
-repeatableregex，positiveregex，negativeregex，topicregex，templates，
-interval，topN。如果具体的.template和.dat文件更新后也可以自动重新加载，只
-需要在crawl.properties任意空白处加空格后重新保存即可；
+seeds,depth,threads,timespan,maxarticlenum,repeatableregex，positiveregex，
+negativeregex，topicregex，templates，interval，topN。
+如果具体的.template和.dat文件更新后也可以自动重新加载，只需要在crawl.properties
+任意空白处加空格后重新保存即可；
 
 2）已经抓取过得页面不予重复抓取，但种子相关页面除外，因为种子页面经常会有新的
 新闻链接加入。可重复抓取的url需要符合repeatableregex正则，可在配置文件中配置；

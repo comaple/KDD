@@ -35,6 +35,7 @@ import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.extractor.Extractor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -56,23 +57,22 @@ public class BreadthCrawler {
         taskname=RandomUtils.getTimeString();
     }
 
-    private String taskname;
-    private String crawl_path = "crawl";
+    protected String taskname;
+    protected String crawl_path = "crawl";
     private String root = "data";
     private String cookie = null;
     private String useragent = "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:26.0) Gecko/20100101 Firefox/26.0";
 
     private int threads=10;
-    private boolean resumable;
+    protected boolean resumable;
+    protected Fetcher fetcher;
 
-    ArrayList<String> regexs = new ArrayList<String>();
-    ArrayList<String> seeds = new ArrayList<String>();
+    protected ArrayList<String> regexs = new ArrayList<String>();
+    protected ArrayList<String> seeds = new ArrayList<String>();
 
     public void addSeed(String seed) {
         seeds.add(seed);
     }
-    
-    
 
     public void addRegex(String regex) {
         regexs.add(regex);
@@ -147,7 +147,9 @@ public class BreadthCrawler {
         while(true){
             count++;
             Log.Infos("info","Number:"+count+" starting...");
-            for (int i = 0; i < depth; i++) {
+            int depths = Integer.parseInt(ConfLoader.getProperty(ConfConstant.DEPTH,"2"));//leilongyan修改
+            int maxArticleNum = Integer.parseInt(ConfLoader.getProperty(ConfConstant.MAXARTICLENUM,"5000"));//leilongyan修改
+            for (int i = 0; i < depths; i++) {
                 if(status==STOPED){
                     break;
                 }
@@ -155,7 +157,13 @@ public class BreadthCrawler {
                 Generator generator=getGenerator();
                 fetcher=getFecther();
                 fetcher.fetchAll(generator);
+                //一个周期内最大允许爬取的文章数
+                if(Extractor.ARTICLENUM >= maxArticleNum) {
+                    Extractor.ARTICLENUM = 0;
+                    break;
+                }
             }
+
             if(status==STOPED){
                 break;
             }
@@ -178,8 +186,6 @@ public class BreadthCrawler {
             fetcher.fetchAll(generator);
         }*/
     }
-    
-    Fetcher fetcher;
 
     /**
      *
@@ -190,23 +196,19 @@ public class BreadthCrawler {
        status=STOPED;
     }
     
-    private void inject() throws IOException {
-        
+    protected void inject() throws IOException {
         Injector injector = new Injector(crawl_path);     
         injector.inject(seeds,resumable);
-
     }
 
-    class CommonConnectionConfig implements ConnectionConfig{
+    public class CommonConnectionConfig implements ConnectionConfig{
         @Override
-            public void config(HttpURLConnection con) {               
+        public void config(HttpURLConnection con) {
                 configCon(con);
             }
     }
-    
-    private Fetcher getFecther(){
-        
-        
+
+    protected Fetcher getFecther(){
          Handler fetch_handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -221,24 +223,20 @@ public class BreadthCrawler {
                         break;
                     default:
                         break;
-                       
                 }
             }
         };
-        
-
-        
         Fetcher fetcher=new Fetcher(crawl_path);
         fetcher.setHandler(fetch_handler);
         conconfig = new CommonConnectionConfig();
         fetcher.setTaskname(taskname);
+        int threads = Integer.parseInt(ConfLoader.getProperty(ConfConstant.THREADS,"10"));//leilongyan修改
         fetcher.setThreads(threads);
         fetcher.setConconfig(conconfig);
         return fetcher;
     }
-    
-    private Generator getGenerator(){
 
+    protected Generator getGenerator(){
         Generator generator = new StandardGenerator(crawl_path);
         //generator=new UniqueFilter(new IntervalFilter(new URLRegexFilter(generator, regexs)));
         generator=new UniqueFilter(new IntervalFilter(generator));//leilongyan修改 不需要URLRegexFilter了

@@ -73,11 +73,11 @@ public class StatisticsExtractor extends Extractor {
 
         String [] contents = getMainContent(body);
         Article article = new Article();
-        article.context = contents[0];
+        article.context = contents[0].trim();
         article.contextWithTag = contents[1];
         article.url = page.url;
-        article.title = getTitle(html);
-        article.publishDate = getPublishDate(body);
+        article.title = getTitle(html).trim();
+        article.publishDate = getPublishDate(body).trim();
         article.author = "";
         return article;
     }

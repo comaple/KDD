@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.extractor.Extractor;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.reflect.ReflectDatumWriter;
@@ -45,15 +46,13 @@ import org.apache.avro.reflect.ReflectDatumWriter;
  * @author hu
  */
 public class Fetcher extends Task {
-    
     public int retry=3;
-    
 
     public static final int FETCH_SUCCESS = 1;
     public static final int FETCH_FAILED = 2;
 
-    int threads = 10;
-    String crawl_path;
+    protected int threads = 10;
+    protected String crawl_path;
 
     public Fetcher(String crawl_path) {
         this.crawl_path = crawl_path;
@@ -65,28 +64,31 @@ public class Fetcher extends Task {
     }
     
     public DbUpdater dbUpdater = null;
+    protected WorkQueue workqueue;
 
-
-    private void start() throws IOException {
+    protected void start() throws IOException {
         if (needUpdateDb) {
             this.dbUpdater = new DbUpdater(crawl_path);
             dbUpdater.initUpdater();
             dbUpdater.lock();
         }
         workqueue = new WorkQueue(threads);
-
     }
 
     public void fetchAll(Generator generator) throws IOException {
         start();
         CrawlDatum crawlDatum = null;
+        int maxArticleNum = Integer.parseInt(ConfLoader.getProperty(ConfConstant.MAXARTICLENUM,"5000"));//leilongyan修改
         while ((crawlDatum = generator.next()) != null) {
             if(crawlDatum.needFetch) {//leilongyan修改，加这个判断设计使去掉递归设计，避免栈溢出
                 addFetcherThread(crawlDatum.url);
             }
+            //一个周期内最大允许爬取的文章数
+            if(Extractor.ARTICLENUM >= maxArticleNum) {
+                break;
+            }
         }
         end();
-
     }
 
     public void stop() throws IOException {
@@ -98,9 +100,7 @@ public class Fetcher extends Task {
         }
     }
 
-    WorkQueue workqueue;
-
-    private void end() throws IOException {
+    protected void end() throws IOException {
         try {
             while (workqueue.isAlive()) {
                 Thread.sleep(5000);
@@ -122,7 +122,7 @@ public class Fetcher extends Task {
         workqueue.execute(fetcherthread);
     }
 
-    ConnectionConfig conconfig = null;
+    protected ConnectionConfig conconfig = null;
 
     public Handler handler = null;
 
