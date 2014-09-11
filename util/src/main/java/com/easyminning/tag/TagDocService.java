@@ -39,7 +39,7 @@ public class TagDocService extends AbstractService<TagDoc> {
     public List<TagDoc> findDocByTag(String tagItem, Integer pageNo, Integer pageSize) {
         QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
-        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
         if (versionStamp != null) {
             queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         }

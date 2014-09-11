@@ -36,7 +36,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
 
     public ResultDocument getDocumentByDocId(String docId) {
         QueryBuilder queryBuilder = QueryBuilder.start("docId").is(docId);
-        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
         if (versionStamp != null) {
             queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         }

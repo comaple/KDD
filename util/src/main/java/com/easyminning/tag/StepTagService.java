@@ -40,7 +40,7 @@ public class StepTagService extends AbstractService<StepTag> {
     public List<StepTag> findStepTagByStep(String stepItem, Integer pageNo, Integer pageSize) {
         QueryBuilder queryBuilder = QueryBuilder.start("stepItem").is(stepItem);
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
-        VersionStamp versionStamp = versionStampService.getLatestVersionStamp();
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
         if (versionStamp != null) {
             queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         }
