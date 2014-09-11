@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -28,6 +29,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private StepSeedCache stepSeedCache = null;
     private static Text docId = new Text("0");
     private Double threshold = 0.0;
+    private String title = "contextwithtag";
 
 
     @Override
@@ -57,12 +59,15 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
+        if (value.toString().contains(title)) {
+            return;
+        }
         String[] fields = pattern.split(value.toString());
         if (fields.length != 9) {
             return;
         }
         DocumentWritable documentWritable = parse2Doc(fields);
-        StringReader reader = new StringReader(documentWritable.getSourceContent().toString());
+        StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
         while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1) {
@@ -96,21 +101,22 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 
     /**
      * 解析为documentWritable
+     * title publishdate url author context contextwithtag
      *
      * @param fields
      * @return
      */
     private DocumentWritable parse2Doc(String[] fields) {
         DocumentWritable documentWritable = new DocumentWritable();
-        documentWritable.setDocId(new Text(fields[0]));
-        documentWritable.setTitle(new Text(fields[1]));
-        documentWritable.setKeyWord(new Text(fields[2]));
-        documentWritable.setSummary(new Text(fields[3]));
+        documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
+        documentWritable.setTitle(new Text(fields[0]));
+        documentWritable.setKeyWord(new Text(""));
+        documentWritable.setSummary(new Text(""));
         documentWritable.setDocContent(new Text(fields[4]));
         documentWritable.setSourceContent(new Text(fields[5]));
-        documentWritable.setUrl(new Text(fields[6]));
-        documentWritable.setIssue(new Text(fields[7]));
-        documentWritable.setAuthor(new Text(fields[8]));
+        documentWritable.setUrl(new Text(fields[2]));
+        documentWritable.setIssue(new Text(fields[1]));
+        documentWritable.setAuthor(new Text(fields[3]));
         return documentWritable;
     }
 
