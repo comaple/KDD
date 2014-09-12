@@ -46,11 +46,14 @@ public class Doc2WordAndFilterJob extends AbstractJob {
 
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
-        Boolean scrawler = Boolean.getBoolean(getOption(isScrawler));
+        Boolean scrawler = Boolean.parseBoolean(getOption(isScrawler));
+        System.out.println(getOption(isScrawler));
+        System.out.println(String.format(" ------ the scrawler u pass is : %s", scrawler));
         if (scrawler) {
             Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
-            combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold));
+            combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold, "-1"));
             combineJob.getConfiguration().set(Constant.PATTERN_STR, getOption(pattern));
+            System.out.println(getOption(pattern));
             combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
             return combineJob.waitForCompletion(true) == true ? 0 : -1;
         } else {
@@ -73,5 +76,6 @@ public class Doc2WordAndFilterJob extends AbstractJob {
         addOption(pattern, "pt", "the pattern which the scrawler doc line use.");
         addOption(DefaultOptionCreator.overwriteOption().create());
     }
+
 
 }

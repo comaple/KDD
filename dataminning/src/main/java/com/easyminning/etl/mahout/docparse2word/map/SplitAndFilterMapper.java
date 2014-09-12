@@ -36,6 +36,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
         String patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
+        System.err.println("pattern str is :" + patternStr);
+
         //设置默认值为-1，代表不用根据默认值，出权重。
         threshold = Double.parseDouble(context.getConfiguration().get(Constant.THRSHOLD) == null ? "-1" : context.getConfiguration().get(Constant.THRSHOLD));
         pattern = Pattern.compile(patternStr);
@@ -44,6 +46,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         //初始化配置文件读取程序
         stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
+        targetMap = new HashMap<String, Double>();
     }
 
     /**
@@ -63,7 +66,10 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
             return;
         }
         String[] fields = pattern.split(value.toString());
-        if (fields.length != 9) {
+        System.err.println("the fields length is : " + fields.length);
+        System.err.println(value.toString());
+
+        if (fields.length != 6) {
             return;
         }
         DocumentWritable documentWritable = parse2Doc(fields);
@@ -85,16 +91,19 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         for (String word : targetMap.keySet()) {
             targetMap.put(word, targetMap.get(word) / count);
         }
+
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
+        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
+        System.err.println(documentWritable.getDocContent());
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重
         documentWritable.setWeihgt(new DoubleWritable(weight));
 
         if (threshold != -1 && threshold <= weight) {
-            context.write(docId, documentWritable);
+            context.write(documentWritable.getDocId(), documentWritable);
         } else {
-            context.write(docId, documentWritable);
+            context.write(documentWritable.getDocId(), documentWritable);
         }
     }
 

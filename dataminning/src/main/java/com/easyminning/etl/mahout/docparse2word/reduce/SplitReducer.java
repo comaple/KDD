@@ -54,8 +54,9 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
 //        });
 //
 //        list = list.subList(0, list.size() <= (resultNum) ? list.size() - 1 : resultNum - 1);
-
         ResultDocument resultDocument = constructDoc(doc);
+        System.out.println(resultDocument.getDocId());
+
         //写mongodb
         resultDocumentService.save(resultDocument);
         //写reduce 文件
@@ -85,6 +86,9 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
     public static void main(String[] args) {
         Text t = new Text();
         System.out.println(t.toString());
+        boolean is_bol=true;
+        is_bol=Boolean.valueOf("true");
+        System.out.println(is_bol=false);
     }
 
 }
