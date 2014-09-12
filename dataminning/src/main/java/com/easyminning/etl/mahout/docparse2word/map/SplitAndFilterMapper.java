@@ -30,12 +30,13 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private static Text docId = new Text("0");
     private Double threshold = 0.0;
     private String title = "contextwithtag";
+    private String patternStr = "";
 
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-        String patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
+        patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
         System.err.println("pattern str is :" + patternStr);
 
         //设置默认值为-1，代表不用根据默认值，出权重。
@@ -65,7 +66,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         if (value.toString().contains(title)) {
             return;
         }
-        String[] fields = pattern.split(value.toString());
+//        String[] fields = pattern.split(value.toString());
+        String[] fields = value.toString().split(patternStr);
         System.err.println("the fields length is : " + fields.length);
         System.err.println(value.toString());
 
