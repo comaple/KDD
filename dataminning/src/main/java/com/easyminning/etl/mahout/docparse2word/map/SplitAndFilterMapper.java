@@ -63,7 +63,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        if (value.toString().contains(title)) {
+        if (value.toString().toLowerCase().contains(title.toLowerCase())) {
             return;
         }
 //        String[] fields = pattern.split(value.toString());
