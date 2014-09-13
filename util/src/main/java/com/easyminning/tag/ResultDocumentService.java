@@ -49,6 +49,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
 
         ResultDocument resultDocument = new ResultDocument();
         resultDocument.setKeyWord("test");
+        resultDocument.setWeight(10.0);
         resultDocumentService.save(resultDocument);
     }
 

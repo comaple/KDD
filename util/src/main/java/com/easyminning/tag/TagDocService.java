@@ -50,12 +50,11 @@ public class TagDocService extends AbstractService<TagDoc> {
 
 
     public static void main(String[] args) {
-        TagDocService tagDocService = new TagDocService();
-
-        tagDocService.init();
+        TagDocService tagDocService = TagDocService.getInstance();
+        tagDocService.save(new TagDoc());
 
       // docWordWeightService.save(new DocWordWeightModel());
-       List<String> models = tagDocService.findWordAll();
+      // List<String> models = tagDocService.findWordAll();
 
     }
 
