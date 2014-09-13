@@ -28,6 +28,11 @@ public class TagDocService extends AbstractService<TagDoc> {
     }
 
     public void save(TagDoc tagDoc) {
+
+        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        if (version != null) {
+           tagDoc.setVersionStamp(version);
+        }
         simpleMongoDBClient2.insert(tagDoc);
     }
 

@@ -17,14 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 下午10:53
  * To change this template use File | Settings | File Templates.
  */
-public class VersionStampService extends AbstractService<VersionStamp> {
+public class VersionStampService extends AbstractService<VersionStamp> implements Runnable {
 
     private static VersionStampService versionStampService = new VersionStampService();
 
-    private  static ConcurrentHashMap<String, String> lastestVersion = new ConcurrentHashMap<String, String>();
-
+    // current finished version
+    public static VersionStamp CURRENT_FINNISHED_VERSION;
     private VersionStampService() {
         this.init();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     public static VersionStampService getInstance() {
@@ -59,8 +61,17 @@ public class VersionStampService extends AbstractService<VersionStamp> {
         VersionStamp versionStamp = null;
 
         //
-        List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder.start("finshedVersion").is(0),QueryBuilder.start().is(1),1,1,VersionStamp.class);
-        return list.get(0);
+        try {
+            List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
+                    .start("finshedVersion").is(0),QueryBuilder.start().is(1),1,1,VersionStamp.class);
+            if (list == null || list.size() == 0) {
+                return new VersionStamp();
+            }
+            return list.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new VersionStamp();
+        }
     }
 
 
@@ -75,31 +86,21 @@ public class VersionStampService extends AbstractService<VersionStamp> {
     }
 
     public VersionStamp getLatestFinshedVersionStamp() {
-        VersionStamp versionStamp = null;
-        if (lastestVersion.size() == 0) {
-            List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder.start(),QueryBuilder.start().is(1),1,1,VersionStamp.class);
-            if (list != null && list.size() ==0) {
-                return null;
-            }
-            lastestVersion.put("version", list.get(0).getVersionStamp() + "," + System.currentTimeMillis());
-            return list.get(0);
-        }
-
-        String version = lastestVersion.get("version").split(",")[0];
-        String time = lastestVersion.get("version").split(",") [1];
-        if ((System.currentTimeMillis() - Long.parseLong(time))/1000 < 60*60*3) {
-            versionStamp = new VersionStamp();
-            versionStamp.setVersionStamp(version);
-            return versionStamp;
-        }
-
-        //
-        List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder.start(),QueryBuilder.start().is(1),1,1,VersionStamp.class);
-        if (list != null && list.size() ==0) {
-            return null;
-        }
-        lastestVersion.put("version", list.get(0).getVersionStamp() + "," + System.currentTimeMillis());
-        return list.get(0);
+        return CURRENT_FINNISHED_VERSION;
     }
 
+
+    @Override
+    public void run() {
+       while (true) {
+           List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
+                   .start(), QueryBuilder.start().is(1), 1, 1, VersionStamp.class);
+           CURRENT_FINNISHED_VERSION = list.get(0);
+          try {
+            Thread.sleep(1000*60*60*3);
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+       }
+    }
 }

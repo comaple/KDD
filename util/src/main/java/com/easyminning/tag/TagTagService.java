@@ -37,10 +37,18 @@ public class TagTagService extends AbstractService<TagTag> {
     }
 
     public void saveTagTag(TagTag tagTag) {
+        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        tagTag.setVersionStamp(version);
         this.simpleMongoDBClient2.insert(tagTag);
     }
 
     public void saveTagTagList(List<TagTag> tagTagList) {
+        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        if (version != null) {
+            for (TagTag tagTag : tagTagList) {
+                tagTag.setVersionStamp(version);
+            }
+        }
         this.simpleMongoDBClient2.insert(tagTagList);
     }
 

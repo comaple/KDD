@@ -24,6 +24,12 @@ public class StepTagService extends AbstractService<StepTag> {
     }
 
     public void saveList(List<StepTag> stepTagList) {
+        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        if (version != null) {
+            for (StepTag stepTag : stepTagList) {
+                stepTag.setVersionStamp(version);
+            }
+        }
         this.simpleMongoDBClient2.insert(stepTagList);
     }
 

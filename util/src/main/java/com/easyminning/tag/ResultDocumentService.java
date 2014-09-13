@@ -2,6 +2,7 @@ package com.easyminning.tag;
 
 import com.easyminning.mongodbclient2.driver.MongoDBDriver;
 import com.easyminning.mongodbclient2.sample.SimpleMongoDBClient2;
+import com.easyminning.util.simhash.DuplicateDocFilter;
 import com.mongodb.QueryBuilder;
 
 /**
@@ -28,9 +29,9 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         this.collectionName = "resultdocument";
     }
 
-
-
     public void save(ResultDocument resultDocument) {
+        resultDocument.setFingerMsg(DuplicateDocFilter.getAnasysisDocHash(resultDocument));
+        resultDocument.setVersionStamp(versionStampService.getUnFinshedVersionStamp().getVersionStamp());
         simpleMongoDBClient2.insert(resultDocument);
     }
 

@@ -24,11 +24,15 @@ public class ResultDocument  extends BaseModel {
     //url 地址
     private String url = new String();
     //发布时间
+
     private String issue = new String();
     //分词结果
     private String result = new String();
     //作者
     private String author = new String();
+
+    // 局部哈希摘要
+    private String fingerMsg;
 
     // 权重
     private Double weight = 0.0;
@@ -120,4 +124,14 @@ public class ResultDocument  extends BaseModel {
     public void setWeight(Double weight) {
         this.weight = weight;
     }
+
+
+    public String getFingerMsg() {
+        return fingerMsg;
+    }
+
+    public void setFingerMsg(String fingerMsg) {
+        this.fingerMsg = fingerMsg;
+    }
+
 }
