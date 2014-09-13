@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -28,12 +29,16 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private StepSeedCache stepSeedCache = null;
     private static Text docId = new Text("0");
     private Double threshold = 0.0;
+    private String title = "contextwithtag";
+    private String patternStr = "";
 
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-        String patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
+        patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
+        System.err.println("pattern str is :" + patternStr);
+
         //设置默认值为-1，代表不用根据默认值，出权重。
         threshold = Double.parseDouble(context.getConfiguration().get(Constant.THRSHOLD) == null ? "-1" : context.getConfiguration().get(Constant.THRSHOLD));
         pattern = Pattern.compile(patternStr);
@@ -42,6 +47,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         //初始化配置文件读取程序
         stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
+        targetMap = new HashMap<String, Double>();
     }
 
     /**
@@ -57,12 +63,19 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         int count = 0;
         StringBuilder stringBuilder = new StringBuilder();
-        String[] fields = pattern.split(value.toString());
-        if (fields.length != 9) {
+        if (value.toString().toLowerCase().contains(title.toLowerCase())) {
+            return;
+        }
+//        String[] fields = pattern.split(value.toString());
+        String[] fields = value.toString().split(patternStr);
+        System.err.println("the fields length is : " + fields.length);
+        System.err.println(value.toString());
+
+        if (fields.length != 6) {
             return;
         }
         DocumentWritable documentWritable = parse2Doc(fields);
-        StringReader reader = new StringReader(documentWritable.getSourceContent().toString());
+        StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
         while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1) {
@@ -80,37 +93,41 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         for (String word : targetMap.keySet()) {
             targetMap.put(word, targetMap.get(word) / count);
         }
+
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
+        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
+        System.err.println(documentWritable.getDocContent());
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重
         documentWritable.setWeihgt(new DoubleWritable(weight));
 
         if (threshold != -1 && threshold <= weight) {
-            context.write(docId, documentWritable);
+            context.write(documentWritable.getDocId(), documentWritable);
         } else {
-            context.write(docId, documentWritable);
+            context.write(documentWritable.getDocId(), documentWritable);
         }
     }
 
 
     /**
      * 解析为documentWritable
+     * title publishdate url author context contextwithtag
      *
      * @param fields
      * @return
      */
     private DocumentWritable parse2Doc(String[] fields) {
         DocumentWritable documentWritable = new DocumentWritable();
-        documentWritable.setDocId(new Text(fields[0]));
-        documentWritable.setTitle(new Text(fields[1]));
-        documentWritable.setKeyWord(new Text(fields[2]));
-        documentWritable.setSummary(new Text(fields[3]));
+        documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
+        documentWritable.setTitle(new Text(fields[0]));
+        documentWritable.setKeyWord(new Text(""));
+        documentWritable.setSummary(new Text(""));
         documentWritable.setDocContent(new Text(fields[4]));
         documentWritable.setSourceContent(new Text(fields[5]));
-        documentWritable.setUrl(new Text(fields[6]));
-        documentWritable.setIssue(new Text(fields[7]));
-        documentWritable.setAuthor(new Text(fields[8]));
+        documentWritable.setUrl(new Text(fields[2]));
+        documentWritable.setIssue(new Text(fields[1]));
+        documentWritable.setAuthor(new Text(fields[3]));
         return documentWritable;
     }
 

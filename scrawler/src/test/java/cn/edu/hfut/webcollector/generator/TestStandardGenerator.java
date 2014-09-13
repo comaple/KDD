@@ -23,7 +23,7 @@ import org.junit.Test;
 public class TestStandardGenerator {
     @Test
     public void testGenerator() throws IOException{
-        String crawl_path="/home/hu/data/webcollector_test";
+        /*String crawl_path="/home/hu/data/webcollector_test";
         ArrayList<String> seeds=new ArrayList<String>();
         seeds.add("http://www.sina.com.cn/");
         seeds.add("http://www.xinhuanet.com/");
@@ -43,9 +43,12 @@ public class TestStandardGenerator {
             Assert.assertEquals(-1, datums.get(i).fetchtime);
             Assert.assertEquals(Page.UNFETCHED, datums.get(i).status);
             Assert.assertEquals(seeds.get(i), datums.get(i).url);
-        }
-        
-        System.out.println("123123");
+        }*/
+
+        String s = "complete reference.        \n" +
+                "\n       " +
+                "To follow along with this guide";
+        System.out.println(s.replaceAll("\\s*\n\\s*",""));
     }
     
     
