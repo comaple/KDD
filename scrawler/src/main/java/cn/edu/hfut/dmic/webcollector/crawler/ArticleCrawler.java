@@ -21,8 +21,9 @@ public class ArticleCrawler extends BreadthCrawler {
 
     @Override
     protected void visit(Page page) {
-        super.visit(page);
-        Extractor.extract(page); //文章抽取
+        if(null != Extractor.extract(page)){//文章抽取
+            super.visit(page);
+        }
     }
 
     public static void execute(){

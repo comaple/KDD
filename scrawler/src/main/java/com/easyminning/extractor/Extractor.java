@@ -15,7 +15,12 @@ import java.util.regex.Pattern;
 public abstract class Extractor {
     //页面html的前缀 对应的 抽取器
     public static HashMap<String,Extractor> pageExtrators = new HashMap<String,Extractor>();
-    public static String []formats = {"yyyy年MM月dd日","yyyy/MM/dd","yyyy-MM-dd","yyyy\\MM\\dd"};
+    public static String []formats = {"yyyy年MM月dd日",
+            "yyyy/MM/dd",
+            "yyyy-MM-dd",
+            "yyyy\\MM\\dd",
+            "yyyy MM dd",
+            "dd MMM yyyy"};
     public static int ARTICLENUM = 0;
 
     public abstract Article extractArticle(Page page);

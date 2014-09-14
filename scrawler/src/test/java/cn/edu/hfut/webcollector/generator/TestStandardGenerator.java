@@ -11,7 +11,13 @@ import cn.edu.hfut.dmic.webcollector.generator.StandardGenerator;
 import cn.edu.hfut.dmic.webcollector.model.CrawlDatum;
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -49,6 +55,18 @@ public class TestStandardGenerator {
                 "\n       " +
                 "To follow along with this guide";
         System.out.println(s.replaceAll("\\s*\n\\s*",""));
+
+        if(Pattern.matches("http://news.liuxue360.com/", "http://news.liuxue360.com/")){
+            System.out.println("affafaef");
+        }
+
+        String ss = "14年6月23日 23:34:4";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.ENGLISH);
+        try {
+            System.out.println(sdf.parse(ss));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     
     

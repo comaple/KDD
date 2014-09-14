@@ -18,7 +18,8 @@ public class TemplateExtractor extends Extractor {
             {"(?is)<script.*?>.*?</script>", ""},
             {"(?is)<style.*?>.*?</style>", ""},
             {"(?is)<!--.*?-->", ""},
-            {"&.{2,5};|&#.{2,5};", ""}
+            {"&.{2,5};|&#.{2,5};", ""},
+            {"&nbsp;", " "}
     };
 
     public TemplateExtractor(HashMap<String,String> templateRex){
