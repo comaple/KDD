@@ -1,0 +1,4 @@
+title=(?is)<h1 class="article_title" title=.*?>.*?</h1>
+publishDate=(?is)\d{2}\s[JFMASOND][a-z]{2,10}\s\d{4}</span>
+author=(?is)作者：<a href=".*?" title=".*?">.*?</a>
+mainContent=(?is)<div class="passage">.*?</div>

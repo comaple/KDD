@@ -25,6 +25,7 @@ public class StatisticsExtractor extends Extractor {
             {"(?is)<style.*?>.*?</style>", ""},
             {"(?is)<!--.*?-->", ""},
             {"&.{2,5};|&#.{2,5};", ""},
+            {"&nbsp;", " "},
             {"(?is)</a>", "</a>\n"}// 针对链接密集型的网站的处理，主要是门户类的网站，降低链接干扰
     };
 

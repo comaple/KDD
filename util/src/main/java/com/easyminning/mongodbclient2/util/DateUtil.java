@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 日期转换的工具类
@@ -163,7 +160,7 @@ public class DateUtil {
     {
         Date d = null;
         for(String format : dateFormats) {
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
             try {
                 d = sdf.parse(dateString);
                 if(null != d)

@@ -1,0 +1,4 @@
+title=(?is)<h1 class="wzbiao2">.*?</h1>
+publishDate=(?is)<span class="wzbiao3">\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}
+author=(?is)来源：.*?<a target="_blank" title=.*?>
+mainContent=(?is)</table>\s+</p>.*?<div class="pg-3">

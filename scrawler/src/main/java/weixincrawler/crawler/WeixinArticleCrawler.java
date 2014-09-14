@@ -27,8 +27,9 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
 
     @Override
     protected void visit(Page page) {
-        super.visit(page);
-        WeixinExtractor.extract(page); //文章抽取
+        if(null != WeixinExtractor.extract(page)){//文章抽取
+            super.visit(page);
+        }
     }
 
     @Override
