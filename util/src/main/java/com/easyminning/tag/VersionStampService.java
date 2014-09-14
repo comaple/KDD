@@ -26,10 +26,21 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
 
     // current finished version
     public static VersionStamp CURRENT_FINNISHED_VERSION;
+
     private VersionStampService() {
         this.init();
-        Thread thread = new Thread(this);
-        thread.start();
+    }
+
+    /**
+     *
+     * @param isUpdate
+     */
+    private VersionStampService(Boolean isUpdate) {
+        this.init();
+        if (isUpdate) {
+            Thread thread = new Thread(this);
+            thread.start();
+        }
     }
 
     public static VersionStampService getInstance() {
