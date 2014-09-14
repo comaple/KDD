@@ -10,3 +10,5 @@ http://[a-z]{1,5}.liuxue360.com/[a-z]{1,15}/\d{8}.html%%%liuxue360.template
 http://www.66xue.com/article/detail/\d{5}.html%%%66xue.template
 http://www.liuxue86.com/a/(20\d{6}/)?\d{7}.html%%%liuxue86.template
 http://news.juesheng.com/detail/\d{6,10}.html%%%juesheng.template
+http://www.cscse.edu.cn/publish/portal0/tab38/info\d{5}.htm%%%cscse.template
+http://www.eduwo.com/[a-z]{1,15}/\d{6}.htm%%%eduwo.template

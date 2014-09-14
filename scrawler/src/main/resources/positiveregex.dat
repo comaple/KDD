@@ -49,3 +49,9 @@ http://www.liuxue86.com/live/
 http://news.juesheng.com/
 http://news.juesheng.com/detail/\d{6,10}.html
 http://news.juesheng.com/list/4/
+
+http://www.cscse.edu.cn/publish/portal0/tab38/module438/more.htm
+http://www.cscse.edu.cn/publish/portal0/tab38/info\d{5}.htm
+
+http://www.eduwo.com/usacollege/index.htm
+http://www.eduwo.com/[a-z]{1,15}/\d{6}.htm
