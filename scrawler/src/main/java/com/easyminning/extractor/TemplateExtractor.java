@@ -66,7 +66,7 @@ public class TemplateExtractor extends Extractor {
         if(m.find()){
             article.contextWithTag = m.group();
             //article.context = article.contextWithTag.replaceAll("<.*?>","").trim();
-            article.context = article.contextWithTag.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*","").trim();
+            article.context = article.contextWithTag.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").trim();
         }
         return article;
     }
