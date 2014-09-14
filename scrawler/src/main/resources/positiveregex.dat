@@ -1,2 +1,11 @@
-http://roll.edu.sina.com.cn/a/lxcg/lxzx/default/index(_[12])?.shtml
+http://roll.edu.sina.com.cn/a/lxcg/lxzx/default/index(_1)?.shtml
 http://edu.sina.com.cn/a/\d{4}-\d{2}-\d{2}/.*
+
+http://goabroad.sohu.com/7/0703/25/column211172554.shtml
+http://goabroad.sohu.com/201\d{5}/n\d{9}.shtml
+
+http://edu.163.com/special/00293HDB/liuxue.html
+http://edu.163.com/1\d{1}/\d{4}/\d{2}/\w{16}.html
+
+http://abroad.edu.ifeng.com/[a-z]{2,10}/[a-z]{2,10}kx/
+http://abroad.edu.ifeng.com/[a-z]{2,10}/\d{2}/\d{6,10}.html

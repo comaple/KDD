@@ -163,9 +163,9 @@ public class StatisticsExtractor extends Extractor {
         String result = sb.toString();
         // 处理回车符，更好的将文本格式化输出
         //String content = result.replaceAll("\\[crlf\\]", "\n");
-        String content = result.replaceAll("\\s*\\[crlf\\]\\s*", "").replaceAll("\\s*\n\\s*"," ");
+        String content = result.replaceAll("\\s*\\[crlf\\]\\s*", "").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         // 输出带标签文本
-        String contentWithTags = orgSb.toString();
+        String contentWithTags = orgSb.toString().replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         return new String[]{content,contentWithTags};
     }
 

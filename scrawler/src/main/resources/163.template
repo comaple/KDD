@@ -1,0 +1,4 @@
+title=(?is)<h1 id="h1title" class="ep-h1">.*?</h1>
+publishDate=(?is)\d{4}-\d{2}-\d{2}(\s?\d{2}:\d{2}:\d{2})?
+author=(?is)<a href=http://zqb.cyol.com/html/.*? target=_blank rel="nofollow">.*?</a>
+mainContent=(?is)<div id="endText">.*?</div>.*?<div class="ep-source cDGray">
