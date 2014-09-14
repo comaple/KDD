@@ -18,7 +18,7 @@ public class CalculateSimilarityOfMap implements Similarity {
         double modTarget = 0.0f;
         for (String keyS : sourceMap.keySet()) {
             for (String keyT : targetMap.keySet()) {
-                if (!keyS.equals(keyT)) {
+                if (keyS.equals(keyT)) {
                     sumProduct += sourceMap.get(keyS) * targetMap.get(keyT);
                 }
                 modSource += Math.pow(sourceMap.get(keyS), 2);

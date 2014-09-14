@@ -10,13 +10,13 @@ package com.easyminning.tag;
 public class VersionStamp extends BaseModel {
 
     // 0. 表示正在进行执行分析的版本，1，表示已经可以使用的版本
-    private Integer finshedVersion;
+    private Integer finishedVersion;
 
-    public Integer getFinshedVersion() {
-        return finshedVersion;
+    public Integer getFinishedVersion() {
+        return finishedVersion;
     }
 
-    public void setFinshedVersion(Integer finshedVersion) {
-        this.finshedVersion = finshedVersion;
+    public void setFinishedVersion(Integer finishedVersion) {
+        this.finishedVersion = finishedVersion;
     }
 }

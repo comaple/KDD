@@ -5,6 +5,7 @@ import com.easyminning.etl.mahout.util.similarity.Similarity;
 import com.easyminning.etl.mahout.util.similarity.impl.CalculateSimilarityOfMap;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
 import com.easyminning.tag.StepSeedCache;
+import com.mongodb.util.StringBuilderPool;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -27,7 +28,6 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private Map<String, Double> targetMap = null;
     private Similarity similarity = null;
     private StepSeedCache stepSeedCache = null;
-    private static Text docId = new Text("0");
     private Double threshold = 0.0;
     private String title = "contextwithtag";
     private String patternStr = "";
@@ -36,12 +36,10 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-        patternStr = context.getConfiguration().get(Constant.PATTERN_STR);
-        System.err.println("pattern str is :" + patternStr);
 
         //设置默认值为-1，代表不用根据默认值，出权重。
         threshold = Double.parseDouble(context.getConfiguration().get(Constant.THRSHOLD) == null ? "-1" : context.getConfiguration().get(Constant.THRSHOLD));
-        pattern = Pattern.compile(patternStr);
+        patternStr = "\\|\\|==\\|\\|";
         //初始化相似度度量程序
         similarity = new CalculateSimilarityOfMap();
         //初始化配置文件读取程序
@@ -68,9 +66,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         }
 //        String[] fields = pattern.split(value.toString());
         String[] fields = value.toString().split(patternStr);
+        System.err.println("pattern str is :" + patternStr);
         System.err.println("the fields length is : " + fields.length);
         System.err.println(value.toString());
-
         if (fields.length != 6) {
             return;
         }
@@ -78,7 +76,10 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
-        while ((lexeme = segmenter.next()) != null && lexeme.getLexemeText().length() != 1) {
+        while ((lexeme = segmenter.next()) != null) {
+            if (lexeme.getLexemeText().length() == 1) {
+                continue;
+            }
             count++;
             String word = lexeme.getLexemeText();
             if (targetMap.containsKey(word)) {
@@ -102,8 +103,11 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         // 设置权重
         documentWritable.setWeihgt(new DoubleWritable(weight));
 
-        if (threshold != -1 && threshold <= weight) {
-            context.write(documentWritable.getDocId(), documentWritable);
+        if (threshold != -1) {
+            if (threshold <= weight) {
+                context.write(documentWritable.getDocId(), documentWritable);
+            }
+
         } else {
             context.write(documentWritable.getDocId(), documentWritable);
         }
@@ -136,5 +140,24 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 
     //参数，原始数据分隔符
     private static Pattern pattern = null;
+
+    public static void main(String[] args) throws Exception {
+        StringReader reader = new StringReader("去英国留学的趋势是怎么样的同学们选择去英国留学，就要了解它的发展趋势，看看自己应该做怎样的准备。  2014年留学英国申请准备已经开始，赴英留学又有哪些变换和趋势。以下是留学专家总结2014年英国留学的四大趋势。  去英国留学趋势一：留学政策开放，门槛逐步降低  自2014年起五年内，英国政府拟将前往英国大学学习的外国学生人数提高20%，新增人数达到9万，而中国是其中一个扩招目标市场。这就意味着，英国大学将对有意向的中国学生放低门槛，同时扩大各类奖学金的比重，鼓励中国青年才俊到英国学习。  去英国留学趋势二：竞争白热化申请名校多做准备  留学人数的增加一定会使竞争升级，申请海外名校已经从提前准备硬指标，升级为提前准备科研成果、实习经验、实践背景等条件。  去英国留学趋势三：留学趋于小龄化  低龄孩子提前出国享受国际化的优质教育，是2014年留学以及今后几年的大趋势，尤其是出国读本科的学生比例会越来越大。  去英国留学趋势四：留学目的的分化愈演愈烈  过去一年，选择留学时，两极分化的情况比较严重。受到经济危机影响较大的留学家庭，变得更为审慎、理性，咨询过程中更多地关注留学回报、奖学金、带薪实习机会;而受影响较少的人群，对孩子出国留学品质要求更高，希望申请全球前30的世界名校，帮孩子铺平留学后的出路。本文来源：http://gb.533.com/191/438257.html    在2014年的留学申请中选择一门适合自已的专业非常重要，但同时也要考虑到自已的兴趣爱好和职业规划，以及当前英国的人气热门专业，现在将英国最热门的专业推荐给大家：会计与金融， 电力与电子工程， 商务管理， 建筑， 法学， 教育学， 翻译与口译， 艺术设计，传媒。\", \"keyWord\" : \"\", \"title\" : \"去英国留学的趋势是怎么样的");
+        StringBuilder stringBuilder = new StringBuilder();
+        IKSegmenter segmenter = new IKSegmenter(reader, true);
+        int count = 0;
+        while ((lexeme = segmenter.next()) != null) {
+            if (lexeme.getLexemeText().length() == 1) {
+                continue;
+            }
+            count++;
+            String word = lexeme.getLexemeText();
+
+            stringBuilder.append(word + " ");
+        }
+
+        System.out.println(stringBuilder.toString());
+
+    }
 
 }

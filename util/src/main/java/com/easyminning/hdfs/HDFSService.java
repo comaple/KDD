@@ -66,6 +66,7 @@ public class HDFSService implements Runnable {
                for (String file : fileList) {
                    if ("bak".equals(file)) continue;
                    if (new File(srcPath+File.separator + file).isDirectory()) continue;
+                   if (file.endsWith("tmp")) continue; //
                    Date now = new Date();
                    String nowStr = DF.format(now);
                    log.info("上传文件：" + srcPath + File.separator + file + " 目标文件夹：" + DEST_PATH + nowStr);

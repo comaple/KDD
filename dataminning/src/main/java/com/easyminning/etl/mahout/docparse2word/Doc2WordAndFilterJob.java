@@ -5,6 +5,7 @@ import com.easyminning.etl.mahout.docparse2word.map.SplitMapper;
 import com.easyminning.etl.mahout.docparse2word.reduce.SplitReducer;
 import com.easyminning.etl.mahout.util.Constant;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
+import com.easyminning.tag.VersionStampService;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -25,7 +26,6 @@ public class Doc2WordAndFilterJob extends AbstractJob {
 
     private final String isScrawler = "isScrawler";
 
-    private final String pattern = "pattern";
 
     public static void main(String[] args) {
         try {
@@ -46,21 +46,23 @@ public class Doc2WordAndFilterJob extends AbstractJob {
 
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
+
         Boolean scrawler = Boolean.parseBoolean(getOption(isScrawler));
         System.out.println(getOption(isScrawler));
         System.out.println(String.format(" ------ the scrawler u pass is : %s", scrawler));
+        int res = 0;
         if (scrawler) {
             Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
             combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold, "-1"));
-            combineJob.getConfiguration().set(Constant.PATTERN_STR, getOption(pattern));
-            System.out.println(getOption(pattern));
-            combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
-            return combineJob.waitForCompletion(true) == true ? 0 : -1;
+            combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum, "2000"));
+            res = combineJob.waitForCompletion(true) == true ? 0 : -1;
         } else {
             Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
-            combineJob_1.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum));
-            return combineJob_1.waitForCompletion(true) == true ? 0 : -1;
+            res = combineJob_1.waitForCompletion(true) == true ? 0 : -1;
         }
+        // 写入版本信息
+        VersionStampService.getInstance().genUnFinshedVersionStamp();
+        return res;
 
     }
 
@@ -70,10 +72,8 @@ public class Doc2WordAndFilterJob extends AbstractJob {
     private void addOptions() {
         addInputOption();
         addOutputOption();
-        addOption(finalDocNum, "dn", "the final doc number of the result.");
         addOption(threshold, "td", "the threshold of the similarity for the doc calculate.");
         addOption(isScrawler, "ic", "the document is from scrawler or not.");
-        addOption(pattern, "pt", "the pattern which the scrawler doc line use.");
         addOption(DefaultOptionCreator.overwriteOption().create());
     }
 

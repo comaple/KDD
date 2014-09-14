@@ -38,7 +38,7 @@ public class StepTagService extends AbstractService<StepTag> {
     }
 
     public List<StepTag> findAll() {
-        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(QueryBuilder.start(),1,10,StepTag.class);
+        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(QueryBuilder.start(),0,10,StepTag.class);
         return stepTagList;
     }
 
@@ -50,7 +50,7 @@ public class StepTagService extends AbstractService<StepTag> {
         if (versionStamp != null) {
             queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         }
-        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,StepTag.class);
+        List<StepTag> stepTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,(pageNo-1)*pageSize,pageSize,StepTag.class);
         return stepTagList;
     }
 
