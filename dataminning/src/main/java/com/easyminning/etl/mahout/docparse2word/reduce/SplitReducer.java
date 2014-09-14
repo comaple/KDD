@@ -25,7 +25,6 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-        resultNum = Integer.parseInt(context.getConfiguration().get(Constant.RESULT_NUM) == null ? "1000" : context.getConfiguration().get(Constant.RESULT_NUM));
         //初始化mogodb
     }
 
