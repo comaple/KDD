@@ -1,6 +1,7 @@
 package com.easyminning.algorithm.fpm.pfpgrowth.result;
 
 import com.easyminning.algorithm.fpm.pfpgrowth.convertors.string.TopKStringPatterns;
+import com.easyminning.tag.StepTagSimilarity;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -39,14 +40,17 @@ public class FpgrowthResultJob extends AbstractJob {
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
 
-       // this.getConf().set("fs.default.name", "hdfs://db1:9000");
+        // this.getConf().set("fs.default.name", "hdfs://db1:9000");
         Job job = prepareJob(getInputPath(), getOutputPath(), SequenceFileInputFormat.class,
                 FpgrowthResultMaper.class, Text.class, TopKStringPatterns.class, Reducer.class,
                 Text.class, Text.class, SequenceFileOutputFormat.class);
 //        job.getConfiguration().set(param1, getOption(param1));
 //        job.getConfiguration().set(param2, getOption(param2));
 
-        return job.waitForCompletion(true) == true ? 0 : -1;
+
+        int res = job.waitForCompletion(true) == true ? 0 : -1;
+        StepTagSimilarity.getInstance().analysis();
+        return res;
 
     }
 
@@ -56,8 +60,8 @@ public class FpgrowthResultJob extends AbstractJob {
     private void addOptions() {
         addInputOption();
         addOutputOption();
-        addOption(param1, "p1", "p1",false);
-        addOption(param2, "p2", "p2",false);
+        addOption(param1, "p1", "p1", false);
+        addOption(param2, "p2", "p2", false);
 
         addOption(DefaultOptionCreator.overwriteOption().create());
     }

@@ -46,13 +46,16 @@ public class LDAResultParser {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.printf("error :" + e.getMessage());
+            System.out.printf("map:" + res);
         }
         return res;
     }
 
 
     public static void main(String[] args) {
-        getMap("/Volumes/work/vectordump-1");
+     Map<String,Map<String,Double>>  map= getMap("/data/KDD/dataminning/src/main/resources/topic_result.txt");
+        System.out.println(map.get("10"));
     }
 
 }

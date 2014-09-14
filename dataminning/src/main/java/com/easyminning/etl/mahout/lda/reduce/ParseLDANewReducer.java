@@ -56,12 +56,14 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         }
         List<TagDoc> wordWeightModels = new LinkedList<TagDoc>();
         StringBuilder stringBuilder = new StringBuilder();
+
         for (String topic : topicWeights) {
             String[] topicKV = topic.split(":");
             if (topicKV.length != 2) {
                 continue;
             }
             Map<String, Double> words = topicKeyVlues.get(topicKV[0]);
+
             for (String k : words.keySet()) {
                 if (NumberUtils.isNumber(k)) {
                     continue;
