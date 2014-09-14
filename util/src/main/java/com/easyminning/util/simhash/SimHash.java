@@ -6,6 +6,7 @@ package com.easyminning.util.simhash;
  * @author june
  * @version 0.1
  */
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
@@ -77,7 +78,7 @@ public class SimHash {
             }
         }
         this.strSimHash = simHashBuffer.toString();
-        System.out.println(this.strSimHash + " length " + this.strSimHash.length());
+//        System.out.println(this.strSimHash + " length " + this.strSimHash.length());
         return fingerprint;
     }
 

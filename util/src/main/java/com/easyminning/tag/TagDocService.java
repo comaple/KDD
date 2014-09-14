@@ -37,7 +37,7 @@ public class TagDocService extends AbstractService<TagDoc> {
     }
 
     public List<String> findWordAll() {
-        List<String> res = simpleMongoDBClient2.collection.distinct("word");
+        List<String> res = simpleMongoDBClient2.collection.distinct("tagItem");
         return res;
     }
 

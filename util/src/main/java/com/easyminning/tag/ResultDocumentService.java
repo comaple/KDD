@@ -47,7 +47,6 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
     public static void main(String[] args) {
         ResultDocumentService resultDocumentService = ResultDocumentService.getInstance();
 
-
         ResultDocument resultDocument = new ResultDocument();
         resultDocument.setKeyWord("test");
         resultDocument.setWeight(10.0);
