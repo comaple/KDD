@@ -64,9 +64,9 @@ public class TemplateExtractor extends Extractor {
         p = Pattern.compile(templateRex.get(ConfConstant.MAINCONTENT));
         m = p.matcher(html);
         if(m.find()){
-            article.contextWithTag = m.group();
+            article.contextWithTag = m.group().replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
             //article.context = article.contextWithTag.replaceAll("<.*?>","").trim();
-            article.context = article.contextWithTag.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").trim();
+            article.context = article.contextWithTag.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         }
         return article;
     }

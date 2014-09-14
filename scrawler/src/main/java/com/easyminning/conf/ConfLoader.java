@@ -100,7 +100,9 @@ public class ConfLoader {
                 }
                 List<String> confs = FileUtils.readLines(file);
                 for(String conf : confs){
-                    propSet.add(conf.trim());
+                    if(!conf.trim().equals("")) {
+                        propSet.add(conf.trim());
+                    }
                 }
             }
         }
@@ -124,7 +126,7 @@ public class ConfLoader {
         System.out.println(ConfLoader.negativeRegexSet);
         System.out.println(ConfLoader.topicRegexSet);
         System.out.println(ConfLoader.templateMap);
-        String s = "author=<span class=\"author\">.*?</span>";
+        /*String s = "author=<span class=\"author\">.*?</span>";
         int index = s.indexOf('=');
         System.out.println(s.substring(0,index)+"***"+s.substring(index));
 
@@ -136,6 +138,6 @@ public class ConfLoader {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
