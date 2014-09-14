@@ -105,12 +105,21 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
        while (true) {
            try {
                List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
-                       .start("finishedVersion").is(1),QueryBuilder.start("versionStamp").is(-1),  0, 1, VersionStamp.class);
-               CURRENT_FINNISHED_VERSION = list.get(0);
+                       .start("finishedVersion").is(1), QueryBuilder.start("versionStamp").is(-1),
+                       0, 1, VersionStamp.class);
+
+               if (list != null && list.size() > 0) {
+                    CURRENT_FINNISHED_VERSION = list.get(0);
+               }
             Thread.sleep(1000*60*60*3);
           } catch (Exception e) {
-              e.printStackTrace();
-          }
+               e.printStackTrace();
+               try {
+                   Thread.sleep(1000*60*60*3);
+               } catch (InterruptedException e1) {
+                   e1.printStackTrace();
+               }
+           }
        }
     }
 
