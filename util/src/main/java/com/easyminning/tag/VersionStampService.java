@@ -96,6 +96,15 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
     }
 
     public VersionStamp getLatestFinshedVersionStamp() {
+        if (CURRENT_FINNISHED_VERSION == null) {
+            List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
+                    .start("finishedVersion").is(1), QueryBuilder.start("versionStamp").is(-1),
+                    0, 1, VersionStamp.class);
+
+            if (list != null && list.size() > 0) {
+                CURRENT_FINNISHED_VERSION = list.get(0);
+            }
+        }
         return CURRENT_FINNISHED_VERSION;
     }
 
