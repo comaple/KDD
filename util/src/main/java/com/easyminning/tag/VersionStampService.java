@@ -1,6 +1,8 @@
 package com.easyminning.tag;
 
 import com.mongodb.QueryBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class VersionStampService extends AbstractService<VersionStamp> implements Runnable {
 
     private static VersionStampService versionStampService = new VersionStampService();
+    private Log log = LogFactory.getLog(VersionStampService.class);
 
     // current finished version
     public static VersionStamp CURRENT_FINNISHED_VERSION;
@@ -44,11 +47,14 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
      * @return
      */
     public VersionStamp genUnFinshedVersionStamp() {
+
+        //  删除未完成的版本号
+        simpleMongoDBClient2.delete(QueryBuilder.start("finishedVersion").is(0));
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         VersionStamp versionStamp = new VersionStamp();
-        versionStamp.setFinshedVersion(0);
+        versionStamp.setFinishedVersion(0);
         versionStamp.setVersionStamp(dateFormat.format(new Date()));
-        simpleMongoDBClient2.delete(QueryBuilder.start("finshedVersion").is(0));
+
         simpleMongoDBClient2.insert(versionStamp);
         return versionStamp;
     }
@@ -59,15 +65,14 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
      */
     public VersionStamp getUnFinshedVersionStamp() {
         VersionStamp versionStamp = null;
-
         //
         try {
-            List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
-                    .start("finshedVersion").is(0),QueryBuilder.start().is(1),1,1,VersionStamp.class);
-            if (list == null || list.size() == 0) {
+            versionStamp = simpleMongoDBClient2.selectOne(QueryBuilder
+                    .start("finishedVersion").is(0),VersionStamp.class);
+            if (versionStamp == null) {
                 return new VersionStamp();
             }
-            return list.get(0);
+            return versionStamp;
         } catch (Exception e) {
             e.printStackTrace();
             return new VersionStamp();
@@ -78,11 +83,16 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
     /**
      * 最后一个任务执行后，修改版本号为已完成版本号
      */
-    public void updateUnFishedVersion() {
+    public void updateUnFinishedVersion() {
         VersionStamp versionStamp = this.getUnFinshedVersionStamp();
-        simpleMongoDBClient2.delete(QueryBuilder.start("finshedVersion").is(0));
-        simpleMongoDBClient2.insert(versionStamp);
-
+        if (versionStamp == null || versionStamp.getVersionStamp() == null
+                || "".equals(versionStamp.getVersionStamp().trim())) {
+            return;
+        }
+        versionStamp.setFinishedVersion(1);
+        versionStampService.simpleMongoDBClient2.marge(
+                QueryBuilder.start("_id").is(versionStamp.get_id().get("$oid")), versionStamp);
+        log.info("update finished version: " + versionStamp.getVersionStamp());
     }
 
     public VersionStamp getLatestFinshedVersionStamp() {
@@ -93,14 +103,23 @@ public class VersionStampService extends AbstractService<VersionStamp> implement
     @Override
     public void run() {
        while (true) {
-           List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
-                   .start(), QueryBuilder.start().is(1), 1, 1, VersionStamp.class);
-           CURRENT_FINNISHED_VERSION = list.get(0);
-          try {
+           try {
+               List<VersionStamp> list = simpleMongoDBClient2.select(QueryBuilder
+                       .start("finishedVersion").is(1),QueryBuilder.start("versionStamp").is(-1),  0, 1, VersionStamp.class);
+               CURRENT_FINNISHED_VERSION = list.get(0);
             Thread.sleep(1000*60*60*3);
           } catch (Exception e) {
               e.printStackTrace();
           }
        }
     }
+
+    public static void main(String[] args) {
+        VersionStampService versionStampService = VersionStampService.getInstance();
+        versionStampService.genUnFinshedVersionStamp();
+        VersionStamp versionstamp = versionStampService.getUnFinshedVersionStamp();
+        versionStampService.updateUnFinishedVersion();
+    }
+
+
 }
