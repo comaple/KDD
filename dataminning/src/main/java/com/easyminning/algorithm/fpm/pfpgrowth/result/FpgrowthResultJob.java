@@ -2,6 +2,7 @@ package com.easyminning.algorithm.fpm.pfpgrowth.result;
 
 import com.easyminning.algorithm.fpm.pfpgrowth.convertors.string.TopKStringPatterns;
 import com.easyminning.tag.StepTagSimilarity;
+import com.easyminning.tag.VersionStampService;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -44,12 +45,16 @@ public class FpgrowthResultJob extends AbstractJob {
         Job job = prepareJob(getInputPath(), getOutputPath(), SequenceFileInputFormat.class,
                 FpgrowthResultMaper.class, Text.class, TopKStringPatterns.class, Reducer.class,
                 Text.class, Text.class, SequenceFileOutputFormat.class);
-//        job.getConfiguration().set(param1, getOption(param1));
+//        job.getConfiguration().set(param1, getOption(param1));。。，。。，
 //        job.getConfiguration().set(param2, getOption(param2));
 
 
         int res = job.waitForCompletion(true) == true ? 0 : -1;
         StepTagSimilarity.getInstance().analysis();
+
+        //  更新版本号为已经完成
+        VersionStampService.getInstance().updateUnFinishedVersion();
+
         return res;
 
     }
