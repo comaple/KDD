@@ -58,6 +58,7 @@ public abstract class WeixinExtractor extends Extractor{
             extractor = null;
         }
         if(article == null || article.publishDate == null || article.context == null){
+            Log.Infos("info","extrat failure,some attr is null:" + page.url);
             return null;
         }
         if(article.context != null && !article.context.equals("")){

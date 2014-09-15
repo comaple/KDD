@@ -74,11 +74,13 @@ public abstract class Extractor {
             }
         }
         if(article == null || article.publishDate == null || article.context == null){
+            Log.Infos("info","extrat failure,some attr is null:" + page.url);
             return null;
         }
         if(article.publishDate != null){
             Date publishDate = DateUtil.createDate(article.publishDate,formats);
             if(null == publishDate){
+                Log.Infos("info","extrat failure,publishdate is unvalid string:" + page.url);
                 return null;
             }
             int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN,"3"));
@@ -91,6 +93,7 @@ public abstract class Extractor {
             //不在时间范围内的文章过滤掉
             if(nowD.compareTo(publishDate) < 0 ||
                     endD.compareTo(publishDate) > 0){
+                Log.Infos("info","extrat failure,publishdate is too long:" + page.url);
                 return null;
             }
 
