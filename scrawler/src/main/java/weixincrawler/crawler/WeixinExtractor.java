@@ -1,6 +1,7 @@
 package weixincrawler.crawler;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
+import cn.edu.hfut.dmic.webcollector.util.Log;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.*;
@@ -41,6 +42,7 @@ public abstract class WeixinExtractor extends Extractor{
         if(articleNum % 500 == 0 || extractor == null){
             initExtrator();//及时重新初始化，可使得更新的配置及时得到更新
         }
+        Log.Infos("info", "extrat url:" + page.url);
 
         Article article = null;
         if(null != extractor) {
@@ -50,7 +52,7 @@ public abstract class WeixinExtractor extends Extractor{
         if((article == null || (article.context == null || article.context.equals(""))
                 || article.publishDate == null) &&
                 extractor instanceof TemplateExtractor){
-            System.out.println("###############StatisticsExtractor###############");
+            //System.out.println("###############StatisticsExtractor###############");
             extractor = new StatisticsExtractor();
             article = extractor.extractArticle(page);
             extractor = null;
@@ -61,14 +63,18 @@ public abstract class WeixinExtractor extends Extractor{
         if(article.context != null && !article.context.equals("")){
             articleNum++;
             FileWriter.getInstance().writeArticle(article);
+            Log.Infos("info","article url:" + article.url);
+            Log.Infos("info","article title:" + article.title);
+            Log.Infos("info","article publishdate:" + article.publishDate);
+            Log.Infos("info","article part content:" + article.context.substring(0,20) + "...");
         }
 
-        System.out.println("----------------标题-----------------");
+        /*System.out.println("----------------标题-----------------");
         System.out.println(article.title);
         System.out.println("----------------发布时间-----------------");
         System.out.println(article.publishDate);
         System.out.println("----------------内容-----------------");
-        System.out.println(article.context);
+        System.out.println(article.context);*/
         return article;
     }
 
