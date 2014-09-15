@@ -70,7 +70,7 @@ public abstract class Extractor {
                 pageExtrators.put(comPath, extractor);
             }
         }
-        if(article == null){
+        if(article == null || article.publishDate == null || article.context == null){
             return null;
         }
         if(article.publishDate != null){

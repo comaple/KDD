@@ -54,7 +54,7 @@ public abstract class WeixinExtractor extends Extractor{
             article = extractor.extractArticle(page);
             extractor = null;
         }
-        if(article == null){
+        if(article == null || article.publishDate == null || article.context == null){
             return null;
         }
         if(article.context != null && !article.context.equals("")){
