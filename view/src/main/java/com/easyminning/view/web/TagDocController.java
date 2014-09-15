@@ -39,7 +39,7 @@ public class TagDocController extends BaseController {
             map.put("docItem", tagDoc.getDocItem() == null ? "" : tagDoc.getDocItem());
             map.put("weight", tagDoc.getWeight() == null ? "" : tagDoc.getWeight().toString());
             if (resultDocument == null) continue;
-            map.put("docContent",resultDocument.getDocContent() == null ? "" : resultDocument.getDocContent());
+            map.put("docContent",resultDocument.getSourceContent() == null ? "" : resultDocument.getSourceContent());
             map.put("title",resultDocument.getTitle() == null ? "" : resultDocument.getTitle());
             map.put("url", resultDocument.getUrl() == null ? "" :resultDocument.getUrl());
             map.put("keyWord",resultDocument.getKeyWord() == null ? "" : resultDocument.getKeyWord());
