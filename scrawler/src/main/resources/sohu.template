@@ -1,4 +1,4 @@
 title=(?is)<h1 itemprop="headline">.*?</h1>
-publishDate=(?is)<div class="time" id="pubtime_baidu" itemprop="datePublished" content=".*?">\d{4}-\d{2}-\d{2}(\s?\d{2}:\d{2}:\d{2})?</div>
+publishDate=(?is)<div class="time".*?itemprop="datePublished" content=".*?">\d{4}-\d{2}-\d{2}(\s?\d{2}:\d{2}:\d{2})?</div>
 author=(?is)<span id="media_span" itemprop="publisher".*?><span itemprop="name">.*?</span></span>
 mainContent=(?is)<div itemprop="articleBody">.*?</div>
