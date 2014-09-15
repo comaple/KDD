@@ -47,7 +47,8 @@ public abstract class WeixinExtractor extends Extractor{
             article = extractor.extractArticle(page);
         }
         //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
-        if((article == null || (article.context == null || article.context.equals(""))) &&
+        if((article == null || (article.context == null || article.context.equals(""))
+                || article.publishDate == null) &&
                 extractor instanceof TemplateExtractor){
             System.out.println("###############StatisticsExtractor###############");
             extractor = new StatisticsExtractor();
