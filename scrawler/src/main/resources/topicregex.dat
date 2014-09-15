@@ -26,3 +26,16 @@ http://news.juesheng.com/detail/\d{6,10}.html
 http://www.cscse.edu.cn/publish/portal0/tab38/info\d{5}.htm
 
 http://www.eduwo.com/[a-z]{1,15}/\d{6}.htm
+
+http://www.en.com.cn/news/\d{8}.html
+
+http://www.csc.edu.cn/(Chuguo|News)/\w{32}.shtml
+
+http://bd.533.com/\d{3}/\d{6}.html
+
+http://www.sharewithu.com/news/\d{5}.shtml
+
+http://cg.yuloo.com/xwzx/\d{6,7}.shtml
+http://cg.yuloo.com/[a-z]{1,15}/[a-z]{1,15}/\d{6,7}.shtml
+
+http://www.liuxue.com/e/20\d{6}/\w{13}.shtml

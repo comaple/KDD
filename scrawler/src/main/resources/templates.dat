@@ -12,3 +12,9 @@ http://www.liuxue86.com/a/(20\d{6}/)?\d{7}.html%%%liuxue86.template
 http://news.juesheng.com/detail/\d{6,10}.html%%%juesheng.template
 http://www.cscse.edu.cn/publish/portal0/tab38/info\d{5}.htm%%%cscse.template
 http://www.eduwo.com/[a-z]{1,15}/\d{6}.htm%%%eduwo.template
+http://www.en.com.cn/news/\d{8}.html%%%ennews.template
+http://www.csc.edu.cn/(Chuguo|News)/\w{32}.shtml%%%cscedu.template
+http://bd.533.com/\d{3}/\d{6}.html%%%533.template
+http://www.sharewithu.com/news/\d{5}.shtml%%%sharewithu.template
+http://cg.yuloo.com/xwzx/\d{6,7}.shtml%%%yuloo.template
+http://www.liuxue.com/e/20\d{6}/\w{13}.shtml%%%liuxue.template

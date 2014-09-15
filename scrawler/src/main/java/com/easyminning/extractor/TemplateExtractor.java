@@ -59,7 +59,7 @@ public class TemplateExtractor extends Extractor {
         m = p.matcher(html);
         if(m.find()){
             String titleHtml = m.group();
-            article.title = titleHtml.replaceAll("<.*?>","").trim();
+            article.title = titleHtml.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         }
         //正文
         p = Pattern.compile(templateRex.get(ConfConstant.MAINCONTENT));

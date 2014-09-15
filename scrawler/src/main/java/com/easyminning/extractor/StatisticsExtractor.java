@@ -201,7 +201,7 @@ public class StatisticsExtractor extends Extractor {
                 break;
             }
         }
-        return title;
+        return title.replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
     }
 
     public String getPublishDate(String html){
