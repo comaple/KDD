@@ -16,8 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.easyminning.conf.ConfConstant;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,12 +62,20 @@ public class TestStandardGenerator {
             System.out.println("affafaef");
         }
 
-        String ss = "14年6月23日 23:34:4";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.ENGLISH);
+        String ss = "Sep152014";//
+                SimpleDateFormat sdf = new SimpleDateFormat("MMMddyyyy", Locale.ENGLISH);
         try {
             System.out.println(sdf.parse(ss));
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        //发布时间
+        String html = "title=\"2014-9-16 19:10:17\">   \"2014-9-13 21:06:27\">3&nbsp";
+        Pattern p = Pattern.compile("(?is)20\\d{2}-\\d{1,2}-\\d{1,2}\\s+\\d{1,2}:\\d{1,2}:\\d{1,2}");
+        Matcher m = p.matcher(html);
+        if(m.find()){
+            System.out.println(m.group());
         }
     }
     

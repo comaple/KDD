@@ -1,0 +1,4 @@
+title=(?is)<a href=".*?" id="thread_subject">.*?</a>
+publishDate=(?is)20\d{2}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2}
+author=(?is)<a name="newpost">.*?<div class="authi"><a href=.*?>.*?</a>
+mainContent=(?is)</style><div class="pcb">\s*<div class="t_fsz">\s+<table cellspacing="0" cellpadding="0"><tr><td class="t_f".*?>.*?</table>

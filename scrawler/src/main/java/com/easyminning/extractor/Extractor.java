@@ -21,8 +21,11 @@ public abstract class Extractor {
             "yyyy-MM-dd",
             "yyyy\\MM\\dd",
             "yyyy MM dd",
-            "dd MMM yyyy"};
+            "dd MMM yyyy",
+            "E,dd MMM yyyy",
+            "MMMddyyyy"};
     public static int ARTICLENUM = 0;
+    private static final int MINARTICLEWORDNUM = 50;
 
     public abstract Article extractArticle(Page page);
 
@@ -77,6 +80,10 @@ public abstract class Extractor {
             Log.Infos("info","extrat failure,some attr is null:" + page.url);
             return null;
         }
+        if(article.context.length() <= MINARTICLEWORDNUM){
+            Log.Infos("info","extrat context too small:" + page.url);
+            return null;
+        }
         if(article.publishDate != null){
             Date publishDate = DateUtil.createDate(article.publishDate,formats);
             if(null == publishDate){
@@ -96,7 +103,7 @@ public abstract class Extractor {
                 Log.Infos("info","extrat failure,publishdate is too long:" + page.url);
                 return null;
             }
-
+            article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");
         }
         if(article.context != null && !article.context.equals("")){
             ARTICLENUM++;

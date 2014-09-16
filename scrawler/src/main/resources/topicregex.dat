@@ -39,3 +39,13 @@ http://cg.yuloo.com/xwzx/\d{6,7}.shtml
 http://cg.yuloo.com/[a-z]{1,15}/[a-z]{1,15}/\d{6,7}.shtml
 
 http://www.liuxue.com/e/20\d{6}/\w{13}.shtml
+
+http://www.goabroad.com/blog/\d{4}/\d{2}/\d{2}/(\w{1,15}-\w{1,15})+/
+
+http://blog.aifsabroad.com/(alumnus|\d{4}/\d{2}/\d{2})/(\w{1,15}-\w{1,15})+/
+
+http://bbs.taisha.org/thread-\d{8}-1-1.html
+
+http://s.hujiang.com/topic/\d{6}/
+
+http://bbs.gter.net/thread-\d{7}-1-1.html

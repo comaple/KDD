@@ -18,3 +18,8 @@ http://bd.533.com/\d{3}/\d{6}.html%%%533.template
 http://www.sharewithu.com/news/\d{5}.shtml%%%sharewithu.template
 http://cg.yuloo.com/xwzx/\d{6,7}.shtml%%%yuloo.template
 http://www.liuxue.com/e/20\d{6}/\w{13}.shtml%%%liuxue.template
+http://www.goabroad.com/blog/\d{4}/\d{2}/\d{2}/(\w{1,15}-\w{1,15})+/%%%goabroadblog.template
+http://blog.aifsabroad.com/(alumnus|\d{4}/\d{2}/\d{2})/(\w{1,15}-\w{1,15})+/%%%aifsabroadblog.template
+http://bbs.taisha.org/thread-\d{8}-1-1.html%%%taisha.template
+http://s.hujiang.com/topic/\d{6}/%%%hujiang.template
+http://bbs.gter.net/thread-\d{7}-1-1.html%%%gter.template
