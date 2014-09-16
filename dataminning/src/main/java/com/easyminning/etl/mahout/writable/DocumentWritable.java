@@ -36,6 +36,9 @@ public class DocumentWritable extends VarLongWritable {
     //权重
     private DoubleWritable weihgt = new DoubleWritable();
 
+    // 文章类型
+    private Text type = new Text();
+
 
     public DocumentWritable() {
     }
@@ -54,6 +57,7 @@ public class DocumentWritable extends VarLongWritable {
         this.url.write(out);
         this.author.write(out);
         this.weihgt.write(out);
+        this.type.write(out);
 
     }
 
@@ -71,6 +75,7 @@ public class DocumentWritable extends VarLongWritable {
         this.url.readFields(in);
         this.author.readFields(in);
         this.weihgt.readFields(in);
+        this.type.readFields(in);
     }
 
     public Text getDocId() {
@@ -159,5 +164,13 @@ public class DocumentWritable extends VarLongWritable {
 
     public void setWeihgt(DoubleWritable weihgt) {
         this.weihgt = weihgt;
+    }
+
+    public Text getType() {
+        return type;
+    }
+
+    public void setType(Text type) {
+        this.type = type;
     }
 }

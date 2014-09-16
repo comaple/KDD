@@ -79,6 +79,7 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
         resultDocument.setTitle(documentWritable.getTitle().toString());
         resultDocument.setUrl(documentWritable.getUrl().toString());
         resultDocument.setWeight(documentWritable.getWeihgt().get());
+        resultDocument.setType(documentWritable.getType().toString());
         return resultDocument;
     }
 

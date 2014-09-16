@@ -69,9 +69,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         System.err.println("pattern str is :" + patternStr);
         System.err.println("the fields length is : " + fields.length);
         System.err.println(value.toString());
-        if (fields.length != 6) {
-            return;
-        }
+//        if (fields.length != 6) {
+//            return;
+//        }
         DocumentWritable documentWritable = parse2Doc(fields);
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
@@ -132,6 +132,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         documentWritable.setUrl(new Text(fields[2]));
         documentWritable.setIssue(new Text(fields[1]));
         documentWritable.setAuthor(new Text(fields[3]));
+        if (fields.length>6) {
+            documentWritable.setType(new Text(fields[6]));
+        }
         return documentWritable;
     }
 

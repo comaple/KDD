@@ -1,6 +1,8 @@
 package com.easyminning.tag;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
+import com.mongodb.QueryOperators;
 
 import java.util.List;
 
@@ -39,6 +41,11 @@ public class TagDocService extends AbstractService<TagDoc> {
     public List<String> findWordAll() {
         List<String> res = simpleMongoDBClient2.collection.distinct("tagItem");
         return res;
+    }
+
+    public void deleteDocIds(List<String> docIds) {
+        this.simpleMongoDBClient2.collection.remove(new BasicDBObject("docItem",
+                new BasicDBObject(QueryOperators.IN,docIds.toArray())));
     }
 
     public List<TagDoc> findDocByTag(String tagItem, Integer pageNo, Integer pageSize) {
