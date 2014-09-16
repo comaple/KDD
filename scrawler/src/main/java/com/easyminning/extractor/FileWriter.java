@@ -23,7 +23,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class FileWriter  implements Runnable {
 
     // 标题,发布时间,url,作者，抽取正文，原文
-    private static String FILE_HEAD = "title||==||publishDate||==||url||==||author||==||context||==||contextWithTag";
+    private static String FILE_HEAD = "title||==||publishDate||==||url||==||author||==||context||==||contextWithTag||==||type";
 
     private static String SEPERATOR = "||==||";
 
@@ -172,6 +172,10 @@ public class FileWriter  implements Runnable {
         String contextWithTag = article.contextWithTag;
         if (contextWithTag == null) contextWithTag = "";
         sbuilder.append(contextWithTag);
+        sbuilder.append(SEPERATOR);
+        String type = article.type;
+        if (type == null) type = "1";
+        sbuilder.append(type);
         return sbuilder.toString();
     }
 

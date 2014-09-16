@@ -37,6 +37,9 @@ public class ResultDocument  extends BaseModel {
     // 权重
     private Double weight = 0.0;
 
+    private String type; // 文章类别
+    private Integer repeatCount = 0; // 重复次数
+
     public String getDocId() {
         return docId;
     }
@@ -134,4 +137,19 @@ public class ResultDocument  extends BaseModel {
         this.fingerMsg = fingerMsg;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getRepeatCount() {
+        return repeatCount;
+    }
+
+    public void setRepeatCount(Integer repeatCount) {
+        this.repeatCount = repeatCount;
+    }
 }

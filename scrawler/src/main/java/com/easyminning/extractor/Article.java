@@ -10,4 +10,5 @@ public class Article {
     public String publishDate;
     public String url;
     public String author;
+    public String type;
 }
