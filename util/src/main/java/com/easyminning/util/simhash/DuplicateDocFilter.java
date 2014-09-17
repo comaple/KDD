@@ -152,9 +152,15 @@ public class DuplicateDocFilter {
                 System.out.println("update resultdocument: " + resultDocument.getDocId() + "->" + resultDocument.getRepeatCount());
             }
         }
+        ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
         System.out.println("delete: " + deleteDocIds);
         ResultDocumentService.getInstance().deleteDocIds(deleteDocIds);
-        ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
+
+    }
+
+
+    public static void main(String[] args) {
+        filter();
     }
 
 }

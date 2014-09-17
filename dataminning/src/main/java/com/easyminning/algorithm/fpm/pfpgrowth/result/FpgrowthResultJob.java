@@ -3,6 +3,7 @@ package com.easyminning.algorithm.fpm.pfpgrowth.result;
 import com.easyminning.algorithm.fpm.pfpgrowth.convertors.string.TopKStringPatterns;
 import com.easyminning.tag.StepTagSimilarity;
 import com.easyminning.tag.VersionStampService;
+import com.easyminning.util.simhash.DuplicateDocFilter;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -51,6 +52,9 @@ public class FpgrowthResultJob extends AbstractJob {
 
         int res = job.waitForCompletion(true) == true ? 0 : -1;
         StepTagSimilarity.getInstance().analysis();
+
+        // 删除重复数据
+        DuplicateDocFilter.filter();
 
         //  更新版本号为已经完成
         VersionStampService.getInstance().updateUnFinishedVersion();
