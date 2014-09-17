@@ -67,7 +67,7 @@ public abstract class WeixinExtractor extends Extractor{
             Log.Infos("info","article url:" + article.url);
             Log.Infos("info","article title:" + article.title);
             Log.Infos("info","article publishdate:" + article.publishDate);
-            Log.Infos("info","article part content:" + article.context.substring(0,50) + "...");
+            Log.Infos("info","article part content:" + article.context.substring(0,30) + "...");
         }
 
         /*System.out.println("----------------标题-----------------");
