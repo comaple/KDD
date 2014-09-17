@@ -39,6 +39,7 @@ public class ResultDocument  extends BaseModel {
 
     private String type; // 文章类别
     private Integer repeatCount = 0; // 重复次数
+    private String scrawDate;
 
     public String getDocId() {
         return docId;
@@ -151,5 +152,13 @@ public class ResultDocument  extends BaseModel {
 
     public void setRepeatCount(Integer repeatCount) {
         this.repeatCount = repeatCount;
+    }
+
+    public String getScrawDate() {
+        return scrawDate;
+    }
+
+    public void setScrawDate(String scrawDate) {
+        this.scrawDate = scrawDate;
     }
 }

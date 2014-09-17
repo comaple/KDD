@@ -135,6 +135,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         if (fields.length>6) {
             documentWritable.setType(new Text(fields[6]));
         }
+        if (fields.length>7) {
+            documentWritable.setScrawDate(new Text(fields[6]));
+        }
         return documentWritable;
     }
 

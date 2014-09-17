@@ -176,6 +176,8 @@ public class FileWriter  implements Runnable {
         String type = article.type;
         if (type == null) type = "1";
         sbuilder.append(type);
+        sbuilder.append(SEPERATOR);
+        sbuilder.append(String.valueOf(System.currentTimeMillis()));
         return sbuilder.toString();
     }
 

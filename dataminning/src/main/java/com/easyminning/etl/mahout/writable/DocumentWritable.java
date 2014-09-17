@@ -39,6 +39,9 @@ public class DocumentWritable extends VarLongWritable {
     // 文章类型
     private Text type = new Text();
 
+    // 抓取时间毫秒数
+    private Text scrawDate = new Text();
+
 
     public DocumentWritable() {
     }
@@ -58,6 +61,7 @@ public class DocumentWritable extends VarLongWritable {
         this.author.write(out);
         this.weihgt.write(out);
         this.type.write(out);
+        this.scrawDate.write(out);
 
     }
 
@@ -76,6 +80,7 @@ public class DocumentWritable extends VarLongWritable {
         this.author.readFields(in);
         this.weihgt.readFields(in);
         this.type.readFields(in);
+        this.scrawDate.readFields(in);
     }
 
     public Text getDocId() {
@@ -172,5 +177,13 @@ public class DocumentWritable extends VarLongWritable {
 
     public void setType(Text type) {
         this.type = type;
+    }
+
+    public Text getScrawDate() {
+        return scrawDate;
+    }
+
+    public void setScrawDate(Text scrawDate) {
+        this.scrawDate = scrawDate;
     }
 }
