@@ -77,17 +77,17 @@ public abstract class Extractor {
             }
         }
         if(article == null || article.publishDate == null || article.context == null){
-            Log.Infos("info","extrat failure,some attr is null:" + page.url);
+            Log.Infos("extraterror","extrat failure,some attr is null:" + page.url);
             return null;
         }
         if(article.context.length() <= MINARTICLEWORDNUM){
-            Log.Infos("info","extrat context too small:" + page.url);
+            Log.Infos("extraterror","extrat context too small:" + page.url);
             return null;
         }
         if(article.publishDate != null){
             Date publishDate = DateUtil.createDate(article.publishDate,formats);
             if(null == publishDate){
-                Log.Infos("info","extrat failure,publishdate is unvalid string:" + page.url);
+                Log.Infos("extraterror","extrat failure,publishdate is unvalid string:" + page.url);
                 return null;
             }
             int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN,"3"));
@@ -100,7 +100,7 @@ public abstract class Extractor {
             //不在时间范围内的文章过滤掉
             if(nowD.compareTo(publishDate) < 0 ||
                     endD.compareTo(publishDate) > 0){
-                Log.Infos("info","extrat failure,publishdate is too long:" + page.url);
+                Log.Infos("extraterror","extrat failure,publishdate is too long:" + page.url);
                 return null;
             }
             article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");
@@ -111,7 +111,7 @@ public abstract class Extractor {
             Log.Infos("info","article url:" + article.url);
             Log.Infos("info","article title:" + article.title);
             Log.Infos("info","article publishdate:" + article.publishDate);
-            Log.Infos("info","article part content:" + article.context.substring(0,20) + "...");
+            Log.Infos("info","article part content:" + article.context.substring(0,50) + "...");
         }
 
         /*System.out.println("----------------标题-----------------");
