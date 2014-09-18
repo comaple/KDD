@@ -63,8 +63,6 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         }
     }
 
-
-
     public List<ResultDocument> getFingerMsgList() {
         List<ResultDocument> resultDocuments = new ArrayList<ResultDocument>();
         VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
@@ -84,6 +82,25 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         }
         //return simpleMongoDBClient2.selectOne(queryBuilder,ResultDocument.class);
         return resultDocuments;
+    }
+
+
+    /**
+     * 返回热门文章列表
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public List<ResultDocument> getHotDocList(Integer pageNo, Integer pageSize) {
+        QueryBuilder queryBuilder = QueryBuilder.start();
+        QueryBuilder queryBuilderSort = QueryBuilder.start("repeatCount").is(-1);
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
+        if (versionStamp != null) {
+            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        }
+        List<ResultDocument> resultDocumentList  = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,
+                (pageNo-1)*pageSize,pageSize,ResultDocument.class);
+        return resultDocumentList;
     }
 
 

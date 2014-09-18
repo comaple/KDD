@@ -24,12 +24,14 @@ public class TagDocController extends BaseController {
      * @param tagItem
      */
     @RequestMapping(value = "/tagdoc", method = RequestMethod.GET)
-    public void test(String tagItem, Integer pageNo, Integer pageSize) {
+    public void test(String tagItem, String type,Integer pageNo, Integer pageSize) {
         if (tagItem == null || "".equals(tagItem.trim())) {renderJson(new ArrayList<Map>());return;};
         if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
         if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
 
-        List<TagDoc> tagDocList = tagDocService.findDocByTag(tagItem,pageNo,pageSize);
+        String[] tagItemArray = tagItem.split(",");
+       // List<TagDoc> tagDocList = tagDocService.findDocByTag(tagItem,pageNo,pageSize);
+        List<TagDoc> tagDocList = tagDocService.findDocByTag(tagItemArray,pageNo,pageSize);
         List<Map> result = new ArrayList<Map>();
 
         for (TagDoc tagDoc : tagDocList) {
@@ -48,5 +50,31 @@ public class TagDocController extends BaseController {
         }
         renderJson(result);
     }
+
+
+    // 获取热门文章
+    @RequestMapping(value = "/hotdoc", method = RequestMethod.GET)
+    public void test2(Integer pageNo,Integer pageSize) {
+        if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
+        if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
+        List<Map> resultDocumentMapList = new ArrayList<Map>();
+        List<ResultDocument> resultDocumentList = ResultDocumentService.getInstance().getHotDocList(pageNo, pageSize);
+        for (ResultDocument resultDocument : resultDocumentList) {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("docContent",resultDocument.getSourceContent() == null ? "" : resultDocument.getSourceContent());
+            map.put("title",resultDocument.getTitle() == null ? "" : resultDocument.getTitle());
+            map.put("url", resultDocument.getUrl() == null ? "" :resultDocument.getUrl());
+            map.put("keyWord",resultDocument.getKeyWord() == null ? "" : resultDocument.getKeyWord());
+            map.put("author", resultDocument.getUrl() == null ? "" : resultDocument.getAuthor());
+            resultDocumentMapList.add(map);
+        }
+        renderJson(resultDocumentMapList);
+    }
+
+
+
+
+
+
 
 }

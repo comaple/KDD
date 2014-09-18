@@ -29,7 +29,9 @@ public class TagTagController extends BaseController {
         if (tagItem == null || "".equals(tagItem.trim())) {renderJson(new ArrayList<Map>());return;};
         if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
         if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
-        List<TagTag> tagTagList = tagTagService.findTagByTag(tagItem,pageNo,pageSize);
+        String[] tagItemArray = tagItem.split(",");
+       // List<TagTag> tagTagList = tagTagService.findTagByTag(tagItem,pageNo,pageSize);
+        List<TagTag> tagTagList = tagTagService.findTagByTag(tagItemArray,pageNo,pageSize);
 
         List<Map> result = new ArrayList<Map>();
         for (TagTag tagTag : tagTagList) {
