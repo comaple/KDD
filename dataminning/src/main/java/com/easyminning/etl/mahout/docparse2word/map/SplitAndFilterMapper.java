@@ -15,6 +15,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -74,6 +75,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 //        }
         DocumentWritable documentWritable = parse2Doc(fields);
         if (documentWritable == null) {
+            System.err.println("source file line is :" + value.toString());
             return;
         }
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
@@ -146,6 +148,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(fields));
             return null;
         }
     }
