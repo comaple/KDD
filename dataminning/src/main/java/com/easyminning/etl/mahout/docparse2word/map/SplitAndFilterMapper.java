@@ -125,23 +125,29 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
      * @return
      */
     private DocumentWritable parse2Doc(String[] fields) {
-        DocumentWritable documentWritable = new DocumentWritable();
-        documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
-        documentWritable.setTitle(new Text(fields[0]));
-        documentWritable.setKeyWord(new Text(""));
-        documentWritable.setSummary(new Text(""));
-        documentWritable.setDocContent(new Text(fields[4]));
-        documentWritable.setSourceContent(new Text(fields[5]));
-        documentWritable.setUrl(new Text(fields[2]));
-        documentWritable.setIssue(new Text(fields[1]));
-        documentWritable.setAuthor(new Text(fields[3]));
-        if (fields.length > 6) {
-            documentWritable.setType(new Text(fields[6]));
+        try {
+            DocumentWritable documentWritable = new DocumentWritable();
+            documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
+            documentWritable.setTitle(new Text(fields[0]));
+            documentWritable.setKeyWord(new Text(""));
+            documentWritable.setSummary(new Text(""));
+            documentWritable.setDocContent(new Text(fields[4]));
+            documentWritable.setSourceContent(new Text(fields[5]));
+            documentWritable.setUrl(new Text(fields[2]));
+            documentWritable.setIssue(new Text(fields[1]));
+            documentWritable.setAuthor(new Text(fields[3]));
+            if (fields.length > 6) {
+                documentWritable.setType(new Text(fields[6]));
+            }
+            if (fields.length > 7) {
+                documentWritable.setScrawDate(new Text(fields[7]));
+            }
+            return documentWritable;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+            return null;
         }
-        if (fields.length > 7) {
-            documentWritable.setScrawDate(new Text(fields[7]));
-        }
-        return documentWritable;
     }
 
     //ik分词器
