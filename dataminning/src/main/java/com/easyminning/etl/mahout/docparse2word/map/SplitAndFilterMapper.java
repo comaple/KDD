@@ -73,6 +73,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 //            return;
 //        }
         DocumentWritable documentWritable = parse2Doc(fields);
+        if (documentWritable == null) {
+            return;
+        }
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
@@ -132,11 +135,11 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         documentWritable.setUrl(new Text(fields[2]));
         documentWritable.setIssue(new Text(fields[1]));
         documentWritable.setAuthor(new Text(fields[3]));
-        if (fields.length>6) {
+        if (fields.length > 6) {
             documentWritable.setType(new Text(fields[6]));
         }
-        if (fields.length>7) {
-            documentWritable.setScrawDate(new Text(fields[6]));
+        if (fields.length > 7) {
+            documentWritable.setScrawDate(new Text(fields[7]));
         }
         return documentWritable;
     }
