@@ -34,6 +34,10 @@ public class HtmlParser extends Parser {
     @Override
     public ParseResult getParse(Page page) throws UnsupportedEncodingException {
         String charset = CharsetDetector.guessEncoding(page.content);
+        //http://bbs.taisha.org 编码有异常
+        if(charset.equals("WINDOWS-1252") || page.url.startsWith("http://bbs.taisha.org/")){
+            charset = "gbk";
+        }
         page.html = new String(page.content, charset);
         page.doc = Jsoup.parse(page.html);
         page.doc.setBaseUri(page.url);
