@@ -214,7 +214,7 @@ public class StatisticsExtractor extends Extractor {
         if(m.find()){
             date = m.group();
         }
-        return date;
+        return date.replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
     }
 
 
