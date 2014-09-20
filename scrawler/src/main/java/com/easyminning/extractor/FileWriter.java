@@ -25,10 +25,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class FileWriter  implements Runnable {
 
 
-    private static List<Filter> filterList = new ArrayList<Filter>(){{
-        add(new ContentFilter());
-    }};
-
     // 标题,发布时间,url,作者，抽取正文，原文
     private static String FILE_HEAD = "title||==||publishDate||==||url||==||author||==||context||==||contextWithTag||==||type";
 
@@ -89,10 +85,7 @@ public class FileWriter  implements Runnable {
             try {
                 Article article = ARTICLE_QUEUE.take();
 
-                for(Filter filter : filterList) {
-                    flag = filter.filter(article);
-                    if (!flag) continue;
-                }
+
 
                 this.writeLine(article);
             } catch (Exception e) {

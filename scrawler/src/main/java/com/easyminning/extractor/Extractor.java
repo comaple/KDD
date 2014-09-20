@@ -15,6 +15,11 @@ import java.util.regex.Pattern;
  * Created by jerry on 2014/8/30.
  */
 public abstract class Extractor {
+
+    private static List<Filter> filterList = new ArrayList<Filter>(){{
+        add(new ContentFilter());
+    }};
+
     //页面html的前缀 对应的 抽取器
     public static HashMap<String,Extractor> pageExtrators = new HashMap<String,Extractor>();
     public static String []formats = {"yyyy年MM月dd日",
@@ -80,6 +85,13 @@ public abstract class Extractor {
                 pageExtrators.put(comPath, extractor);
             }
         }
+
+        boolean flag = true;
+        for(Filter filter : filterList) {
+            flag = filter.filter(article);
+            if (!flag) return null;
+        }
+
         if(article == null || article.publishDate == null || article.context == null){
             Log.Infos("extraterror","extrat failure,some attr is null:" + page.url);
             conDiscardUrls.add(page.url);
