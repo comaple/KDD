@@ -33,6 +33,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private String title = "contextwithtag";
     private String patternStr = "";
 
+    private static int CONTENT_MIN_LENGTH = 200;
+
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
@@ -75,10 +77,20 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 //            return;
 //        }
         DocumentWritable documentWritable = parse2Doc(fields);
+
         if (documentWritable == null) {
             System.err.println("parse 2 doc object error , source file line is : \n " + value.toString());
             return;
         }
+
+        if (documentWritable.getDocContent() == null) {
+            return;
+        }
+        if (documentWritable.getDocContent().getLength() < CONTENT_MIN_LENGTH) {
+            return;
+        }
+
+
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
@@ -110,7 +122,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         documentWritable.setWeihgt(new DoubleWritable(weight));
 
         if (threshold != -1) {
-            if (threshold <= weight) {
+            if (threshold < weight) {
                 context.write(documentWritable.getDocId(), documentWritable);
             }
 
