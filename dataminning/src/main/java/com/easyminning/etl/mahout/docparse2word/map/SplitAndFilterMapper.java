@@ -5,6 +5,7 @@ import com.easyminning.etl.mahout.util.similarity.Similarity;
 import com.easyminning.etl.mahout.util.similarity.impl.CalculateSimilarityOfMap;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
 import com.easyminning.tag.StepSeedCache;
+import com.easyminning.tag.TagCache;
 import com.mongodb.util.StringBuilderPool;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -104,7 +105,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
                 targetMap.put(word, targetMap.get(word) + 1d);
             } else {
                 targetMap.put(word, 1d);
-                stringBuilder.append(word + " ");
+                if (TagCache.contain(word)) {
+                    stringBuilder.append(word + " ");
+                }
             }
         }
 
