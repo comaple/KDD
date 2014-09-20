@@ -46,7 +46,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         //初始化配置文件读取程序
         stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
-        targetMap = new HashMap<String, Double>();
+
     }
 
     /**
@@ -61,6 +61,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         int count = 0;
+        targetMap = new HashMap<String, Double>();
         StringBuilder stringBuilder = new StringBuilder();
         if (value.toString().toLowerCase().contains(title.toLowerCase())) {
             return;
@@ -69,13 +70,13 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         String[] fields = value.toString().split(patternStr);
         System.err.println("pattern str is :" + patternStr);
         System.err.println("the fields length is : " + fields.length);
-        System.err.println(value.toString());
+//        System.err.println(value.toString());
 //        if (fields.length != 6) {
 //            return;
 //        }
         DocumentWritable documentWritable = parse2Doc(fields);
         if (documentWritable == null) {
-            System.err.println("source file line is :" + value.toString());
+            System.err.println("parse 2 doc object error , source file line is : \n " + value.toString());
             return;
         }
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
@@ -101,8 +102,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         }
 
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
-        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
-        System.err.println(documentWritable.getDocContent());
+//        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
+//        System.err.println(documentWritable.getDocContent());
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重
