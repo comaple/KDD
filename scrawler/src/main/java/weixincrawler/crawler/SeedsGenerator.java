@@ -8,10 +8,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import weixincrawler.conf.WeixinConfConstant;
@@ -32,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class SeedsGenerator {
     private static final String url = "http://weixin.sogou.com/weixin";
-    private static HttpClient hc = new DefaultHttpClient();
+    private static CloseableHttpClient hc = HttpClients.createDefault();
 
     public static List<String> generatorSeedsFromWords(){
         List<String> seeds = new ArrayList<String>();
@@ -89,7 +93,6 @@ public class SeedsGenerator {
 
     public static String get(String url, List<NameValuePair> params) {
         String body = null;
-        //byte [] body = null;
         try {
             // Get请求
             HttpGet httpget = new HttpGet(url);
@@ -103,18 +106,19 @@ public class SeedsGenerator {
                     "http://weixin.sogou.com/");
             httpget.setHeader("Host",
                     "weixin.sogou.com");
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setSocketTimeout(10000).setConnectTimeout(10000).build();//设置请求和传输超时时间
             // 设置参数
             String str = EntityUtils.toString(new UrlEncodedFormEntity(params, "utf-8"));
             httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
+            httpget.setConfig(requestConfig);
+
             // 发送请求
-            HttpResponse httpresponse = hc.execute(httpget);
+            CloseableHttpResponse httpresponse = hc.execute(httpget);
             // 获取返回数据
             HttpEntity entity = httpresponse.getEntity();
             body = EntityUtils.toString(entity);
-            //body = EntityUtils.toByteArray(entity);
-            if (entity != null) {
-                entity.consumeContent();
-            }
+
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {

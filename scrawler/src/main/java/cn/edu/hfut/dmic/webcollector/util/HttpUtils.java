@@ -44,6 +44,8 @@ public class HttpUtils {
     public static Page fetchHttpResponseWithSize(String url, ConnectionConfig conconfig,int maxsize) throws Exception {
         URL _URL = new URL(url);
         HttpURLConnection con = (HttpURLConnection) _URL.openConnection();
+        con.setConnectTimeout(10000);//设置超时时间
+        con.setReadTimeout(10000);//设置超时时间
         con.setDoInput(true);
         con.setDoOutput(true);
         if (conconfig != null) {

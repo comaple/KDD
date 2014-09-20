@@ -83,7 +83,7 @@ public abstract class Extractor {
         for(Filter filter : filterList) {
             flag = filter.filter(article);
             if (!flag) {
-                Log.Infos("extraterror", "extrat failure :" + page.url);
+                //Log.Infos("extraterror", "extrat failure :" + page.url);
                 conDiscardUrls.add(page.url);
                 return null;
             }

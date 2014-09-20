@@ -16,14 +16,13 @@ public class ContentFilter implements Filter {
     @Override
     public boolean filter(Article article) {
         if (article == null)  return false;
-        if (article.title == null || "".equals(article.title)) {
+        if (article.title == null || "".equals(article.title)
+                || article.publishDate == null || article.context == null) {
+            Log.Infos("extraterror","extrat failure,some attr is null:" + article.url);
             return false;
         }
         if (article.context == null || article.context.length() < CONTENT_LENGTH) {
-            return false;
-        }
-
-        if(article == null || article.publishDate == null || article.context == null){
+            Log.Infos("extraterror","extrat context too small:" + article.url);
             return false;
         }
 
