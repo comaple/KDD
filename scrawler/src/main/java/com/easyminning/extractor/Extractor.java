@@ -36,7 +36,8 @@ public abstract class Extractor {
             return null;
         }
         //判断是否是文章页，是文章页才需要获取正文
-        if(!isArticlePage(page.url)){
+        String articleFlag = isArticlePage(page.url);
+        if(articleFlag.equals("0")){
             return null;
         }
 
@@ -78,12 +79,12 @@ public abstract class Extractor {
                 pageExtrators.put(comPath, extractor);
             }
         }
+        article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例
 
         boolean flag = true;
         for(Filter filter : filterList) {
             flag = filter.filter(article);
             if (!flag) {
-                //Log.Infos("extraterror", "extrat failure :" + page.url);
                 conDiscardUrls.add(page.url);
                 return null;
             }
@@ -124,16 +125,29 @@ public abstract class Extractor {
         return templateReg;
     }
 
-    public static boolean isArticlePage(String url){
-        boolean isArticle = false;
+    //返回值 0:非主题页，1:新闻资讯文章，2:案例
+    public static String isArticlePage(String url){
+        String articleFlag = "0";
+        Pattern p = null;
+        Matcher m = null;
         for (String topicRegx : ConfLoader.topicRegexSet){
-            Pattern p = Pattern.compile(topicRegx);
-            Matcher m = p.matcher(url);
+            p = Pattern.compile(topicRegx);
+            m = p.matcher(url);
             if(m.find()){
-                isArticle = true;
+                articleFlag = "1";
                 break;
             }
         }
-        return isArticle;
+        if(articleFlag.equals("0")){
+            for (String topicRegx : ConfLoader.caseTopicRegexSet){
+                p = Pattern.compile(topicRegx);
+                m = p.matcher(url);
+                if(m.find()){
+                    articleFlag = "2";
+                    break;
+                }
+            }
+        }
+        return articleFlag;
     }
 }
