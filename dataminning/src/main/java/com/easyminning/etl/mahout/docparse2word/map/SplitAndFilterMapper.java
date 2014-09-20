@@ -104,13 +104,13 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
                 targetMap.put(word, targetMap.get(word) + 1d);
             } else {
                 targetMap.put(word, 1d);
+                stringBuilder.append(word + " ");
             }
-            stringBuilder.append(word + " ");
         }
 
         //权重归一化处理
         for (String word : targetMap.keySet()) {
-            targetMap.put(word, targetMap.get(word) / count);
+            targetMap.put(word, targetMap.get(word));
         }
 
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
