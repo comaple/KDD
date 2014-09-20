@@ -50,6 +50,8 @@ public class Doc2WordAndFilterJob extends AbstractJob {
         Boolean scrawler = Boolean.parseBoolean(getOption(isScrawler));
         System.out.println(getOption(isScrawler));
         System.out.println(String.format(" ------ the scrawler u pass is : %s", scrawler));
+        // 写入版本信息
+        VersionStampService.getInstance().genUnFinshedVersionStamp();
         int res = 0;
         if (scrawler) {
             Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
@@ -60,8 +62,7 @@ public class Doc2WordAndFilterJob extends AbstractJob {
             Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
             res = combineJob_1.waitForCompletion(true) == true ? 0 : -1;
         }
-        // 写入版本信息
-        VersionStampService.getInstance().genUnFinshedVersionStamp();
+
         return res;
 
     }
