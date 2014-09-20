@@ -34,6 +34,7 @@ public class DateFilter implements Filter {
 
         Date publishDate = DateUtil.createDate(article.publishDate, formats);
         if(null == publishDate){
+            Log.Infos("extraterror","extrat failure,publishdate is unvalid string:" + article.url);
             return false;
         }
 
@@ -46,6 +47,7 @@ public class DateFilter implements Filter {
 
         //不在时间范围内的文章过滤掉
         if(nowD.compareTo(publishDate) < 0 || endD.compareTo(publishDate) > 0){
+            Log.Infos("extraterror","extrat failure,publishdate is too long:" + article.url);
             return false;
         }
         article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");

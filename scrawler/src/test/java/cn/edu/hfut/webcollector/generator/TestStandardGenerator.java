@@ -11,6 +11,7 @@ import cn.edu.hfut.dmic.webcollector.generator.StandardGenerator;
 import cn.edu.hfut.dmic.webcollector.model.CrawlDatum;
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,8 +19,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.easyminning.conf.ConfConstant;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import weixincrawler.crawler.SeedsGenerator;
 
 /**
  *
@@ -82,8 +92,25 @@ public class TestStandardGenerator {
         conDiscardUrls.add("b");
         conDiscardUrls.add("c");
         System.out.println(discardUrls);
+
+
+
     }
     
-    
+    @Test
+    public void test1() throws Exception{
+
+        HttpClient hc = new DefaultHttpClient();
+        HttpGet httpget = new HttpGet("http://bbs.gter.net/thread-1772302-1-1.html");
+        // 设置参数
+        String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
+        httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
+        // 发送请求
+        HttpResponse httpresponse = hc.execute(httpget);
+        // 获取返回数据
+        HttpEntity entity = httpresponse.getEntity();
+        String body = EntityUtils.toString(entity);
+        System.out.println(body);
+    }
    
 }
