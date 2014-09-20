@@ -45,14 +45,14 @@ public class TemplateExtractor extends Extractor {
         Matcher m = p.matcher(html);
         if(m.find()){
             String authorHtml = m.group();
-            article.author = authorHtml.replaceAll("<.*?>","").trim();
+            article.author = authorHtml.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         }
         //发布时间
         p = Pattern.compile(templateRex.get(ConfConstant.PUBLISHDATE));
         m = p.matcher(html);
         if(m.find()){
             String dateHtml = m.group();
-            article.publishDate = dateHtml.replaceAll("<.*?>","").trim();
+            article.publishDate = dateHtml.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
         }
         //标题
         p = Pattern.compile(templateRex.get(ConfConstant.TITLE));

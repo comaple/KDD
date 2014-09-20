@@ -15,10 +15,10 @@ import cn.edu.hfut.dmic.webcollector.util.Task;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.extractor.Extractor;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumReader;
@@ -35,6 +35,10 @@ public class DbUpdater extends Task{
     public DbUpdater(String crawl_path){
         this.crawl_path=crawl_path;
     }
+    /*private HashSet<String> discardUrls = new HashSet<String>();
+    public Set<String> getDiscardUrls(){
+        return Collections.synchronizedSet(discardUrls);
+    }*/
     
     public static  void backup(String backuppath) throws IOException {
         File oldfile = new File(backuppath, Config.old_info_path);
@@ -114,6 +118,9 @@ public class DbUpdater extends Task{
         while(reader.hasNext()){
             crawldatum=reader.readNext();
             String url=crawldatum.url;
+            if(Extractor.discardUrls.contains(url)){
+                continue;//如果已经发现这个url文章是过久的，已经废弃的，这不再加入到序列化文件中
+            }
             if(indexmap.containsKey(crawldatum.url)){
                 int preindex=indexmap.get(url);
                 CrawlDatum pre_datum=origin_datums.get(preindex);
@@ -145,7 +152,7 @@ public class DbUpdater extends Task{
        
         reader.close();
         updateAll(origin_datums);
-
+        Extractor.discardUrls.clear();//每次合并完成后清除
     }
     
 }
