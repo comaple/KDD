@@ -15,6 +15,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         //初始化配置文件读取程序
         stepSeedCache = new StepSeedCache();
         stepSeedCache.init();
-        targetMap = new HashMap<String, Double>();
+
     }
 
     /**
@@ -60,6 +61,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         int count = 0;
+        targetMap = new HashMap<String, Double>();
         StringBuilder stringBuilder = new StringBuilder();
         if (value.toString().toLowerCase().contains(title.toLowerCase())) {
             return;
@@ -68,11 +70,15 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         String[] fields = value.toString().split(patternStr);
         System.err.println("pattern str is :" + patternStr);
         System.err.println("the fields length is : " + fields.length);
-        System.err.println(value.toString());
+//        System.err.println(value.toString());
 //        if (fields.length != 6) {
 //            return;
 //        }
         DocumentWritable documentWritable = parse2Doc(fields);
+        if (documentWritable == null) {
+            System.err.println("parse 2 doc object error , source file line is : \n " + value.toString());
+            return;
+        }
         StringReader reader = new StringReader(documentWritable.getDocContent().toString());
         IKSegmenter segmenter = new IKSegmenter(reader, true);
         // 分词并记录 count 总数，计算word权重
@@ -96,8 +102,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         }
 
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
-        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
-        System.err.println(documentWritable.getDocContent());
+//        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
+//        System.err.println(documentWritable.getDocContent());
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重
@@ -122,23 +128,30 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
      * @return
      */
     private DocumentWritable parse2Doc(String[] fields) {
-        DocumentWritable documentWritable = new DocumentWritable();
-        documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
-        documentWritable.setTitle(new Text(fields[0]));
-        documentWritable.setKeyWord(new Text(""));
-        documentWritable.setSummary(new Text(""));
-        documentWritable.setDocContent(new Text(fields[4]));
-        documentWritable.setSourceContent(new Text(fields[5]));
-        documentWritable.setUrl(new Text(fields[2]));
-        documentWritable.setIssue(new Text(fields[1]));
-        documentWritable.setAuthor(new Text(fields[3]));
-        if (fields.length>6) {
-            documentWritable.setType(new Text(fields[6]));
+        try {
+            DocumentWritable documentWritable = new DocumentWritable();
+            documentWritable.setDocId(new Text(UUID.randomUUID().toString()));
+            documentWritable.setTitle(new Text(fields[0]));
+            documentWritable.setKeyWord(new Text(""));
+            documentWritable.setSummary(new Text(""));
+            documentWritable.setDocContent(new Text(fields[4]));
+            documentWritable.setSourceContent(new Text(fields[5]));
+            documentWritable.setUrl(new Text(fields[2]));
+            documentWritable.setIssue(new Text(fields[1]));
+            documentWritable.setAuthor(new Text(fields[3]));
+            if (fields.length > 6) {
+                documentWritable.setType(new Text(fields[6]));
+            }
+            if (fields.length > 7) {
+                documentWritable.setScrawDate(new Text(fields[7]));
+            }
+            return documentWritable;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(fields));
+            return null;
         }
-        if (fields.length>7) {
-            documentWritable.setScrawDate(new Text(fields[6]));
-        }
-        return documentWritable;
     }
 
     //ik分词器

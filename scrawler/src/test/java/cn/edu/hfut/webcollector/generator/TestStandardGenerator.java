@@ -13,9 +13,7 @@ import cn.edu.hfut.dmic.webcollector.model.Page;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +75,13 @@ public class TestStandardGenerator {
         if(m.find()){
             System.out.println(m.group());
         }
+
+        HashSet<String> discardUrls = new HashSet<String>();
+        Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
+        conDiscardUrls.add("a");
+        conDiscardUrls.add("b");
+        conDiscardUrls.add("c");
+        System.out.println(discardUrls);
     }
     
     

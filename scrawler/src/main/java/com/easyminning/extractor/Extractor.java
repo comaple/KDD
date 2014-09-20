@@ -5,6 +5,7 @@ import cn.edu.hfut.dmic.webcollector.util.Log;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.mongodbclient2.util.DateUtil;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -26,6 +27,9 @@ public abstract class Extractor {
             "MMMddyyyy"};
     public static int ARTICLENUM = 0;
     private static final int MINARTICLEWORDNUM = 50;
+
+    public static HashSet<String> discardUrls = new HashSet<String>();
+    private static Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
 
     public abstract Article extractArticle(Page page);
 
@@ -78,16 +82,19 @@ public abstract class Extractor {
         }
         if(article == null || article.publishDate == null || article.context == null){
             Log.Infos("extraterror","extrat failure,some attr is null:" + page.url);
+            conDiscardUrls.add(page.url);
             return null;
         }
         if(article.context.length() <= MINARTICLEWORDNUM){
             Log.Infos("extraterror","extrat context too small:" + page.url);
+            conDiscardUrls.add(page.url);
             return null;
         }
         if(article.publishDate != null){
             Date publishDate = DateUtil.createDate(article.publishDate,formats);
             if(null == publishDate){
                 Log.Infos("extraterror","extrat failure,publishdate is unvalid string:" + page.url);
+                conDiscardUrls.add(page.url);
                 return null;
             }
             int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN,"3"));
@@ -101,6 +108,7 @@ public abstract class Extractor {
             if(nowD.compareTo(publishDate) < 0 ||
                     endD.compareTo(publishDate) > 0){
                 Log.Infos("extraterror","extrat failure,publishdate is too long:" + page.url);
+                conDiscardUrls.add(page.url);
                 return null;
             }
             article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");
