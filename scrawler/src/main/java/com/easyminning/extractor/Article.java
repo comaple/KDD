@@ -10,6 +10,6 @@ public class Article {
     public String publishDate;
     public String url;
     public String author;
-    public String type; // 文章类型
+    public String type; // 文章类型,1,新闻，其它，2,案例
     public String scrawDate; // 抓取时间
 }

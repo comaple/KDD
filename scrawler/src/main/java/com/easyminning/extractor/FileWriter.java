@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -21,6 +23,11 @@ import java.util.concurrent.LinkedBlockingDeque;
  * To change this template use File | Settings | File Templates.
  */
 public class FileWriter  implements Runnable {
+
+
+    private static List<Filter> filterList = new ArrayList<Filter>(){{
+        add(new ContentFilter());
+    }};
 
     // 标题,发布时间,url,作者，抽取正文，原文
     private static String FILE_HEAD = "title||==||publishDate||==||url||==||author||==||context||==||contextWithTag||==||type";
@@ -77,9 +84,16 @@ public class FileWriter  implements Runnable {
 
     @Override
     public void run() {
+        boolean flag = true;
         while (true) {
             try {
                 Article article = ARTICLE_QUEUE.take();
+
+                for(Filter filter : filterList) {
+                    flag = filter.filter(article);
+                    if (!flag) continue;
+                }
+
                 this.writeLine(article);
             } catch (Exception e) {
                 e.printStackTrace();
