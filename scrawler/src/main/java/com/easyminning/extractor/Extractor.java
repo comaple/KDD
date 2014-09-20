@@ -18,20 +18,13 @@ public abstract class Extractor {
 
     private static List<Filter> filterList = new ArrayList<Filter>(){{
         add(new ContentFilter());
+        add(new DateFilter());
     }};
 
     //页面html的前缀 对应的 抽取器
     public static HashMap<String,Extractor> pageExtrators = new HashMap<String,Extractor>();
-    public static String []formats = {"yyyy年MM月dd日",
-            "yyyy/MM/dd",
-            "yyyy-MM-dd",
-            "yyyy\\MM\\dd",
-            "yyyy MM dd",
-            "dd MMM yyyy",
-            "E,dd MMM yyyy",
-            "MMMddyyyy"};
+
     public static int ARTICLENUM = 0;
-    private static final int MINARTICLEWORDNUM = 50;
 
     public static HashSet<String> discardUrls = new HashSet<String>();
     private static Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
@@ -89,57 +82,19 @@ public abstract class Extractor {
         boolean flag = true;
         for(Filter filter : filterList) {
             flag = filter.filter(article);
-            if (!flag) return null;
-        }
-
-        if(article == null || article.publishDate == null || article.context == null){
-            Log.Infos("extraterror","extrat failure,some attr is null:" + page.url);
-            conDiscardUrls.add(page.url);
-            return null;
-        }
-        if(article.context.length() <= MINARTICLEWORDNUM){
-            Log.Infos("extraterror","extrat context too small:" + page.url);
-            conDiscardUrls.add(page.url);
-            return null;
-        }
-        if(article.publishDate != null){
-            Date publishDate = DateUtil.createDate(article.publishDate,formats);
-            if(null == publishDate){
-                Log.Infos("extraterror","extrat failure,publishdate is unvalid string:" + page.url);
+            if (!flag) {
+                Log.Infos("extraterror", "extrat failure :" + page.url);
                 conDiscardUrls.add(page.url);
                 return null;
             }
-            int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN,"3"));
-            Calendar now = Calendar.getInstance();
-            Calendar end = Calendar.getInstance();
-            end.add(Calendar.DATE,-span);
-            Date nowD = DateUtil.formatToDate(now.getTime(),"yyyy-MM-dd");
-            Date endD = DateUtil.formatToDate(end.getTime(),"yyyy-MM-dd");
-
-            //不在时间范围内的文章过滤掉
-            if(nowD.compareTo(publishDate) < 0 ||
-                    endD.compareTo(publishDate) > 0){
-                Log.Infos("extraterror","extrat failure,publishdate is too long:" + page.url);
-                conDiscardUrls.add(page.url);
-                return null;
-            }
-            article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");
-        }
-        if(article.context != null && !article.context.equals("")){
-            ARTICLENUM++;
-            FileWriter.getInstance().writeArticle(article);
-            Log.Infos("info","article url:" + article.url);
-            Log.Infos("info","article title:" + article.title);
-            Log.Infos("info","article publishdate:" + article.publishDate);
-            Log.Infos("info","article part content:" + article.context.substring(0,30) + "...");
         }
 
-        /*System.out.println("----------------标题-----------------");
-        System.out.println(article.title);
-        System.out.println("----------------发布时间-----------------");
-        System.out.println(article.publishDate);
-        System.out.println("----------------内容-----------------");
-        System.out.println(article.context);*/
+        ARTICLENUM++;
+        FileWriter.getInstance().writeArticle(article);
+        Log.Infos("info","article url:" + article.url);
+        Log.Infos("info","article title:" + article.title);
+        Log.Infos("info","article publishdate:" + article.publishDate);
+        Log.Infos("info","article part content:" + article.context.substring(0,30) + "...");
         return article;
     }
 

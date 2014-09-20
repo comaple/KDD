@@ -1,5 +1,7 @@
 package com.easyminning.extractor;
 
+import cn.edu.hfut.dmic.webcollector.util.Log;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xdx
@@ -9,16 +11,23 @@ package com.easyminning.extractor;
  */
 public class ContentFilter implements Filter {
 
+    private static int CONTENT_LENGTH = 200;
+
     @Override
     public boolean filter(Article article) {
         if (article == null)  return false;
         if (article.title == null || "".equals(article.title)) {
             return false;
         }
-        if (article.context == null || article.context.length() < 200) {
+        if (article.context == null || article.context.length() < CONTENT_LENGTH) {
             return false;
         }
-        return false;
+
+        if(article == null || article.publishDate == null || article.context == null){
+            return false;
+        }
+
+        return true;
     }
 
 }
