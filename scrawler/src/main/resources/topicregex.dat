@@ -1,3 +1,5 @@
+########留学资讯，新闻，其他的文章页正则########
+
 http://edu.sina.com.cn/a/\d{4}-\d{2}-\d{2}/\d{10}.shtml
 
 http://goabroad.sohu.com/201\d{5}/n\d{9}.shtml

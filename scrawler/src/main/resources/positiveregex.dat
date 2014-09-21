@@ -101,3 +101,14 @@ http://www.goabroad.com/blog/writer-contest/
 
 http://blog.aifsabroad.com/journals/
 http://blog.aifsabroad.com/(alumnus|\d{4}/\d{2}/\d{2})/(\w{1,15}-\w{1,15})+/
+
+########以上的是留学资讯，其他，以下的是留学案例########
+
+http://www.eic.org.cn/case/
+http://www.eic.org.cn/[a-z]{2,5}_case/\d{14}.html
+
+http://www.igo.cn/2010/case/cgal/
+http://www.igo.cn/2010/case/cgal/hwsx/[a-z]{2,8}/20\d{2}/\d{2}/\d{2}/\d{5}.shtml
+
+http://liuxue.eastday.com/anli.html
+http://liuxue.eastday.com/NewsDetail-\d{6}-0.html

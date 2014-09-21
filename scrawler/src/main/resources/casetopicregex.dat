@@ -1,0 +1,7 @@
+########留学案例的文章页正则########
+
+http://www.eic.org.cn/[a-z]{2,5}_case/\d{14}.html
+
+http://www.igo.cn/2010/case/cgal/hwsx/[a-z]{2,8}/20\d{2}/\d{2}/\d{2}/\d{5}.shtml
+
+http://liuxue.eastday.com/NewsDetail-\d{6}-0.html

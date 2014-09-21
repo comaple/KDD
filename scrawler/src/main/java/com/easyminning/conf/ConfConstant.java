@@ -6,6 +6,7 @@ package com.easyminning.conf;
 public class ConfConstant {
     public static final String ObjectSplit = ";;;"; //配置文件中一个对象的分隔符
     public static final String TemplateSplit = "%%%"; //模板配置中正则和模板文件的分隔符
+    public static final String CommentFlag = "#";//dat文件的注释的标识
 
 
     public static final String CRAWLDBPATH = "crawldbpath";
@@ -23,6 +24,7 @@ public class ConfConstant {
     public static final String POSITIVEREGEX = "positiveregex";
     public static final String NEGATIVEREGEX = "negativeregex";
     public static final String TOPICREGEX = "topicregex";
+    public static final String CASETOPICREGEX = "casetopicregex";
     public static final String TEMPLATES = "templates";
     public static final String TOPN = "topN";
     public static final String INTERVAL = "interval";

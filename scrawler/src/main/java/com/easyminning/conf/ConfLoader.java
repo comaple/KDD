@@ -21,8 +21,10 @@ public class ConfLoader {
     public static HashSet<String> positiveRegexSet = new HashSet<String>();
     public static HashSet<String> negativeRegexSet = new HashSet<String>();
     public static HashSet<String> topicRegexSet = new HashSet<String>();
+    public static HashSet<String> caseTopicRegexSet = new HashSet<String>();
     //<使用模板的url正则,模板文件>
     public static HashMap<String,HashMap<String,String>> templateMap = new HashMap<String, HashMap<String,String>>();
+    public static HashMap<String,Integer> urlTimeSpanMap = new HashMap<String, Integer>();
 
     public static PropertiesConfiguration prop = null;
 
@@ -57,11 +59,21 @@ public class ConfLoader {
             positiveRegexSet = analyzeConf(ConfConstant.POSITIVEREGEX, ConfConstant.ObjectSplit, prop, positiveRegexSet);
             negativeRegexSet = analyzeConf(ConfConstant.NEGATIVEREGEX, ConfConstant.ObjectSplit, prop, negativeRegexSet);
             topicRegexSet = analyzeConf(ConfConstant.TOPICREGEX, ConfConstant.ObjectSplit, prop, topicRegexSet);
+            caseTopicRegexSet = analyzeConf(ConfConstant.CASETOPICREGEX, ConfConstant.ObjectSplit, prop, caseTopicRegexSet);
 
+            Integer defaultTimeSpan = Integer.parseInt(getProperty(ConfConstant.TIMESPAN, "30"));
             HashSet<String> templateSet = new HashSet<String>();
             templateSet = analyzeConf(ConfConstant.TEMPLATES, ConfConstant.ObjectSplit, prop, templateSet);
             for (String template : templateSet) {
                 String[] regFiles = template.split(ConfConstant.TemplateSplit);
+                if(regFiles.length <= 1){
+                    continue;
+                }else if(regFiles.length == 2){
+                    urlTimeSpanMap.put(regFiles[0],defaultTimeSpan);
+                }else if(regFiles.length == 3){
+                    urlTimeSpanMap.put(regFiles[0],Integer.parseInt(regFiles[2]));
+                }
+
                 InputStream inputStream = ConfLoader.class.getClassLoader().getResourceAsStream(regFiles[1]);
                 if (inputStream == null) {
                     Log.Infos("info", "file:" + regFiles[1] + " not exists");
@@ -100,6 +112,9 @@ public class ConfLoader {
                 }
                 List<String> confs = FileUtils.readLines(file);
                 for(String conf : confs){
+                    if(conf.startsWith(ConfConstant.CommentFlag)){//去掉注释
+                        continue;
+                    }
                     if(!conf.trim().equals("")) {
                         propSet.add(conf.trim());
                     }
