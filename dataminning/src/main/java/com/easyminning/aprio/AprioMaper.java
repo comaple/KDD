@@ -31,19 +31,33 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
         for (String word : words) {
 
             //
-            if (!lineWordsMap.keySet().contains(word)) {
-                lineWordsMap.put(word,1.0D);
-               if (!oneItemMap.containsKey(word)) {
-                   oneItemMap.put(word, 1.0);
-               } else {
-                   oneItemMap.put(word, oneItemMap.get(word)+1.0);
-               }
+//            if (!lineWordsMap.keySet().contains(word)) {
+//                lineWordsMap.put(word,1.0D);
+//            } else {
+//                lineWordsMap.put(word, lineWordsMap.get(word)+1.0D);
+//            }
+            lineWordsMap.put(word,1.0D);
+        }
 
-            //
-            } else {
-                lineWordsMap.put(word, lineWordsMap.get(word)+1.0D);
+
+        // 根据一项集构造二项集
+        Set<String> oneItemSet = lineWordsMap.keySet();
+        String[] oneItemArray = oneItemSet.toArray(new String[0]);
+
+        // 构造二项集
+        for (String oneItemWord : oneItemSet) {
+            for (String word: oneItemArray) {
+                if (oneItemWord.trim().equals(word.trim()))continue;
+                TagTagWritable tagTag= new TagTagWritable();
+                tagTag.setTagItem(new Text(oneItemWord));
+                tagTag.setTagItem1(new Text(word));
+                tagTag.setWeight(new DoubleWritable(1.0));
+                context.write(tagTag,new DoubleWritable(1.0D));
             }
         }
+
+        // 清空
+      //  oneItemMap.clear();
 
 
     }
@@ -55,37 +69,37 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
 
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        Set<String> oneItemSet = oneItemMap.keySet();
-        String[] oneItemArray = oneItemSet.toArray(new String[0]);
-
-        Map<TagTagWritable,NullWritable> writableMap = new HashMap<TagTagWritable, NullWritable>();
-
-        // 构造二项集
-        for (String key : oneItemSet) {
-            for (String word: oneItemArray) {
-                TagTagWritable tagTag= new TagTagWritable();
-                tagTag.setTagItem(new Text(key));
-                tagTag.setTagItem1(new Text(word));
-                tagTag.setWeight(new DoubleWritable(1.0));
-                writableMap.put(tagTag, NullWritable.get());
-            }
-        }
-
-        // 遍历数据库
-        for (Map lineWordMap: lineWordsMapList) {
-            Set<String> keySet = lineWordMap.keySet();
-
-            // 遍历相关二项集
-            for (TagTagWritable tag : writableMap.keySet()) {
-                if (keySet.contains(tag.getTagItem()) && keySet.contains(tag.getTagItem1())) {
-                    tag.setWeight(new DoubleWritable(tag.getWeight().get()+1.0));
-                }
-            }
-        }
-
-        for (TagTagWritable temp : writableMap.keySet())  {
-            context.write(temp,temp.getWeight());
-        }
+//        Set<String> oneItemSet = oneItemMap.keySet();
+//        String[] oneItemArray = oneItemSet.toArray(new String[0]);
+//
+//        Map<TagTagWritable,NullWritable> writableMap = new HashMap<TagTagWritable, NullWritable>();
+//
+//        // 构造二项集
+//        for (String key : oneItemSet) {
+//            for (String word: oneItemArray) {
+//                TagTagWritable tagTag= new TagTagWritable();
+//                tagTag.setTagItem(new Text(key));
+//                tagTag.setTagItem1(new Text(word));
+//                tagTag.setWeight(new DoubleWritable(1.0));
+//                writableMap.put(tagTag, NullWritable.get());
+//            }
+//        }
+//
+//        // 遍历数据库
+//        for (Map lineWordMap: lineWordsMapList) {
+//            Set<String> keySet = lineWordMap.keySet();
+//
+//            // 遍历相关二项集
+//            for (TagTagWritable tag : writableMap.keySet()) {
+//                if (keySet.contains(tag.getTagItem()) && keySet.contains(tag.getTagItem1())) {
+//                    tag.setWeight(new DoubleWritable(tag.getWeight().get()+1.0));
+//                }
+//            }
+//        }
+//
+//        for (TagTagWritable temp : writableMap.keySet())  {
+//            context.write(temp,temp.getWeight());
+//        }
 
         super.cleanup(context);
     }
