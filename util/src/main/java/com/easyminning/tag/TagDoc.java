@@ -52,9 +52,11 @@ public class TagDoc extends BaseModel implements Comparable {
         }
         Double res = this.getWeight() - other.getWeight();
         if (res > 0) {
-            return 1;
-        } else {
             return -1;
+        } else if (res == 0) {
+            return 0;
+        } else {
+            return 1;
         }
 
 
