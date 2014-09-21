@@ -105,9 +105,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
                 targetMap.put(word, targetMap.get(word) + 1d);
             } else {
                 targetMap.put(word, 1d);
-                if (TagCache.contain(word)) {
+               // if (TagCache.contain(word)) {
                     stringBuilder.append(word + " ");
-                }
+               // }
             }
         }
 
