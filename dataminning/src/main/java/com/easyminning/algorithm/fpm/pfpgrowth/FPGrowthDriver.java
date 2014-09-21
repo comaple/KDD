@@ -134,7 +134,7 @@ public final class FPGrowthDriver extends AbstractJob {
     } else if ("mapreduce".equalsIgnoreCase(classificationMethod)) {
       Configuration conf = new Configuration();
       HadoopUtil.delete(conf, outputDir);
-      com.easyminning.algorithm.fpm.pfpgrowth.PFPGrowth.runPFPGrowth(params);
+      com.easyminning.algorithm.fpm.pfpgrowth.PFPGrowth.runPFPGrowth(params,getConf());
     }
 
     return 0;

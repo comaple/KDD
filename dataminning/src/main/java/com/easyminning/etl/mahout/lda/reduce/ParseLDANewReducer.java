@@ -54,7 +54,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         if (topicWeights == null || topicWeights.length != k) {
             return;
         }
-        List<TagDoc> wordWeightModels = new LinkedList<TagDoc>();
+        Map<String, TagDoc> wordWeightModels = new HashMap<String, TagDoc>();
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String topic : topicWeights) {
@@ -69,16 +69,20 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
                     continue;
                 }
                 TagDoc model = new TagDoc(docname, k, words.get(k) * Double.parseDouble(topicKV[1]));
-                wordWeightModels.add(model);
-//                stringBuilder.append(k + ",");
+                if (wordWeightModels.containsKey(k)) {
+                    model.setWeight(model.getWeight() + wordWeightModels.get(k).getWeight());
+                }
+                wordWeightModels.put(k, model);
             }
         }
+        List<TagDoc> list = new ArrayList();
+        list.addAll(wordWeightModels.values());
 
-        Collections.sort(wordWeightModels);
+        Collections.sort(list);
 
         int index = 0;
         //插入mongodb
-        for (TagDoc tagDoc : wordWeightModels) {
+        for (TagDoc tagDoc : list) {
             if (index > topN) {
                 break;
             }
@@ -89,5 +93,13 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
         String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
         context.write(new Text(content), NullWritable.get());
 
+    }
+
+    public static void main(String[] args) {
+        List<TagDoc> wordWeightModels = new LinkedList<TagDoc>();
+        wordWeightModels.add(new TagDoc("S", "DSF", 2d));
+        wordWeightModels.add(new TagDoc("S", "DSasdf", 3d));
+        Collections.sort(wordWeightModels);
+        System.out.println(wordWeightModels);
     }
 }
