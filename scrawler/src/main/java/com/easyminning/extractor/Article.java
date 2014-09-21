@@ -12,4 +12,9 @@ public class Article {
     public String author;
     public String type; // 文章类型,1,新闻，其它，2,案例
     public String scrawDate; // 抓取时间
+
+
+    public static void main(String[] args) {
+        System.out.println("ÔÚÏ¤ÄáµÄÖÐ¹úÁôÑ§Éú ¿ÉÒÔÔÚ°ÄÖÞ¾³ÄÚÇ©Ö¤È¥ÆäËû¹ú¼ÒÂÃÓÎÂð£¿£¨ÀýÈç º«¹ú ÈÕ±¾ ÃÀ¹úµÈ£©Ð»Ð»£¡".length());
+    }
 }
