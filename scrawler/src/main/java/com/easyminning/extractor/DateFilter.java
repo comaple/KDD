@@ -7,6 +7,8 @@ import com.easyminning.mongodbclient2.util.DateUtil;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +40,7 @@ public class DateFilter implements Filter {
             return false;
         }
 
-        int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN, "3"));
+        int span = getUrlTimeSpan(article.url);
         Calendar now = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         end.add(Calendar.DATE,-span);
@@ -52,5 +54,19 @@ public class DateFilter implements Filter {
         }
         article.publishDate = DateUtil.format(publishDate,"yyyy-MM-dd HH:mm:ss");
         return true;
+    }
+
+    //获取某个主题下的时间长度
+    private static int getUrlTimeSpan(String url){
+        int span = Integer.parseInt(ConfLoader.getProperty(ConfConstant.TIMESPAN, "30"));
+        for (String topicRegx : ConfLoader.urlTimeSpanMap.keySet()){
+            Pattern p = Pattern.compile(topicRegx);
+            Matcher m = p.matcher(url);
+            if(m.find()){
+                span = ConfLoader.urlTimeSpanMap.get(topicRegx);
+                break;
+            }
+        }
+        return span;
     }
 }

@@ -35,7 +35,8 @@ public abstract class WeixinExtractor extends Extractor{
             return null;
         }
         //判断是否是文章页，是文章页才需要获取正文
-        if(!isArticlePage(page.url)){
+        String articleFlag = isArticlePage(page.url);
+        if(articleFlag.equals("0")){
             return null;
         }
 
@@ -57,6 +58,8 @@ public abstract class WeixinExtractor extends Extractor{
             article = extractor.extractArticle(page);
             extractor = null;
         }
+        article.type = articleFlag;
+
         if(article == null || article.publishDate == null || article.context == null){
             Log.Infos("extraterror","extrat failure,some attr is null:" + page.url);
             return null;
@@ -69,23 +72,16 @@ public abstract class WeixinExtractor extends Extractor{
             Log.Infos("info","article publishdate:" + article.publishDate);
             Log.Infos("info","article part content:" + article.context.substring(0,30) + "...");
         }
-
-        /*System.out.println("----------------标题-----------------");
-        System.out.println(article.title);
-        System.out.println("----------------发布时间-----------------");
-        System.out.println(article.publishDate);
-        System.out.println("----------------内容-----------------");
-        System.out.println(article.context);*/
         return article;
     }
 
-    public static boolean isArticlePage(String url){
-        boolean isArticle = false;
+    public static String isArticlePage(String url){
+        String articleFlag = "0";
         String topicReg = WeixinConfLoader.getProperty(ConfConstant.TOPICREGEX,"http://mp.weixin.qq.com/mp/appmsg/show\\?.*?");
         if(Pattern.matches(topicReg,url)){
-            isArticle = true;
+            articleFlag = "1";
         }
-        return isArticle;
+        return articleFlag;
     }
 
     public static HashMap<String,String> getTemplates(){
