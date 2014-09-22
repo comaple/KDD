@@ -117,7 +117,7 @@ public class TagTagWritable implements WritableComparable {
         tagTagWritable2.setTagItem(new Text("句子"));
         tagTagWritable2.setTagItem1(new Text("答案"));
 
-        System.out.println(tagTagWritable.compareTo(tagTagWritable2) );
+        System.out.println(tagTagWritable.equals(tagTagWritable2) );
 
 
 

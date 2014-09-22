@@ -15,9 +15,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/9/6.
  */
-public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,Text,NullWritable> {
+public class AprioReducer extends Reducer<Text,DoubleWritable,Text,NullWritable> {
 
     List<TagTag> tagTagList = new ArrayList<TagTag>();
+
+    private static double MIN_SUPPORT = 5.0;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
@@ -25,24 +27,21 @@ public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,Text,Nul
     }
 
     @Override
-    protected void reduce(TagTagWritable key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+    protected void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
         Double sumWeight = 0.0D;
         for (DoubleWritable weight : values) {
             sumWeight = weight.get() +sumWeight;
         }
 
+        if (sumWeight <= MIN_SUPPORT) return;
+
         TagTag tagTag = new TagTag();
-        tagTag.setTagItem(key.getTagItem().toString());
-        tagTag.setTagItem1(key.getTagItem1().toString());
+        tagTag.setTagItem(key.toString().split(",")[0]);
+        tagTag.setTagItem1(key.toString().split(",")[1]);
         tagTag.setWeight(sumWeight);
 
-        TagTag tagTag1 = new TagTag();
-        tagTag1.setTagItem(key.getTagItem1().toString());
-        tagTag1.setTagItem1(key.getTagItem().toString());
-        tagTag1.setWeight(sumWeight);
         tagTagList.add(tagTag);
-        tagTagList.add(tagTag1);
-        context.write(new Text(key.getTagItem().toString() + ":" +  key.getTagItem1().toString() + ":" +  sumWeight),NullWritable.get());
+        context.write(new Text(key.toString()+ ":" +  sumWeight),NullWritable.get());
        // super.reduce(key, values, context);
     }
 

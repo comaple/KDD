@@ -1,24 +1,31 @@
 package com.easyminning.aprio;
 
-import com.easyminning.etl.mahout.writable.TagTagWritable;
+import com.easyminning.tag.StepTagSimilarity;
+import com.easyminning.tag.VersionStampService;
+import com.easyminning.util.simhash.DuplicateDocFilter;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2014/9/6.
  */
-public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWritable> {
+public class AprioMaper extends Mapper<LongWritable,Text,Text,DoubleWritable> {
 
     // 行单词集合
     public static List<Map<String,Double>> lineWordsMapList = new ArrayList<Map<String,Double>>();
 
-    public static int MAX_WORD_COUNT = 10;
+    public static int MAX_WORD_COUNT = 75;
+
+    Pattern digitPattern = Pattern.compile(".*\\d+.*");
+
+    String filterWord = "一个 我的 可以 事情 情况 得 得人 学生 学校 留学 留学网";
 
     // 一项集支持度
     public static Map<String,Double> oneItemMap = new HashMap<String, Double>();
@@ -33,6 +40,10 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
         int count = 0;
         // 遍历一行的词
         for (String word : words) {
+            if (hasDigit(word)) continue;
+            if (filterWord.contains(word)) continue;
+
+          //  if (word.contains())
 
             //
 //            if (!lineWordsMap.keySet().contains(word)) {
@@ -40,7 +51,7 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
 //            } else {
 //                lineWordsMap.put(word, lineWordsMap.get(word)+1.0D);
 //            }
-            lineWordsMap.put(word,1.0D);
+            lineWordsMap.put(word, 1.0D);
             count++;
             if (count == MAX_WORD_COUNT)break;
         }
@@ -54,11 +65,11 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
         for (String oneItemWord : oneItemSet) {
             for (String word: oneItemArray) {
                 if (oneItemWord.trim().equals(word.trim()))continue;
-                TagTagWritable tagTag= new TagTagWritable();
-                tagTag.setTagItem(new Text(oneItemWord));
-                tagTag.setTagItem1(new Text(word));
-                tagTag.setWeight(new DoubleWritable(1.0));
-                context.write(tagTag,new DoubleWritable(1.0D));
+//                TagTagWritable tagTag= new TagTagWritable();
+//                tagTag.setTagItem(new Text(oneItemWord));
+//                tagTag.setTagItem1(new Text(word));
+//                tagTag.setWeight(new DoubleWritable(1.0));
+                context.write(new Text(oneItemWord+","+word),new DoubleWritable(1.0D));
             }
         }
 
@@ -110,8 +121,26 @@ public class AprioMaper extends Mapper<LongWritable,Text,TagTagWritable,DoubleWr
         super.cleanup(context);
     }
 
+    // 判断一个字符串是否含有数字
+    public boolean hasDigit(String content) {
+        boolean flag = false;
+        Matcher m = digitPattern.matcher(content);
+        if (m.matches())
+            flag = true;
+        return flag;
+
+    }
+
     public static void main(String[] args) {
-        String[] words = "工程,计算机,教育,美国留学,申请,会计,选择,毕业生,多伦多大学,数学,职业,研究,发展,行业,就业前景,市场,工作,新加坡,工程师,精算,企业,平均,成绩,海外,未来,需求量,本科,商科,科学,石油,英国,院校,顾问,滑铁卢大学,起薪,管理,奖学金,提供,课程,旗下,公司,澳大利亚,生物,中介,澳洲,免费,名校,学院,阿尔伯塔大学,西安大略大学,商学院,能力,学习,优秀,国际,中国学生,酒店,专家,mba,化学,联盟,培训,拥有,全球,管理人员,管理学院,中国,分析".toString().split(",",5);
-        System.out.println(words.length);
+        System.out.println("******** 计算步骤和标签相似度************");
+        StepTagSimilarity.getInstance().analysis();
+
+        System.out.println("********** 删除重复文章*************");
+        // 删除重复数据
+        DuplicateDocFilter.filter();
+
+        System.out.println("*********** 更新版本号***********");
+        //  更新版本号为已经完成
+        VersionStampService.getInstance().updateUnFinishedVersion();
     }
 }
