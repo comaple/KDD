@@ -75,8 +75,7 @@ public class TagTagWritable implements WritableComparable {
             return 0;
         }
 
-        return (this.tagItem.toString()+ tagTagWritable.tagItem.toString()).compareTo(
-                tagTagWritable.getTagItem().toString()+ tagTagWritable.getTagItem1().toString());
+        return (this.tagItem).compareTo(tagTagWritable.getTagItem());
     }
 
     @Override
