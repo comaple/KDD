@@ -2,10 +2,7 @@ package com.easyminning.extractor;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import cn.edu.hfut.dmic.webcollector.util.Log;
-import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
-import com.easyminning.mongodbclient2.util.DateUtil;
-import org.apache.commons.lang.time.DateUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -20,6 +17,8 @@ public abstract class Extractor {
         add(new ContentFilter());
         add(new DateFilter());
     }};
+
+    private static Filter caseFilter = new CaseContentFilter();
 
     //页面html的前缀 对应的 抽取器
     public static HashMap<String,Extractor> pageExtrators = new HashMap<String,Extractor>();
@@ -79,7 +78,6 @@ public abstract class Extractor {
                 pageExtrators.put(comPath, extractor);
             }
         }
-        article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例
 
         boolean flag = true;
         for(Filter filter : filterList) {
@@ -89,6 +87,21 @@ public abstract class Extractor {
                 return null;
             }
         }
+
+        if(!articleFlag.equals("1")){//如果不是新闻资讯,做案例过滤
+            flag = caseFilter.filter(article);
+            if (!flag) {
+                if(articleFlag.equals("2")) {//前面判断是案例
+                    conDiscardUrls.add(page.url);
+                    return null;
+                }else if (articleFlag.equals("3")){//前面判断既是案例又是新闻
+                    articleFlag = "1";
+                }
+            }else{
+                articleFlag = "2";
+            }
+        }
+        article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例
 
         ARTICLENUM++;
         FileWriter.getInstance().writeArticle(article);
@@ -125,27 +138,29 @@ public abstract class Extractor {
         return templateReg;
     }
 
-    //返回值 0:非主题页，1:新闻资讯文章，2:案例
+    //返回值 0:非主题页，1:新闻资讯文章，2:案例，3:既匹配新闻又匹配案例
     public static String isArticlePage(String url){
         String articleFlag = "0";
         Pattern p = null;
         Matcher m = null;
+        for (String topicRegx : ConfLoader.caseTopicRegexSet){
+            p = Pattern.compile(topicRegx);
+            m = p.matcher(url);
+            if(m.find()){
+                articleFlag = "2";
+                break;
+            }
+        }
+
         for (String topicRegx : ConfLoader.topicRegexSet){
             p = Pattern.compile(topicRegx);
             m = p.matcher(url);
             if(m.find()){
-                articleFlag = "1";
+                if(articleFlag.equals("2"))
+                    articleFlag = "3";
+                else
+                    articleFlag = "1";
                 break;
-            }
-        }
-        if(articleFlag.equals("0")){
-            for (String topicRegx : ConfLoader.caseTopicRegexSet){
-                p = Pattern.compile(topicRegx);
-                m = p.matcher(url);
-                if(m.find()){
-                    articleFlag = "2";
-                    break;
-                }
             }
         }
         return articleFlag;

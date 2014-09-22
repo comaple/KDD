@@ -5,3 +5,9 @@ http://www.eic.org.cn/[a-z]{2,5}_case/\d{14}.html
 http://www.igo.cn/2010/case/cgal/hwsx/[a-z]{2,8}/20\d{2}/\d{2}/\d{2}/\d{5}.shtml
 
 http://liuxue.eastday.com/NewsDetail-\d{6}-0.html
+
+http://www.bole.me/article/\d{5}.html
+
+http://www.bailitop.com/case_lx/20\d{6}/\d{4}.html
+
+http://www.indexedu.com/20\d{4}/\d{5}.html

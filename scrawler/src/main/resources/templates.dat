@@ -28,3 +28,6 @@ http://blog.aifsabroad.com/(alumnus|\d{4}/\d{2}/\d{2})/(\w{1,15}-\w{1,15})+/%%%a
 http://www.eic.org.cn/[a-z]{2,5}_case/\d{14}.html%%%case_eic.template%%%360
 http://www.igo.cn/2010/case/cgal/hwsx/[a-z]{2,8}/20\d{2}/\d{2}/\d{2}/\d{5}.shtml%%%case_igo.template%%%360
 http://liuxue.eastday.com/NewsDetail-\d{6}-0.html%%%case_liuxueeastday.template%%%360
+http://www.bole.me/article/\d{5}.html%%%case_bole.template%%%360
+http://www.bailitop.com/case_lx/20\d{6}/\d{4}.html%%%case_bailitop.template%%%360
+http://www.indexedu.com/20\d{4}/\d{5}.html%%%case_indexedu.template%%%360
