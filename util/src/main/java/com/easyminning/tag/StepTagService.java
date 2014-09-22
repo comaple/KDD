@@ -2,6 +2,7 @@ package com.easyminning.tag;
 
 import com.mongodb.QueryBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +26,23 @@ public class StepTagService extends AbstractService<StepTag> {
 
     public void saveList(List<StepTag> stepTagList) {
         String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        List<StepTag> tempList = new ArrayList<StepTag>();
         if (version != null) {
             for (StepTag stepTag : stepTagList) {
                 stepTag.setVersionStamp(version);
+                tempList.add(stepTag);
+
+                //
+                if (tempList.size() == 500) {
+                    this.simpleMongoDBClient2.insert(tempList);
+                    tempList.clear();
+                }
+            }
+
+            if (tempList.size()>0) {
+                this.simpleMongoDBClient2.insert(tempList);
             }
         }
-        this.simpleMongoDBClient2.insert(stepTagList);
     }
 
     public void setCollectionName(String collectionName) {
