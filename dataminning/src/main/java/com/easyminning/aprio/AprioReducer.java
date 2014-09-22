@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/9/6.
  */
-public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,NullWritable,NullWritable> {
+public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,Text,NullWritable> {
 
     List<TagTag> tagTagList = new ArrayList<TagTag>();
 
@@ -42,6 +42,7 @@ public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,NullWrit
         tagTag1.setWeight(sumWeight);
         tagTagList.add(tagTag);
         tagTagList.add(tagTag1);
+        context.write(new Text(key.getTagItem().toString() + ":" +  key.getTagItem1().toString() + ":" +  sumWeight),NullWritable.get());
        // super.reduce(key, values, context);
     }
 

@@ -47,7 +47,7 @@ public class AprioJob extends AbstractJob {
         this.getConf().set("mapred.reduce.tasks","10");
         Job job = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class,
                 AprioMaper.class, TagTagWritable.class, DoubleWritable.class, AprioReducer.class,
-                NullWritable.class, NullWritable.class, TextOutputFormat.class);
+                Text.class, NullWritable.class, TextOutputFormat.class);
         int res = job.waitForCompletion(true) == true ? 0 : -1;
         return res;
     }

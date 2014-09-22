@@ -74,7 +74,11 @@ public class TagTagWritable implements WritableComparable {
             return 0;
         }
 
-        return (this.tagItem).compareTo(tagTagWritable.getTagItem());
+        if(this.tagItem.compareTo(tagTagWritable.getTagItem()) != 0){
+            return this.tagItem.compareTo(tagTagWritable.getTagItem());
+        }else{
+            return this.tagItem1.compareTo(tagTagWritable.getTagItem1());
+        }
     }
 
     @Override
@@ -106,14 +110,15 @@ public class TagTagWritable implements WritableComparable {
 
     public static void main(String[] args) {
         TagTagWritable tagTagWritable = new TagTagWritable();
-        tagTagWritable.setTagItem(new Text("工作"));
-        tagTagWritable.setTagItem1(new Text("学习"));
+        tagTagWritable.setTagItem(new Text("句子"));
+        tagTagWritable.setTagItem1(new Text("答案"));
 
         TagTagWritable tagTagWritable2 = new TagTagWritable();
-        tagTagWritable2.setTagItem(new Text("学习"));
-        tagTagWritable2.setTagItem1(new Text("工作"));
+        tagTagWritable2.setTagItem(new Text("句子"));
+        tagTagWritable2.setTagItem1(new Text("答案"));
 
-        System.out.println(tagTagWritable.hashCode() == tagTagWritable2.hashCode());
+        System.out.println(tagTagWritable.compareTo(tagTagWritable2) );
+
 
 
 
