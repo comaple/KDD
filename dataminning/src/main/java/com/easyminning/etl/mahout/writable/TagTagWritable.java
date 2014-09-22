@@ -66,12 +66,12 @@ public class TagTagWritable implements WritableComparable {
     @Override
     public int compareTo(Object o) {
         TagTagWritable tagTagWritable = (TagTagWritable)o;
-        if (this.tagItem.toString().equals((tagTagWritable).getTagItem().toString())
-                && this.tagItem1.toString().equals(tagTagWritable.getTagItem1().toString())) {
+        if (this.tagItem.compareTo(tagTagWritable.getTagItem()) == 0
+                && this.tagItem1.compareTo(tagTagWritable.getTagItem1()) == 0) {
             return 0;
         }
-        if (this.tagItem1.toString().equals((tagTagWritable).getTagItem().toString())
-                && this.tagItem.toString().equals(tagTagWritable.getTagItem1().toString())) {
+        if (this.tagItem.compareTo(tagTagWritable.getTagItem1()) == 0
+                && this.tagItem1.compareTo(tagTagWritable.getTagItem()) == 0) {
             return 0;
         }
 
@@ -83,10 +83,7 @@ public class TagTagWritable implements WritableComparable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((this.tagItem == null) ? 0 : this.tagItem.hashCode());
-        result = prime * result
-                + ((this.tagItem1 == null) ? 0 : this.tagItem1.hashCode());
+        result = prime * ((this.tagItem == null) ? 0 : this.tagItem.hashCode()) *((this.tagItem1 == null) ? 0 : this.tagItem1.hashCode());
         return result;
     }
     @Override
@@ -107,6 +104,22 @@ public class TagTagWritable implements WritableComparable {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        TagTagWritable tagTagWritable = new TagTagWritable();
+        tagTagWritable.setTagItem(new Text("工作"));
+        tagTagWritable.setTagItem1(new Text("学习"));
+
+        TagTagWritable tagTagWritable2 = new TagTagWritable();
+        tagTagWritable2.setTagItem(new Text("学习"));
+        tagTagWritable2.setTagItem1(new Text("工作d的"));
+
+        System.out.println(tagTagWritable2.compareTo(tagTagWritable));
+
+
+
+
     }
 
 }
