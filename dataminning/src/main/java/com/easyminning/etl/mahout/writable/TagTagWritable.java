@@ -3,7 +3,6 @@ package com.easyminning.etl.mahout.writable;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
-import org.apache.mahout.math.VarLongWritable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -112,9 +111,9 @@ public class TagTagWritable implements WritableComparable {
 
         TagTagWritable tagTagWritable2 = new TagTagWritable();
         tagTagWritable2.setTagItem(new Text("学习"));
-        tagTagWritable2.setTagItem1(new Text("工作d的"));
+        tagTagWritable2.setTagItem1(new Text("工作"));
 
-        System.out.println(tagTagWritable2.compareTo(tagTagWritable));
+        System.out.println(tagTagWritable.hashCode() == tagTagWritable2.hashCode());
 
 
 
