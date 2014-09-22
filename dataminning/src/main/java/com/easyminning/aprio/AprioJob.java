@@ -1,5 +1,8 @@
 package com.easyminning.aprio;
 
+import com.easyminning.etl.mahout.writable.TagTagWritable;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -22,7 +25,8 @@ public class AprioJob extends AbstractJob {
 
     public static void main(String[] args) {
         try {
-            ToolRunner.run(new AprioJob(), args);
+            ToolRunner.run(new Configuration(), new AprioJob(), args);
+            //ToolRunner.run(new AprioJob(), args);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,8 +43,10 @@ public class AprioJob extends AbstractJob {
 
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
+        this.getConf().set("mapred.map.tasks","10");
+        this.getConf().set("mapred.reduce.tasks","10");
         Job job = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class,
-                AprioMaper.class, LongWritable.class, Text.class, Reducer.class,
+                AprioMaper.class, TagTagWritable.class, DoubleWritable.class, AprioReducer.class,
                 NullWritable.class, NullWritable.class, TextOutputFormat.class);
         int res = job.waitForCompletion(true) == true ? 0 : -1;
         return res;

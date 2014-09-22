@@ -85,6 +85,7 @@ public class SimpleMongoDBClient2<E> implements MongoDBClient<E> {
       return true;
     } 
     else {
+
       throw new RuntimeException("MongoDB batch insert exception! data is null or out max number");
     }
   }

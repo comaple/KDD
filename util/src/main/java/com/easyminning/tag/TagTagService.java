@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,12 +45,28 @@ public class TagTagService extends AbstractService<TagTag> {
 
     public void saveTagTagList(List<TagTag> tagTagList) {
         String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+
+        System.out.println("==========version:" +version);
+
+        List<TagTag> tempList = new ArrayList<TagTag>();
         if (version != null) {
             for (TagTag tagTag : tagTagList) {
                 tagTag.setVersionStamp(version);
+                tempList.add(tagTag);
+
+                //
+                if (tempList.size() == 500) {
+                    this.simpleMongoDBClient2.insert(tempList);
+                    tempList.clear();
+                }
+            }
+
+            if (tempList.size()>0) {
+                this.simpleMongoDBClient2.insert(tempList);
             }
         }
-        this.simpleMongoDBClient2.insert(tagTagList);
+
+
     }
 
     public List<TagTag> findTagByTag(String tagItem, Integer pageNo, Integer pageSize) {

@@ -42,16 +42,16 @@ public class AprioReducer extends Reducer<TagTagWritable,DoubleWritable,NullWrit
         tagTag1.setWeight(sumWeight);
         tagTagList.add(tagTag);
         tagTagList.add(tagTag1);
-
-
-
-        super.reduce(key, values, context);
+       // super.reduce(key, values, context);
     }
 
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         TagTagService tagTagService = TagTagService.getInstance();
-        tagTagService.saveTagTagList(tagTagList);
+        System.out.println("taglistsize:" + tagTagList.size());
+        if (tagTagList.size()>0) {
+            tagTagService.saveTagTagList(tagTagList);
+        }
         super.cleanup(context);
     }
 }
