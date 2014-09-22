@@ -101,7 +101,7 @@ public class TestStandardGenerator {
     public void test1() throws Exception{
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://liuxue.eastday.com/NewsDetail-178000-0.html");
+        HttpGet httpget = new HttpGet("http://www.indexedu.com/201407/13334.html");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
@@ -109,7 +109,7 @@ public class TestStandardGenerator {
         HttpResponse httpresponse = hc.execute(httpget);
         // 获取返回数据
         HttpEntity entity = httpresponse.getEntity();
-        String body = EntityUtils.toString(entity,"gb2312");
+        String body = EntityUtils.toString(entity,"gbk");
         System.out.println(body);
 
         /*Pattern p = Pattern.compile("(?is)20\\d{2}-\\d{2}-\\d{2}");

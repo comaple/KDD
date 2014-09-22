@@ -112,3 +112,13 @@ http://www.igo.cn/2010/case/cgal/hwsx/[a-z]{2,8}/20\d{2}/\d{2}/\d{2}/\d{5}.shtml
 
 http://liuxue.eastday.com/anli.html
 http://liuxue.eastday.com/NewsDetail-\d{6}-0.html
+
+http://www.bole.me/newsmore/index_case/
+http://www.bole.me/article/\d{5}.html
+
+http://www.bailitop.com/case_lx/
+http://www.bailitop.com/case_lx/20\d{6}/\d{4}.html
+
+http://www.indexedu.com/gallery/apply/
+http://www.indexedu.com/gallery/visa/
+http://www.indexedu.com/20\d{4}/\d{5}.html
