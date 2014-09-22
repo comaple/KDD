@@ -93,12 +93,12 @@ public class TagTagWritable implements WritableComparable {
         if (getClass() != obj.getClass())
             return false;
         TagTagWritable other = (TagTagWritable) obj;
-        if (this.tagItem.toString().equals(other.getTagItem().toString())
-                && this.tagItem1.toString().equals(other.getTagItem1().toString())) {
+        if (this.tagItem.equals(other.getTagItem())
+                && this.tagItem1.equals(other.getTagItem1())) {
             return true;
         }
-        if (this.tagItem1.toString().equals(other.getTagItem().toString())
-                && this.tagItem.toString().equals(other.getTagItem1().toString())) {
+        if (this.tagItem1.equals(other.getTagItem())
+                && this.tagItem.equals(other.getTagItem1())) {
             return true;
         }
         return false;
