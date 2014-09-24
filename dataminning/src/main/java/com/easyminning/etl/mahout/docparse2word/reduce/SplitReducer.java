@@ -22,6 +22,8 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
     private ResultDocumentService resultDocumentService = ResultDocumentService.getInstance();
     private int resultNum = 1000;
 
+    List<ResultDocument> resultDocumentList = new ArrayList<ResultDocument>();
+
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
@@ -40,30 +42,20 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
         }
         doc.setResult(new Text(stringBuilder.toString()));
         doc.setDocContent(new Text(docContent.toString()));
-//        Collections.sort(list, new Comparator<DocumentWritable>() {
-//            @Override
-//            public int compare(DocumentWritable o, DocumentWritable o2) {
-//                double result = o.getWeihgt().get() - o2.getWeihgt().get();
-//                if (result > 0) {
-//                    return 1;
-//                } else {
-//                    return -1;
-//                }
-//            }
-//        });
-//
-//        list = list.subList(0, list.size() <= (resultNum) ? list.size() - 1 : resultNum - 1);
+
         ResultDocument resultDocument = constructDoc(doc);
-        System.out.println(resultDocument.getDocId());
 
         //写mongodb
-        resultDocumentService.save(resultDocument);
+        resultDocumentList.add(resultDocument);
+
         //写reduce 文件
         context.write(doc.getDocId(), doc.getResult());
+    }
 
-//        context.write(doc.getResult(), new Text());
-
-
+    @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException {
+        resultDocumentService.saveList(resultDocumentList);
+        super.cleanup(context);
     }
 
     private ResultDocument constructDoc(DocumentWritable documentWritable) {

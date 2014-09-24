@@ -63,22 +63,14 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
      */
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        int count = 0;
         targetMap = new HashMap<String, Double>();
         StringBuilder stringBuilder = new StringBuilder();
         if (value.toString().toLowerCase().contains(title.toLowerCase())) {
             return;
         }
-//        String[] fields = pattern.split(value.toString());
-        String[] fields = value.toString().split(patternStr);
-        System.err.println("pattern str is :" + patternStr);
-        System.err.println("the fields length is : " + fields.length);
-//        System.err.println(value.toString());
-//        if (fields.length != 6) {
-//            return;
-//        }
-        DocumentWritable documentWritable = parse2Doc(fields);
 
+        String[] fields = value.toString().split(patternStr);
+        DocumentWritable documentWritable = parse2Doc(fields);
         if (documentWritable == null) {
             System.err.println("parse 2 doc object error , source file line is : \n " + value.toString());
             return;
@@ -99,15 +91,15 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
             if (lexeme.getLexemeText().length() == 1) {
                 continue;
             }
-            count++;
             String word = lexeme.getLexemeText();
+
+            // 过滤掉一些分词
+            if (!ResultDocumentFilter.filterLexeme(word)) continue;
             if (targetMap.containsKey(word)) {
                 targetMap.put(word, targetMap.get(word) + 1d);
             } else {
                 targetMap.put(word, 1d);
-               // if (TagCache.contain(word)) {
-                    stringBuilder.append(word + " ");
-               // }
+                stringBuilder.append(word + " ");
             }
         }
 
@@ -117,8 +109,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         }
 
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
-//        System.err.println("similarity :" + weight + ",doc name :" + documentWritable.getTitle());
-//        System.err.println(documentWritable.getDocContent());
+
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
         // 设置权重

@@ -38,60 +38,67 @@ public class TagTagService extends AbstractService<TagTag> {
     }
 
     public void saveTagTag(TagTag tagTag) {
-        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
-        tagTag.setVersionStamp(version);
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return ;
+        }
+
+        tagTag.setVersionStamp(versionStamp.getVersionStamp());
         this.simpleMongoDBClient2.insert(tagTag);
     }
 
     public void saveTagTagList(List<TagTag> tagTagList) {
-        String version = versionStampService.getUnFinshedVersionStamp().getVersionStamp();
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
 
-        System.out.println("==========version:" +version);
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return ;
+        }
 
         List<TagTag> tempList = new ArrayList<TagTag>();
-        if (version != null) {
-            for (TagTag tagTag : tagTagList) {
-                tagTag.setVersionStamp(version);
-                tempList.add(tagTag);
+        for (TagTag tagTag : tagTagList) {
+            tagTag.setVersionStamp(versionStamp.getVersionStamp());
+            tempList.add(tagTag);
 
-                //
-                if (tempList.size() == 500) {
-                    this.simpleMongoDBClient2.insert(tempList);
-                    tempList.clear();
-                }
-            }
-
-            if (tempList.size()>0) {
+            //
+            if (tempList.size() % BATCH_SIZE_MAX == 0) {
                 this.simpleMongoDBClient2.insert(tempList);
+                tempList.clear();
             }
         }
 
+        if (tempList.size()>0) {
+            this.simpleMongoDBClient2.insert(tempList);
+        }
 
     }
 
     public List<TagTag> findTagByTag(String tagItem, Integer pageNo, Integer pageSize) {
-        QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
-
-        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
         VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
-        if (versionStamp != null) {
-            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        if (versionStamp == null) {
+            return new ArrayList<TagTag>();
         }
-        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
 
+        QueryBuilder queryBuilder = QueryBuilder.start("tagItem").is(tagItem);
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
+        queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+
+        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
         return tagTagList;
     }
 
     public List<TagTag> findTagByTag(String[] tagItem, Integer pageNo, Integer pageSize) {
-        QueryBuilder queryBuilder = QueryBuilder.start("tagItem").in(tagItem);
-
-        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
         VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
-        if (versionStamp != null) {
-            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        if (versionStamp == null) {
+            return new ArrayList<TagTag>();
         }
-        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
 
+        QueryBuilder queryBuilder = QueryBuilder.start("tagItem").in(tagItem);
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
+        queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
         return tagTagList;
     }
 }
