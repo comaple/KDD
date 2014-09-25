@@ -22,6 +22,7 @@ public class DateFilter implements Filter {
     public static String []formats = {"yyyy年MM月dd日",
             "yyyy/MM/dd",
             "yyyy-MM-dd",
+            "yyyy-MM",
             "yyyy\\MM\\dd",
             "yyyy MM dd",
             "dd MMM yyyy",

@@ -11,3 +11,19 @@ http://www.bole.me/article/\d{5}.html
 http://www.bailitop.com/case_lx/20\d{6}/\d{4}.html
 
 http://www.indexedu.com/20\d{4}/\d{5}.html
+
+http://(liuxue|qiantu).xdf.cn/blog/\w+/(case|blog)/detail/\d{3,6}.html
+
+http://www.eduglobal.com/(usa|uk|can|aus|ire|nz)/Article/\d{6}/
+
+http://liuxue.eol.cn/daodu_3369/20\d{6}/t20\d{6}_\d{6}.shtml
+
+http://www.chuchuguo.com/(research|scholarship|high|undergraduate)/anli/show/\d{5}/
+
+http://edu.sun0769.com/abroad(/study)?/20\d{4}/t20\d{6}_\d{7}.shtml
+
+http://goabroad.sohu.com/20\d{6}/n\d{9}.shtml
+
+http://www.cscdf.org/success/20\d{12}.html
+
+http://www.oxbridgedu.org/(us|uk|ca|au|Europe|Asia)/anli/[a-z]{2,15}/(20\d{6}|20\d{2}/\d{4})/\d{5}.html
