@@ -6,6 +6,7 @@ import com.easyminning.etl.mahout.util.similarity.impl.CalculateSimilarityOfMap;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
 import com.easyminning.tag.StepSeedCache;
 import com.easyminning.tag.TagCache;
+import com.easyminning.tag.TagDoc;
 import com.mongodb.util.StringBuilderPool;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -16,10 +17,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -35,6 +33,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     private String patternStr = "";
 
     private static int CONTENT_MIN_LENGTH = 200;
+
+    private static String HIGH_FREQUENCY_WORDS = "留学,学校";
 
 
     @Override
@@ -99,7 +99,8 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
                 targetMap.put(word, targetMap.get(word) + 1d);
             } else {
                 targetMap.put(word, 1d);
-                stringBuilder.append(word + " ");
+                if (!HIGH_FREQUENCY_WORDS.contains(word))
+                    stringBuilder.append(word + " ");
             }
         }
 
@@ -112,9 +113,31 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 
         //设置分词结果，以空格分隔
         documentWritable.setResult(new Text(stringBuilder.toString()));
+
         // 设置权重
         documentWritable.setWeihgt(new DoubleWritable(weight));
 
+        // 关键词
+        List<TagDoc> tagDocList = new ArrayList<TagDoc>();
+        for (String word : targetMap.keySet()) {
+            if (HIGH_FREQUENCY_WORDS.contains(word)) continue;
+            TagDoc tagDoc = new TagDoc();
+            tagDoc.setTagItem(word);
+            tagDoc.setWeight(targetMap.get(word));
+            tagDocList.add(tagDoc);
+        }
+        Collections.sort(tagDocList);
+        if (tagDocList.size() > 5) {
+            tagDocList = tagDocList.subList(0, 5);
+        }
+
+        StringBuilder content = new StringBuilder();
+        for (TagDoc tagDoc : tagDocList) {
+            content.append(tagDoc.getTagItem());
+            content.append(" ");
+        }
+
+        documentWritable.setKeyWord(new Text(content.toString()));
         if (threshold != -1) {
             if (threshold < weight) {
                 context.write(documentWritable.getDocId(), documentWritable);
