@@ -1,11 +1,14 @@
 package com.easyminning.tag;
 
+import com.easyminning.util.filter.ResultDocumentFilter;
 import com.mongodb.BasicDBObject;
 import com.mongodb.QueryBuilder;
 import com.mongodb.QueryOperators;
+import org.wltea.analyzer.core.IKSegmenter;
+import org.wltea.analyzer.core.Lexeme;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.StringReader;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +18,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TagDocService extends AbstractService<TagDoc> {
+
+    private static String HIGH_FREQUENCY_WORDS = "留学,学校";
 
     private static TagDocService tagDocService = new TagDocService();
 
@@ -106,15 +111,60 @@ public class TagDocService extends AbstractService<TagDoc> {
         return tagDocList;
     }
 
+    public List<TagDoc> parseWords(String content) throws Exception {
+        StringReader reader = new StringReader(content);
+        IKSegmenter segmenter = new IKSegmenter(reader, true);
+        Lexeme lexeme = null;
+        Map<String, Double> targetMap = new HashMap<String, Double>();
+        List<TagDoc> tagDocList = new ArrayList<TagDoc>();
+
+        // 分词并记录 count 总数，计算word权重
+        while ((lexeme = segmenter.next()) != null) {
+            if (lexeme.getLexemeText().length() == 1) {
+                continue;
+            }
+            String word = lexeme.getLexemeText();
+
+            // 过滤掉一些分词
+            if (!ResultDocumentFilter.filterLexeme(word)) continue;
+            if (targetMap.containsKey(word)) {
+                targetMap.put(word, targetMap.get(word) + 1d);
+            } else {
+                targetMap.put(word, 1d);
+            }
+        }
+
+        for (String word : targetMap.keySet()) {
+            if (HIGH_FREQUENCY_WORDS.contains(word)) continue;
+            TagDoc tagDoc = new TagDoc();
+            tagDoc.setTagItem(word);
+            tagDoc.setWeight(targetMap.get(word));
+            tagDocList.add(tagDoc);
+        }
+        Collections.sort(tagDocList);
+        if (tagDocList.size() > 5) {
+            return tagDocList.subList(0, 5);
+        } else {
+            return tagDocList;
+        }
+
+    }
 
 
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
         TagDocService tagDocService = TagDocService.getInstance();
       //  tagDocService.save(new TagDoc());
 
       // docWordWeightService.save(new DocWordWeightModel());
       // List<String> models = tagDocService.findWordAll();
+        String str = " 　在日本留学\n" ;
+
+        List<TagDoc> tagDocList = tagDocService.parseWords(str);
+        for (TagDoc tagDoc : tagDocList) {
+            System.out.println(tagDoc.getTagItem());
+        }
 
     }
 
