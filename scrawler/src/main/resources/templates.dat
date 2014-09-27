@@ -39,3 +39,7 @@ http://edu.sun0769.com/abroad(/study)?/20\d{4}/t20\d{6}_\d{7}.shtml%%%case_sun07
 http://goabroad.sohu.com/20\d{6}/n\d{9}.shtml%%%case_sohugoabroad.template%%%360
 http://www.cscdf.org/success/20\d{12}.html%%%case_cscdf.template%%%360
 http://www.oxbridgedu.org/(us|uk|ca|au|Europe|Asia)/anli/[a-z]{2,15}/(20\d{6}|20\d{2}/\d{4})/\d{5}.html%%%case_oxbridgedu.template%%%360
+http://success.tiandaoedu.com/(undergrad/)?\d{6}.html%%%case_tiandaoedu.template%%%360
+http://www.zmnedu.com/zixun/(bkanli|benke)/\d{5}.html%%%case_zmnedu.template%%%360
+http://www.jsjyg.cn/cgal/[a-z]{2,5}lx/20\d{2}/\d{4}/\d{4}.html%%%case_jsjyg.template%%%360
+http://www.dahuaedu.com/about/case/20\d{6}-\d{4}.html%%%case_dahuaedu.template%%%360
