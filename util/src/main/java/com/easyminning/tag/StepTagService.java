@@ -61,7 +61,7 @@ public class StepTagService extends AbstractService<StepTag> {
 
 
     public List<StepTag> findStepTagByStep(String stepItem, Integer pageNo, Integer pageSize) {
-        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
         if (versionStamp == null) {
             log.error("versionstamp is null");
             return new ArrayList<StepTag>();
