@@ -144,7 +144,8 @@ public class Fetcher extends Task {
 
             if (response == null) {
                 Log.Errors("failed ", Fetcher.this.taskname, page.url);
-                HandlerUtils.sendMessage(handler, new Message(Fetcher.FETCH_FAILED, page),true);              
+                HandlerUtils.sendMessage(handler, new Message(Fetcher.FETCH_FAILED, page),true);
+                Extractor.conDiscardUrls.add(url);//失败了的需要清理
                 return;
             }
             
