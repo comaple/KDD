@@ -71,8 +71,22 @@ public class TagDocController extends BaseController {
         renderJson(resultDocumentMapList);
     }
 
-    @RequestMapping(value = "/doctag", method = RequestMethod.POST)
+    @RequestMapping(value = "/doctag", method = RequestMethod.GET)
     public void test3(String content) throws Exception{
+        List<TagDoc> tagDocList = tagDocService.parseWords(content);
+        List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+
+        for (TagDoc tagDoc : tagDocList) {
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("tagItem",tagDoc.getTagItem());
+            map.put("weight", String.valueOf(tagDoc.getWeight()));
+            list.add(map);
+        }
+        renderJson(list);
+    }
+
+    @RequestMapping(value = "/doctag", method = RequestMethod.POST)
+    public void test4(String content) throws Exception{
         List<TagDoc> tagDocList = tagDocService.parseWords(content);
         List<Map<String,String>> list = new ArrayList<Map<String,String>>();
 
