@@ -9,8 +9,8 @@ public class CaseContentFilter implements Filter {
         if(article.title.contains("案例"))
             return true;
         int count = article.context.contains("案例")?1:0;
-        count += article.context.contains("申请")?1:0;
-        count += article.context.contains("录取")?1:0;
+        count += (article.context.contains("申请") || article.title.contains("申请"))?1:0;
+        count += (article.context.contains("录取") || article.title.contains("录取"))?1:0;
         return count >= 2;
     }
 }
