@@ -27,7 +27,6 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
     TagDocService tagDocService = TagDocService.getInstance();
     private int topN = 0;
 
-    List<TagDoc> tagDocList = new ArrayList<TagDoc>();
 
     @Override
 
@@ -42,6 +41,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
     @Override
     protected void reduce(Text key, Iterable<UidPrefWritable> values, Context context) throws IOException, InterruptedException {
         String docname = "";
+        List<TagDoc> tagDocList = new ArrayList<TagDoc>();
         Text vector = new Text();
         String vectorStr = "";
         for (UidPrefWritable uidPrefWritable : values) {
@@ -93,6 +93,7 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             stringBuilder.append(tagDoc.getTagItem() + ",");
             index++;
         }
+        tagDocService.saveList(tagDocList);
         String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
         context.write(new Text(content), NullWritable.get());
 
@@ -100,7 +101,6 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
 
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        tagDocService.saveList(tagDocList);
         super.cleanup(context);
     }
 

@@ -58,6 +58,32 @@ public class ResultDocumentFilter {
         add("之");
         add("只");
         add("就");
+        add("让");
+        add("方");
+        add("确");
+        add("稍");
+        add("先");
+        add("后");
+        add("对");
+        add("较");
+        add("未");
+        add("过");
+        add("等");
+        add("里");
+        add("估");
+        add("将");
+        add("哥");
+        add("几");
+        add("风");
+        add("看");
+        add("岁");
+        add("滴");
+        add("深");
+        add("因");
+        add("慢");
+        add("谢");
+
+
 
         // 英文
 

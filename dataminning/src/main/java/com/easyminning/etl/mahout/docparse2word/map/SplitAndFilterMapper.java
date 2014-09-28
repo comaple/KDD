@@ -97,13 +97,16 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
             if (!ResultDocumentFilter.filterLexeme(word)) continue;
             if (targetMap.containsKey(word)) {
                 targetMap.put(word, targetMap.get(word) + 1d);
+                if (!HIGH_FREQUENCY_WORDS.contains(word)) {
+                    stringBuilder.append(word + " ");
+                }
+
+
             } else {
                 targetMap.put(word, 1d);
-                if (!HIGH_FREQUENCY_WORDS.contains(word))
-                    stringBuilder.append(word + " ");
+
             }
         }
-
         //权重归一化处理
         for (String word : targetMap.keySet()) {
             targetMap.put(word, targetMap.get(word));
@@ -156,6 +159,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
      * @param fields
      * @return
      */
+
     private DocumentWritable parse2Doc(String[] fields) {
         try {
             DocumentWritable documentWritable = new DocumentWritable();
