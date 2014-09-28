@@ -1,1 +1,5 @@
-This file was created by IntelliJ IDEA 12.1.1 for binding GitHub repository
+todo:
+1. 爬取信息存储
+2. 提供分词接口
+3.标签到标签算法调整
+4.存文章的关键词

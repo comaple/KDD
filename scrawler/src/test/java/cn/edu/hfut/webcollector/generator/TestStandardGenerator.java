@@ -70,8 +70,8 @@ public class TestStandardGenerator {
             System.out.println("affafaef");
         }
 
-        String ss = "Sep152014";//
-                SimpleDateFormat sdf = new SimpleDateFormat("MMMddyyyy", Locale.ENGLISH);
+        String ss = "2012-9";//
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.ENGLISH);
         try {
             System.out.println(sdf.parse(ss));
         } catch (ParseException e) {
@@ -85,23 +85,13 @@ public class TestStandardGenerator {
         if(m.find()){
             System.out.println(m.group());
         }
-
-        HashSet<String> discardUrls = new HashSet<String>();
-        Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
-        conDiscardUrls.add("a");
-        conDiscardUrls.add("b");
-        conDiscardUrls.add("c");
-        System.out.println(discardUrls);
-
-
-
     }
     
     @Test
-    public void test1() throws Exception{
+    public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.indexedu.com/201407/13334.html");
+        HttpGet httpget = new HttpGet("http://www.dahuaedu.com/about/case/20140411-6068.html");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
@@ -109,7 +99,7 @@ public class TestStandardGenerator {
         HttpResponse httpresponse = hc.execute(httpget);
         // 获取返回数据
         HttpEntity entity = httpresponse.getEntity();
-        String body = EntityUtils.toString(entity,"gbk");
+        String body = EntityUtils.toString(entity,"utf-8");
         System.out.println(body);
 
         /*Pattern p = Pattern.compile("(?is)20\\d{2}-\\d{2}-\\d{2}");
@@ -118,5 +108,13 @@ public class TestStandardGenerator {
             String dateHtml = m.group();
             System.out.println(dateHtml.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim());
         }*/
+    }
+
+    @Test
+    public void test2(){
+        String s = "http://edu.sina.com.cn/a/2014-09-15/1416247541.shtml#J_Comment_Wrap";
+        if(Pattern.matches("http://edu.sina.com.cn/a/\\d{4}-\\d{2}-\\d{2}/\\d{10}.shtml",s)){
+            System.out.println(s);
+        }
     }
 }

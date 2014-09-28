@@ -19,6 +19,7 @@ public class LDADocMapper extends Mapper<IntWritable, VectorWritable, Text, UidP
     protected void map(IntWritable key, VectorWritable value, Context context) throws IOException, InterruptedException {
 
         System.err.println(value.toString());
+
         context.write(new Text(key.toString()), new UidPrefWritable(key.get(), Constant.FLAG_DOC, "0", new Text(value.toString())));
 
     }

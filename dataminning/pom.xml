@@ -41,11 +41,6 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>com.xunlei.IKAnalyzer</groupId>
-            <artifactId>IKAnalyzer</artifactId>
-            <version>1.0</version>
-        </dependency>
 
     </dependencies>
     <build>

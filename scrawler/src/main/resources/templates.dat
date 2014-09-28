@@ -31,3 +31,15 @@ http://liuxue.eastday.com/NewsDetail-\d{6}-0.html%%%case_liuxueeastday.template%
 http://www.bole.me/article/\d{5}.html%%%case_bole.template%%%360
 http://www.bailitop.com/case_lx/20\d{6}/\d{4}.html%%%case_bailitop.template%%%360
 http://www.indexedu.com/20\d{4}/\d{5}.html%%%case_indexedu.template%%%360
+http://(liuxue|qiantu).xdf.cn/blog/\w+/(case|blog)/detail/\d{3,6}.html%%%case_xdfqiantu.template%%%360
+http://www.eduglobal.com/(usa|uk|can|aus|ire|nz)/Article/\d{6}/%%%case_eduglobal.template%%%360
+http://liuxue.eol.cn/daodu_3369/20\d{6}/t20\d{6}_\d{6}.shtml%%%case_eol.template%%%360
+http://www.chuchuguo.com/(research|scholarship|high|undergraduate)/anli/show/\d{5}/%%%case_chuchuguo.template%%%360
+http://edu.sun0769.com/abroad(/study)?/20\d{4}/t20\d{6}_\d{7}.shtml%%%case_sun0769.template%%%360
+http://goabroad.sohu.com/20\d{6}/n\d{9}.shtml%%%case_sohugoabroad.template%%%360
+http://www.cscdf.org/success/20\d{12}.html%%%case_cscdf.template%%%360
+http://www.oxbridgedu.org/(us|uk|ca|au|Europe|Asia)/anli/[a-z]{2,15}/(20\d{6}|20\d{2}/\d{4})/\d{5}.html%%%case_oxbridgedu.template%%%360
+http://success.tiandaoedu.com/(undergrad/)?\d{6}.html%%%case_tiandaoedu.template%%%360
+http://www.zmnedu.com/zixun/(bkanli|benke)/\d{5}.html%%%case_zmnedu.template%%%360
+http://www.jsjyg.cn/cgal/[a-z]{2,5}lx/20\d{2}/\d{4}/\d{4}.html%%%case_jsjyg.template%%%360
+http://www.dahuaedu.com/about/case/20\d{6}-\d{4}.html%%%case_dahuaedu.template%%%360

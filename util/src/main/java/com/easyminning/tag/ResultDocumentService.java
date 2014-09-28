@@ -29,35 +29,98 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         return resultDocumentService;
     }
 
-
     public void setCollectionName(String collectionName) {
         this.collectionName = "resultdocument";
     }
 
     public void save(ResultDocument resultDocument) {
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return ;
+        }
         resultDocument.setFingerMsg(DuplicateDocFilter.getAnasysisDocHash(resultDocument));
-        resultDocument.setVersionStamp(versionStampService.getUnFinshedVersionStamp().getVersionStamp());
+        resultDocument.setVersionStamp(versionStamp.getVersionStamp());
         simpleMongoDBClient2.insert(resultDocument);
     }
 
-    public ResultDocument getDocumentByDocId(String docId) {
-        QueryBuilder queryBuilder = QueryBuilder.start("docId").is(docId);
-        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
-        if (versionStamp != null) {
-            queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+    public void saveList(List<ResultDocument> resultDocuments) {
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return ;
         }
+        List<ResultDocument> tempList = new ArrayList<ResultDocument>();
+        for (ResultDocument resultDocument : resultDocuments) {
+            resultDocument.setFingerMsg(DuplicateDocFilter.getAnasysisDocHash(resultDocument));
+            resultDocument.setVersionStamp(versionStamp.getVersionStamp());
+            tempList.add(resultDocument);
+
+            if (tempList.size() % BATCH_SIZE_MAX == 0) {
+                simpleMongoDBClient2.insert(tempList);
+                tempList.clear();
+            }
+        }
+
+        if (tempList.size() > 0 ) {
+            simpleMongoDBClient2.insert(tempList);
+        }
+    }
+
+    public ResultDocument getDocumentByDocId(String docId,VersionStamp versionStamp) {
+        QueryBuilder queryBuilder = QueryBuilder.start("docId").is(docId);
+        queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
+        return simpleMongoDBClient2.selectOne(queryBuilder,ResultDocument.class);
+    }
+    public ResultDocument getDocumentByDocId(String docId) {
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return null;
+        }
+        QueryBuilder queryBuilder = QueryBuilder.start("docId").is(docId);
+        queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         return simpleMongoDBClient2.selectOne(queryBuilder,ResultDocument.class);
     }
 
     public void deleteDocIds(List<String> docIds) {
-        TagDocService.getInstance().deleteDocIds(docIds);
-        this.simpleMongoDBClient2.collection.remove(new BasicDBObject("docId",
-                new BasicDBObject(QueryOperators.IN,docIds.toArray())));
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return;
+        }
+
+        BasicDBObject queryCondition = new BasicDBObject();
+        queryCondition.put("versionStamp", versionStamp.getVersionStamp());
+        List<String> tempList = new ArrayList<String>();
+
+        for (String docId : docIds) {
+            tempList.add(docId);
+            if (tempList.size() % BATCH_SIZE_MAX == 0) {
+                queryCondition.put("docId",new BasicDBObject(QueryOperators.IN,tempList.toArray()));
+                TagDocService.getInstance().deleteDocIds(tempList, versionStamp);
+                this.simpleMongoDBClient2.collection.remove(queryCondition);
+                tempList.clear();
+            }
+        }
+
+        if (tempList.size() > 0) {
+            TagDocService.getInstance().deleteDocIds(tempList,versionStamp);
+            queryCondition.put("docId",new BasicDBObject(QueryOperators.IN,tempList.toArray()));
+            this.simpleMongoDBClient2.collection.remove(queryCondition);
+        }
     }
 
-
     public void updateDocRepeatCount(List<ResultDocument> resultDocuments) {
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return;
+        }
+        BasicDBObject queryCondition = new BasicDBObject();
+        queryCondition.put("versionStamp", versionStamp.getVersionStamp());
         for (ResultDocument resultDocument : resultDocuments) {
+            queryCondition.put("docId", resultDocument.getDocId());
             this.simpleMongoDBClient2.collection.update(new BasicDBObject("docId", resultDocument.getDocId()),
                     new BasicDBObject("$set",new BasicDBObject("repeatCount", resultDocument.getRepeatCount())), false, false);
         }
@@ -65,14 +128,18 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
 
     public List<ResultDocument> getFingerMsgList() {
         List<ResultDocument> resultDocuments = new ArrayList<ResultDocument>();
-        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
+        VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return new ArrayList<ResultDocument>();
+        }
         DBCursor dbCursor = null;
         if (versionStamp != null) {
-            dbCursor = simpleMongoDBClient2.collection.find(new BasicDBObject("versionStamp",versionStamp.getVersionStamp()),new BasicDBObject("fingerMsg",true).append("docId",true));
-        } else {
-            dbCursor = simpleMongoDBClient2.collection.find(null,new BasicDBObject("fingerMsg",true).append("docId",true));
+            dbCursor = simpleMongoDBClient2.collection.find(new BasicDBObject("versionStamp",versionStamp.getVersionStamp()),
+                    new BasicDBObject("fingerMsg",true).append("docId",true));
         }
 
+        //  遍历获取fingerMsg
         while (dbCursor.hasNext())  {
             DBObject dbObject = dbCursor.next();
             ResultDocument resultDocument = new ResultDocument();
@@ -80,7 +147,6 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
             resultDocument.setDocId(dbObject.get("docId").toString());
             resultDocuments.add(resultDocument);
         }
-        //return simpleMongoDBClient2.selectOne(queryBuilder,ResultDocument.class);
         return resultDocuments;
     }
 
@@ -95,6 +161,10 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         QueryBuilder queryBuilder = QueryBuilder.start();
         QueryBuilder queryBuilderSort = QueryBuilder.start("repeatCount").is(-1);
         VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
+        if (versionStamp == null) {
+            log.error("versionstamp is null");
+            return new ArrayList<ResultDocument>();
+        }
         if (versionStamp != null) {
             queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         }
@@ -112,7 +182,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
         resultDocument1.setKeyWord("test");
         resultDocument1.setWeight(10.0);
         resultDocument1.setSourceContent("zheshi yige meili de guojia ");
-        resultDocumentService.save(resultDocument1);
+       // resultDocumentService.save(resultDocument1);
 
         ResultDocument resultDocument2 = new ResultDocument();
         resultDocument2.setDocId(UUID.randomUUID().toString());
@@ -123,7 +193,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
                 "                + \"原理上这次差异有多大呢3相当于伪随机数产生算法。产生的两个签名，如果相等，\"\n" +
                 "                + \"说明原始内容在一定概 率 下是相等的；如果不相等，除了说明原始内容不相等外，不再提供任何信息，\"");
         resultDocument2.setSourceContent("zheshi yige meili de guojia ");
-        resultDocumentService.save(resultDocument2);
+       // resultDocumentService.save(resultDocument2);
 
         ResultDocument resultDocument3 = new ResultDocument();
         resultDocument3.setDocId(UUID.randomUUID().toString());
@@ -140,7 +210,7 @@ public class ResultDocumentService extends AbstractService<ResultDocument> {
                 + "因为即使原始内容只相差一个字节，所产生的签名也很可能差别极大。从这个意义 上来 说，"
                 + "要设计一个 hash 算法，对相似的内容产生的签名也相近，是更为艰难的任务，因为它的签名值除了提供原始"
                 + "内容是否相等的信息外，干扰1还能额外提供不相等的 原始再来干扰2内容的差异程度的信息。");
-        resultDocumentService.save(resultDocument3);
+       // resultDocumentService.save(resultDocument3);
 
 
 

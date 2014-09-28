@@ -5,6 +5,7 @@ import com.easyminning.tag.TagDoc;
 import com.easyminning.tag.TagDocService;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
 import com.easyminning.tag.LDAResultParser;
+import org.apache.avro.generic.GenericData;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -25,6 +26,8 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
     // mongo db service
     TagDocService tagDocService = TagDocService.getInstance();
     private int topN = 0;
+
+    List<TagDoc> tagDocList = new ArrayList<TagDoc>();
 
     @Override
 
@@ -86,13 +89,19 @@ public class ParseLDANewReducer extends Reducer<Text, UidPrefWritable, Text, Nul
             if (index > topN) {
                 break;
             }
-            tagDocService.save(tagDoc);
+            tagDocList.add(tagDoc);
             stringBuilder.append(tagDoc.getTagItem() + ",");
             index++;
         }
         String content = stringBuilder.toString().substring(0, stringBuilder.toString().lastIndexOf(","));
         context.write(new Text(content), NullWritable.get());
 
+    }
+
+    @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException {
+        tagDocService.saveList(tagDocList);
+        super.cleanup(context);
     }
 
     public static void main(String[] args) {

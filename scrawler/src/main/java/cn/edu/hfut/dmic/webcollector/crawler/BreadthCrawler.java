@@ -33,14 +33,19 @@ import cn.edu.hfut.dmic.webcollector.util.Config;
 import cn.edu.hfut.dmic.webcollector.util.ConnectionConfig;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import cn.edu.hfut.dmic.webcollector.util.RandomUtils;
+import com.bson.types.Symbol;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Extractor;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -144,9 +149,13 @@ public class BreadthCrawler {
         status=RUNNING;
         //leilongyan修改 可以循环无限运行
         int count = 0;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
         while(true){
             count++;
+            long startTime = System.currentTimeMillis();
             Log.Infos("info","Number:"+count+" starting...");
+            LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),"周期"+count+"抓取开始"));
             int depths = Integer.parseInt(ConfLoader.getProperty(ConfConstant.DEPTH,"2"));//leilongyan修改
             int maxArticleNum = Integer.parseInt(ConfLoader.getProperty(ConfConstant.MAXARTICLENUM,"5000"));//leilongyan修改
             for (int i = 0; i < depths; i++) {
@@ -163,7 +172,11 @@ public class BreadthCrawler {
                     break;
                 }
             }
-
+            long endTime = System.currentTimeMillis();
+            Extractor.ARTICLENUM = Extractor.ARTICLENUM==0?maxArticleNum:Extractor.ARTICLENUM;
+            LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),
+                    "周期"+count+"抓取结束,抓取文章"+Extractor.ARTICLENUM+"篇,耗时"+df2.format(endTime-startTime)));
+            Extractor.ARTICLENUM = 0;
             if(status==STOPED){
                 break;
             }
