@@ -1,0 +1,4 @@
+title=(?is)<h1 id="body_lblTitle">.*?</h1>
+publishDate=(?is)<span id="body_lblCreated">20\d{2}-\d{2}-\d{2}</span>
+author=(?is)<span class="author">.*?</span>
+mainContent=(?is)<p class="p1">.*?</div>
