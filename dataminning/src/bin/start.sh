@@ -10,8 +10,6 @@ cat result/vectordump-* > result/topic_result.txt
 hadoop fs -put result/topic_result.txt  /kdd/lda/topic_map/topic.txt
 ### lda 结果解析入库
 sh $APP_PATH/sufix_process.sh
-### pfpgrowth 关联分析
-sh $APP_PATH/pfp.sh
-### pfp 结果解析入库
-sh $APP_PATH/pfp_sufix.sh
+### aprio 关联分析
+sh $APP_PATH/aprio.sh
 
