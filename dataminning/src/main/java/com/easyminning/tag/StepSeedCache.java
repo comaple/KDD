@@ -79,9 +79,9 @@ public class StepSeedCache {
 
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-dataminning.xml");
-
-        System.out.println(NumberUtils.isNumber("20.011q"));
+       StepSeedCache stepSeedCache = new StepSeedCache();
+        stepSeedCache.init();
+        System.out.println(STEP_SEED_MAP);
     }
 
 

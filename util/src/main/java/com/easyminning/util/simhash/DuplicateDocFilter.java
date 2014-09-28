@@ -1,8 +1,7 @@
 package com.easyminning.util.simhash;
 
-import com.easyminning.tag.ResultDocument;
-import com.easyminning.tag.ResultDocumentService;
-import com.easyminning.tag.TagDoc;
+import com.easyminning.tag.*;
+import com.easyminning.util.date.DateUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -149,12 +148,14 @@ public class DuplicateDocFilter {
         for(ResultDocument resultDocument : resultDocumentMap.values()) {
             if (resultDocument.getRepeatCount() > 0) {
                 updateResultDocumentList.add(resultDocument);
-                System.out.println("update resultdocument: " + resultDocument.getDocId() + "->" + resultDocument.getRepeatCount());
+               // System.out.println("update resultdocument: " + resultDocument.getDocId() + "->" + resultDocument.getRepeatCount());
             }
         }
         ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
-        System.out.println("delete: " + deleteDocIds);
+        //System.out.println("delete: " + deleteDocIds);
         ResultDocumentService.getInstance().deleteDocIds(deleteDocIds);
+
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"删除重复文章数：" + deleteDocIds.size()));
 
     }
 

@@ -5,6 +5,9 @@ import com.easyminning.etl.mahout.lda.map.MatrixMapper;
 import com.easyminning.etl.mahout.lda.reduce.ParseLDANewReducer;
 import com.easyminning.etl.mahout.util.Constant;
 import com.easyminning.etl.mahout.writable.UidPrefWritable;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
+import com.easyminning.util.date.DateUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
@@ -51,6 +54,8 @@ public class ParseLDAJob extends AbstractJob {
     }
 
     private int runMapReduce() throws Exception {
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"解析LDA执行结果开始" ));
+
         Path input = getInputPath();
         Path output = getOutputPath();
         int k = Integer.parseInt(getOption(TOPIC_K));
@@ -77,11 +82,14 @@ public class ParseLDAJob extends AbstractJob {
         ldaParseJob.getConfiguration().setInt(Constant.TOP_N, topn);
         //commit the job execute and get the result
         boolean phrase_1 = ldaParseJob.waitForCompletion(true);
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"解析LDA执行结构结束" ));
+
         if (phrase_1) {
             return 0;
         } else {
             return -1;
         }
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.easyminning.tag;
 
 import com.easyminning.etl.mahout.util.distance.EditDistance;
+import com.easyminning.util.date.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class StepTagSimilarity {
 
     public void analysis() {
         List<String> words = tagDocService.findWordAll();
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime()," 计算步骤与标签相似度，标签总数：" + words.size()));
         List<StepTag> stepTagList = new ArrayList<StepTag>();
         for (String word : words) {
             if (word == null || "".equals(word.trim())) continue;
