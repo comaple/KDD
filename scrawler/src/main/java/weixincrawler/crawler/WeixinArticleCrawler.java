@@ -52,7 +52,7 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
         //leilongyan修改 可以循环无限运行
         int count = 0;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        //SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
         while(true){
             count++;
             long startTime = System.currentTimeMillis();
@@ -75,8 +75,10 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
                 fetcher.fetchAll(generator);
             }
             long endTime = System.currentTimeMillis();
+            long duration = endTime-startTime;
+            long hour = duration/3600000;
             LogRecordService.getInstance().save(new LogRecord("2",df.format(new Date()),
-                    "周期"+count+"微信抓取结束,抓取文章"+ WeixinExtractor.articleNum +"篇,耗时"+df2.format(endTime-startTime)));
+                    "周期"+count+"微信抓取结束,抓取文章"+ WeixinExtractor.articleNum +"篇,耗时"+ hour +"时"+(duration-hour*3600000)/60000 + "分"));
             WeixinExtractor.articleNum = 0;
             if(status==STOPED){
                 break;

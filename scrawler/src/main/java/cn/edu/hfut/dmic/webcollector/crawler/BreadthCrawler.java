@@ -46,6 +46,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
@@ -150,7 +151,8 @@ public class BreadthCrawler {
         //leilongyan修改 可以循环无限运行
         int count = 0;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        //SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        //df2.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         while(true){
             count++;
             long startTime = System.currentTimeMillis();
@@ -172,10 +174,12 @@ public class BreadthCrawler {
                     break;
                 }
             }
-            long endTime = System.currentTimeMillis();
             Extractor.ARTICLENUM = Extractor.ARTICLENUM==0?maxArticleNum:Extractor.ARTICLENUM;
+            long endTime = System.currentTimeMillis();
+            long duration = endTime-startTime;
+            long hour = duration/3600000;
             LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),
-                    "周期"+count+"抓取结束,抓取文章"+Extractor.ARTICLENUM+"篇,耗时"+df2.format(endTime-startTime)));
+                    "周期"+count+"抓取结束,抓取文章"+Extractor.ARTICLENUM+"篇,耗时"+ hour +"时"+(duration-hour*3600000)/60000 + "分"));
             Extractor.ARTICLENUM = 0;
             if(status==STOPED){
                 break;
