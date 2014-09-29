@@ -26,7 +26,7 @@ public abstract class Extractor {
     public static int ARTICLENUM = 0;
 
     public static HashSet<String> discardUrls = new HashSet<String>();
-    private static Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
+    public static Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
 
     public abstract Article extractArticle(Page page);
 

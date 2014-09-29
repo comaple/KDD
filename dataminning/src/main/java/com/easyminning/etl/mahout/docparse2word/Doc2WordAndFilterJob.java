@@ -5,7 +5,10 @@ import com.easyminning.etl.mahout.docparse2word.map.SplitMapper;
 import com.easyminning.etl.mahout.docparse2word.reduce.SplitReducer;
 import com.easyminning.etl.mahout.util.Constant;
 import com.easyminning.etl.mahout.writable.DocumentWritable;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
 import com.easyminning.tag.VersionStampService;
+import com.easyminning.util.date.DateUtil;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -46,6 +49,7 @@ public class Doc2WordAndFilterJob extends AbstractJob {
 
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"分词算法执行开始" ));
 
         Boolean scrawler = Boolean.parseBoolean(getOption(isScrawler));
         System.out.println(getOption(isScrawler));
@@ -63,6 +67,7 @@ public class Doc2WordAndFilterJob extends AbstractJob {
             res = combineJob_1.waitForCompletion(true) == true ? 0 : -1;
         }
 
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"分词算法执行结束" ));
         return res;
 
     }

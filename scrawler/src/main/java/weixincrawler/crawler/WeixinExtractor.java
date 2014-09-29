@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public abstract class WeixinExtractor extends Extractor{
     private static Extractor extractor;
-    private static int articleNum = 0;
+    public static int articleNum = 0;
 
     static {
         initExtrator();

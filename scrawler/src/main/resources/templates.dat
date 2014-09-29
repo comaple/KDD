@@ -39,3 +39,14 @@ http://edu.sun0769.com/abroad(/study)?/20\d{4}/t20\d{6}_\d{7}.shtml%%%case_sun07
 http://goabroad.sohu.com/20\d{6}/n\d{9}.shtml%%%case_sohugoabroad.template%%%360
 http://www.cscdf.org/success/20\d{12}.html%%%case_cscdf.template%%%360
 http://www.oxbridgedu.org/(us|uk|ca|au|Europe|Asia)/anli/[a-z]{2,15}/(20\d{6}|20\d{2}/\d{4})/\d{5}.html%%%case_oxbridgedu.template%%%360
+http://success.tiandaoedu.com/(undergrad/)?\d{6}.html%%%case_tiandaoedu.template%%%360
+http://www.zmnedu.com/zixun/(bkanli|benke)/\d{5}.html%%%case_zmnedu.template%%%360
+http://www.jsjyg.cn/cgal/[a-z]{2,5}lx/20\d{2}/\d{4}/\d{4}.html%%%case_jsjyg.template%%%360
+http://www.dahuaedu.com/about/case/20\d{6}-\d{4}.html%%%case_dahuaedu.template%%%360
+http://[a-z]{2,10}.aoji.cn/anli/20\d{6}_\d{6}.html%%%case_aoji.template%%%360
+http://www.ycie.org/gacz/anli/20\d{11}.html%%%case_ycie.template%%%360
+http://www.fornow.cn/case/\d{4}.html%%%case_fornow.template%%%360
+http://www.xhd.cn/ielts/\d{6}.html%%%case_xhd.template%%%360
+http://www.huashen-edu.com/article_\d{8}.html%%%case_huashen.template%%%360
+http://[a-z]{2,10}.bincailiuxue.com/chenggonganli/20\d{11}.html%%%case_bincailiuxue.template%%%360
+http://www.chivast.com/[a-z]{2,15}/case/20\d{4}/\d{5}.html%%%case_chivast.template%%%360

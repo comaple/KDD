@@ -91,7 +91,7 @@ public class TestStandardGenerator {
     public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.oxbridgedu.org/uk/anli/yanjiusheng/20140925/10927.html");
+        HttpGet httpget = new HttpGet("http://www.chivast.com/italy/case/201408/25190.html");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
@@ -112,9 +112,15 @@ public class TestStandardGenerator {
 
     @Test
     public void test2(){
-        String s = "http://edu.sina.com.cn/a/2014-09-15/1416247541.shtml#J_Comment_Wrap";
-        if(Pattern.matches("http://edu.sina.com.cn/a/\\d{4}-\\d{2}-\\d{2}/\\d{10}.shtml",s)){
-            System.out.println(s);
-        }
+        long ms = 60010000;
+        long a = ms/3600000;
+        System.out.println(ms/3600000+"时"+(ms-a*3600000)/60000+"分");
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-HH:mm:ss");
+        df2.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        //System.out.println(df2.format(calendar.getTime()));
+        System.out.println(df2.format(calendar.getTime()));
+        System.out.println(df2.format(ms));
     }
 }

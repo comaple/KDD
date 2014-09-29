@@ -1,9 +1,13 @@
 package com.easyminning.aprio;
 
 import com.easyminning.etl.mahout.writable.TagTagWritable;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
 import com.easyminning.tag.StepTagSimilarity;
 import com.easyminning.tag.VersionStampService;
+import com.easyminning.util.date.DateUtil;
 import com.easyminning.util.simhash.DuplicateDocFilter;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -46,6 +50,8 @@ public class AprioJob extends AbstractJob {
 
     // run mapreduce to parse doc to word and split
     private int runMapReduce() throws Exception {
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"aprior 算法执行开始....."));
+
         this.getConf().set("mapred.map.tasks","10");
         this.getConf().set("mapred.reduce.tasks","10");
         Job job = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class,
@@ -54,6 +60,8 @@ public class AprioJob extends AbstractJob {
         int res = job.waitForCompletion(true) == true ? 0 : -1;
 
         if (res == -1) return -1;
+
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"aprior 算法执行结束，执行结果为:" + res));
 
         System.out.println("******** 计算步骤和标签相似度************");
         StepTagSimilarity.getInstance().analysis(getInputPath(), this.getConf());
@@ -65,6 +73,8 @@ public class AprioJob extends AbstractJob {
         System.out.println("*********** 更新版本号***********");
         //  更新版本号为已经完成
         VersionStampService.getInstance().updateUnFinishedVersion();
+
+        LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"算法执行结束,更新版本号"));
         return res;
     }
 

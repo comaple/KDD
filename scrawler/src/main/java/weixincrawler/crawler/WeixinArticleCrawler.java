@@ -11,10 +11,15 @@ import cn.edu.hfut.dmic.webcollector.model.Page;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.extractor.Extractor;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
 import weixincrawler.conf.WeixinConfConstant;
 import weixincrawler.conf.WeixinConfLoader;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,10 +51,13 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
         status=RUNNING;
         //leilongyan修改 可以循环无限运行
         int count = 0;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
         while(true){
             count++;
+            long startTime = System.currentTimeMillis();
             Log.Infos("info","Number:"+count+" starting...");
-
+            LogRecordService.getInstance().save(new LogRecord("2",df.format(new Date()),"周期"+count+"微信抓取开始"));
             List<String> seeds = SeedsGenerator.generatorSeedsFromWords();
             for(String seed : seeds){
                 addSeed(seed);
@@ -66,6 +74,12 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
                 fetcher=getFecther();
                 fetcher.fetchAll(generator);
             }
+            long endTime = System.currentTimeMillis();
+            long duration = endTime-startTime;
+            long hour = duration/3600000;
+            LogRecordService.getInstance().save(new LogRecord("2",df.format(new Date()),
+                    "周期"+count+"微信抓取结束,抓取文章"+ WeixinExtractor.articleNum +"篇,耗时"+ hour +"时"+(duration-hour*3600000)/60000 + "分"));
+            WeixinExtractor.articleNum = 0;
             if(status==STOPED){
                 break;
             }
