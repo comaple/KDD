@@ -52,4 +52,11 @@ public class SequenceFileUtil {
         return res;
     }
 
+    public static void main(String[] args) {
+        Configuration con = new Configuration();
+        con.set("fs.default.name", "hdfs://master:9000");
+        String sequenceFilePath = "/test";
+        readSequenceFile(sequenceFilePath,con);
+    }
+
 }
