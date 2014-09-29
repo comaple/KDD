@@ -17,6 +17,8 @@ public class StepTag extends BaseModel {
 
     private Double weight;
 
+    private Double tagFrequency;
+
     public String getStepItem() {
         return stepItem;
     }
@@ -42,4 +44,11 @@ public class StepTag extends BaseModel {
     }
 
 
+    public Double getTagFrequency() {
+        return tagFrequency;
+    }
+
+    public void setTagFrequency(Double tagFrequency) {
+        this.tagFrequency = tagFrequency;
+    }
 }

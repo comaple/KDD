@@ -56,7 +56,7 @@ public class AprioJob extends AbstractJob {
         if (res == -1) return -1;
 
         System.out.println("******** 计算步骤和标签相似度************");
-        StepTagSimilarity.getInstance().analysis();
+        StepTagSimilarity.getInstance().analysis(getInputPath(), this.getConf());
 
         System.out.println("********** 删除重复文章*************");
         // 删除重复数据

@@ -68,7 +68,10 @@ public class StepTagService extends AbstractService<StepTag> {
         }
 
         QueryBuilder queryBuilder = QueryBuilder.start("stepItem").is(stepItem);
+
+        // 按照权重和标签频率排序
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(1);
+        queryBuilderSort.and("tagFrequency").is(-1);
         queryBuilder.and("versionStamp").is(versionStamp.getVersionStamp());
         List<StepTag> stepTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,(pageNo-1)*pageSize,pageSize,StepTag.class);
         return stepTagList;

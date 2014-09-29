@@ -42,6 +42,7 @@ public class AprioMaper extends Mapper<LongWritable,Text,Text,DoubleWritable> {
         for (String word : words) {
             if (hasDigit(word)) continue;
             if (filterWord.contains(word)) continue;
+            if (!TagFilter.filterTag(word)) continue;
 
           //  if (word.contains())
 
@@ -133,7 +134,7 @@ public class AprioMaper extends Mapper<LongWritable,Text,Text,DoubleWritable> {
 
     public static void main(String[] args) {
         System.out.println("******** 计算步骤和标签相似度************");
-        StepTagSimilarity.getInstance().analysis();
+        //StepTagSimilarity.getInstance().analysis();
 
         System.out.println("********** 删除重复文章*************");
         // 删除重复数据
