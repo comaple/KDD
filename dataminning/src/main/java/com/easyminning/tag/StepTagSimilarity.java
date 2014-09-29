@@ -46,9 +46,11 @@ public class StepTagSimilarity {
         for (String word : words) {
             if (word == null || "".equals(word.trim())) continue;
             if (!TagFilter.filterTag(word)) continue;
-            StepTag stepTag = editDistance.getTagSimilarityStep(word);
-            stepTag.setTagFrequency(wordFrequency.get(word));
-            stepTagList.add(stepTag);
+            List<StepTag> stepTagList1 = editDistance.getTagSimilarityStep(word);
+            for (StepTag temp : stepTagList1) {
+                temp.setTagFrequency(wordFrequency.get(word));
+            }
+            stepTagList.addAll(stepTagList1);
         }
         stepTagService.saveList(stepTagList);
     }

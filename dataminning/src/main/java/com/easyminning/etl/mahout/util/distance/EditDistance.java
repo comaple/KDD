@@ -4,9 +4,7 @@ package com.easyminning.etl.mahout.util.distance;
 import com.easyminning.tag.StepSeedCache;
 import com.easyminning.tag.StepTag;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class EditDistance {
 
@@ -43,10 +41,12 @@ public class EditDistance {
      * @param calTag 计算的标签
      * @return
      */
-    public  StepTag getTagSimilarityStep(String calTag) {
+    public List<StepTag> getTagSimilarityStep(String calTag) {
         Set<String> stepSet = stepSeedMap.keySet();
         String selectStepName = "";
         Double selectStepWeight = Integer.MAX_VALUE + 0.0;
+        List<StepTag> stepTagList = new ArrayList<StepTag>();
+        List<String> zeroStep = new ArrayList<String>();
 
         for (String step : stepSet) {
             Set<String> tagSet = stepSeedMap.get(step).keySet();
@@ -55,13 +55,29 @@ public class EditDistance {
                 selectStepWeight = currentStepWeight + 0.0;
                 selectStepName = step;
             }
+            if (currentStepWeight == 0) {
+                zeroStep.add(step);
+            }
         }
+
 
         StepTag stepTag = new StepTag();
         stepTag.setStepItem(selectStepName);
         stepTag.setTagItem(calTag);
         stepTag.setWeight(selectStepWeight);
-        return stepTag;
+        stepTagList.add(stepTag);
+
+        // 增加为0的步骤
+        for (String temp: zeroStep) {
+            if (temp.equals(selectStepName)) continue;
+
+            stepTag = new StepTag();
+            stepTag.setStepItem(temp);
+            stepTag.setTagItem(calTag);
+            stepTag.setWeight(0.0);
+            stepTagList.add(stepTag);
+        }
+        return stepTagList;
     }
 
 

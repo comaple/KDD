@@ -51,7 +51,7 @@ public class FpgrowthResultJob extends AbstractJob {
 
 
         int res = job.waitForCompletion(true) == true ? 0 : -1;
-        StepTagSimilarity.getInstance().analysis();
+        //StepTagSimilarity.getInstance().analysis();
 
         // 删除重复数据
         DuplicateDocFilter.filter();

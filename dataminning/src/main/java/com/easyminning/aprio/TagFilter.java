@@ -29,6 +29,7 @@ public class TagFilter {
         add("精彩内容");
         add("万元");
         add("平均");
+        add("能力");
          }};
 
     public static boolean filterTag(String tag) {
