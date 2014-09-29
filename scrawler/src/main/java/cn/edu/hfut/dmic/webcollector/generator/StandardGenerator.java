@@ -25,18 +25,17 @@ public class StandardGenerator extends Generator {
     public String crawl_path;
     public StandardGenerator(String crawl_path){
         this.crawl_path=crawl_path;
-        try {
-            backup();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
         DbUpdater dbupdater=new DbUpdater(crawl_path);
         try {
             if(dbupdater.isLocked()){
                 dbupdater.merge();
                 dbupdater.unlock();
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            backup();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
