@@ -91,7 +91,7 @@ public class TestStandardGenerator {
     public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.chivast.com/italy/case/201408/25190.html");
+        HttpGet httpget = new HttpGet("http://www.lasedu.org/laseduhtml/cases/liuxue/3909.html");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
@@ -99,7 +99,7 @@ public class TestStandardGenerator {
         HttpResponse httpresponse = hc.execute(httpget);
         // 获取返回数据
         HttpEntity entity = httpresponse.getEntity();
-        String body = EntityUtils.toString(entity,"utf-8");
+        String body = EntityUtils.toString(entity,"utf8");
         System.out.println(body);
 
         /*Pattern p = Pattern.compile("(?is)20\\d{2}-\\d{2}-\\d{2}");

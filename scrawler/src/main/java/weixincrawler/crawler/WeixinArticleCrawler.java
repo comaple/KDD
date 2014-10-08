@@ -57,7 +57,7 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
             count++;
             long startTime = System.currentTimeMillis();
             Log.Infos("info","Number:"+count+" starting...");
-            LogRecordService.getInstance().save(new LogRecord("2",df.format(new Date()),"周期"+count+"微信抓取开始"));
+            LogRecordService.getInstance().save(new LogRecord("3",df.format(new Date()),"周期"+count+"微信抓取开始"));
             List<String> seeds = SeedsGenerator.generatorSeedsFromWords();
             for(String seed : seeds){
                 addSeed(seed);
@@ -77,7 +77,7 @@ public class WeixinArticleCrawler  extends BreadthCrawler {
             long endTime = System.currentTimeMillis();
             long duration = endTime-startTime;
             long hour = duration/3600000;
-            LogRecordService.getInstance().save(new LogRecord("2",df.format(new Date()),
+            LogRecordService.getInstance().save(new LogRecord("3",df.format(new Date()),
                     "周期"+count+"微信抓取结束,抓取文章"+ WeixinExtractor.articleNum +"篇,耗时"+ hour +"时"+(duration-hour*3600000)/60000 + "分"));
             WeixinExtractor.articleNum = 0;
             if(status==STOPED){

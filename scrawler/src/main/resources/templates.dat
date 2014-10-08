@@ -50,3 +50,13 @@ http://www.xhd.cn/ielts/\d{6}.html%%%case_xhd.template%%%360
 http://www.huashen-edu.com/article_\d{8}.html%%%case_huashen.template%%%360
 http://[a-z]{2,10}.bincailiuxue.com/chenggonganli/20\d{11}.html%%%case_bincailiuxue.template%%%360
 http://www.chivast.com/[a-z]{2,15}/case/20\d{4}/\d{5}.html%%%case_chivast.template%%%360
+http://www.macmagnus.org/Home/Example/Detail/\d{1,3}.html%%%case_macmagnus.template%%%360
+http://www.topsedu.com/case/20\d{4}/\d{2}/\d{3,5}.html%%%case_topsedu.template%%%360
+http://www.idp.cn/[a-z]{2,15}/chenggonganli/\d{5}.html%%%case_idp.template%%%360
+http://[a-z]{3,10}.211lx.com/case/\d{3,7}.html%%%case_211lx.template%%%360
+http://www.wiseway.com.cn/article/\d{5}-\d{6}.html%%%case_wiseway.template%%%360
+http://liuxue.xiaoma.com/shangke/cgal/20\d{6}/\d{6}.html%%%case_xiaoma.template%%%360
+http://www.meishiedu.com/html/university/case/\d{5}.html%%%case_meishiedu.template%%%360
+http://ttl.edu.cn/content/details93_\d{4,6}.html%%%case_ttledu.template%%%360
+http://www.taisha.org/abroad/case/20\d{4}/20\d{12}.html%%%case_taisha.template%%%360
+http://www.lasedu.org/laseduhtml/cases/liuxue/\d{4,6}.html%%%case_lasedu.template%%%360
