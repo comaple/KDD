@@ -69,3 +69,21 @@ http://ttl.edu.cn/content/details93_\d{4,6}.html
 http://www.taisha.org/abroad/case/20\d{4}/20\d{12}.html
 
 http://www.lasedu.org/laseduhtml/cases/liuxue/\d{4,6}.html
+
+http://www.xinquanedu.com/news/chenggonganli/[a-z]{2,14}gongsi/20\d{2}/\d{4}/\d{5}.html
+
+http://www.welltrend-edu.com/article/\d{5}/
+
+http://www.wanjia.org/newsinfo/news\d{4}.shtml
+
+http://www.leadyourway.org/show.php?contentid=\d{3,5}
+
+http://www.jiazhuoedu.com/success/(high_school|undergraduate|postgraduate)/\d{5}.html
+
+http://jp.weilanliuxue.com/cgal/\d{4,6}.html
+http://korea.weilanliuxue.com/anli/\d{4,6}.html
+http://usa.weilanliuxue.com/anli/\d{4,6}.html
+
+http://www.liumeinet.com/news-final.php?cat=6&id=\d{4,6}
+
+http://www.chinazhaolong.com/[a-z]{2,15}/cgal/zl\d{5,7}.html

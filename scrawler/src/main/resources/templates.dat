@@ -60,3 +60,13 @@ http://www.meishiedu.com/html/university/case/\d{5}.html%%%case_meishiedu.templa
 http://ttl.edu.cn/content/details93_\d{4,6}.html%%%case_ttledu.template%%%360
 http://www.taisha.org/abroad/case/20\d{4}/20\d{12}.html%%%case_taisha.template%%%360
 http://www.lasedu.org/laseduhtml/cases/liuxue/\d{4,6}.html%%%case_lasedu.template%%%360
+http://www.xinquanedu.com/news/chenggonganli/[a-z]{2,14}gongsi/20\d{2}/\d{4}/\d{5}.html%%%case_xinquanedu.template%%%360
+http://www.welltrend-edu.com/article/\d{5}/%%%case_welltrend.template%%%360
+http://www.wanjia.org/newsinfo/news\d{4}.shtml%%%case_wanjia.template%%%360
+http://www.leadyourway.org/show.php?contentid=\d{3,5}%%%case_leadyourway.template%%%360
+http://www.jiazhuoedu.com/success/(high_school|undergraduate|postgraduate)/\d{5}.html%%%case_jiazhuoedu.template%%%360
+http://jp.weilanliuxue.com/cgal/\d{4,6}.html%%%case_jpweilan.template%%%360
+http://korea.weilanliuxue.com/anli/\d{4,6}.html%%%case_koreaweilan.template%%%360
+http://usa.weilanliuxue.com/anli/\d{4,6}.html%%%case_usaweilan.template%%%360
+http://www.liumeinet.com/news-final.php?cat=6&id=\d{4,6}%%%case_liumeinet.template%%%360
+http://www.chinazhaolong.com/[a-z]{2,15}/cgal/zl\d{5,7}.html%%%case_chinazhaolong.template%%%360
