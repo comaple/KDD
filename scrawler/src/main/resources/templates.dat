@@ -70,3 +70,8 @@ http://korea.weilanliuxue.com/anli/\d{4,6}.html%%%case_koreaweilan.template%%%36
 http://usa.weilanliuxue.com/anli/\d{4,6}.html%%%case_usaweilan.template%%%360
 http://www.liumeinet.com/news-final.php?cat=6&id=\d{4,6}%%%case_liumeinet.template%%%360
 http://www.chinazhaolong.com/[a-z]{2,15}/cgal/zl\d{5,7}.html%%%case_chinazhaolong.template%%%360
+http://liuxue.xhd.cn/meiguoanli/\d{4}.html%%%case_liuxuexhd.template%%%360
+http://www.ilongre.com/news/\d{5,7}.html%%%case_ilongre.template%%%360
+http://www.austarstudy.com/article/case/\d{4,5}.html%%%case_austarstudy.template%%%360
+http://www.hanterry.com/show.php?contentid=\d{5,7}%%%case_hanterry.template%%%360
+http://www.wefwuhan.com/a/chenggonganli/[a-z]{2,18}/(benke/)?20\d{6}/\d{3,5}.html%%%case_wefwuhan.template%%%360

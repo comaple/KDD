@@ -237,3 +237,18 @@ http://www.liumeinet.com/news-final.php?cat=6&id=\d{4,6}
 
 http://www.chinazhaolong.com/chenggonganli/
 http://www.chinazhaolong.com/[a-z]{2,15}/cgal/zl\d{5,7}.html
+
+http://liuxue.xhd.cn/meiguoanli/
+http://liuxue.xhd.cn/meiguoanli/\d{4}.html
+
+http://www.ilongre.com/news/list_85_1.html
+http://www.ilongre.com/news/\d{5,7}.html
+
+http://www.austarstudy.com/wuxi/case.html
+http://www.austarstudy.com/article/case/\d{4,5}.html
+
+http://www.hanterry.com/list.php?catid=49
+http://www.hanterry.com/show.php?contentid=\d{5,7}
+
+http://www.wefwuhan.com/a/chenggonganli/
+http://www.wefwuhan.com/a/chenggonganli/[a-z]{2,18}/(benke/)?20\d{6}/\d{3,5}.html
