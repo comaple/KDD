@@ -1,0 +1,4 @@
+title=(?is)<h3>.*?</h3>
+publishDate=(?is)20\d{2}.\d{2}.\d{2}
+author=(?is)</a>　作者：.*?</h4>
+mainContent=(?is)</h4>.*?<div class="txt_nav">

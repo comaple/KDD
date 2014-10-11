@@ -97,3 +97,15 @@ http://www.austarstudy.com/article/case/\d{4,5}.html
 http://www.hanterry.com/show.php?contentid=\d{5,7}
 
 http://www.wefwuhan.com/a/chenggonganli/[a-z]{2,18}/(benke/)?20\d{6}/\d{3,5}.html
+
+http://www.newhomewayedu.com/anli/20\d{2}/\d{4}/\d{3,5}.html
+
+http://www.wztigo.com/chuguoliuxue/\d{3,5}/
+
+http://edubridge.com.cn/[a-z]{2,15}/Case/(swiss/)?20\d{10}.html
+
+http://www.perspectiveedu.com/html/20\d{2}/chenggonganli_0802/\d{3,6}.html
+
+http://www.houdeliuxue.com/anli_show.php?id=\d{3,4}
+
+http://www.bybjy.com/20\d{2}/mingxiaooffer_\d{4}/\d{3,4}.html

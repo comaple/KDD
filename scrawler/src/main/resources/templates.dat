@@ -75,3 +75,9 @@ http://www.ilongre.com/news/\d{5,7}.html%%%case_ilongre.template%%%360
 http://www.austarstudy.com/article/case/\d{4,5}.html%%%case_austarstudy.template%%%360
 http://www.hanterry.com/show.php?contentid=\d{5,7}%%%case_hanterry.template%%%360
 http://www.wefwuhan.com/a/chenggonganli/[a-z]{2,18}/(benke/)?20\d{6}/\d{3,5}.html%%%case_wefwuhan.template%%%360
+http://www.newhomewayedu.com/anli/20\d{2}/\d{4}/\d{3,5}.html%%%case_newhomewayedu.template%%%360
+http://www.wztigo.com/chuguoliuxue/\d{3,5}/%%%case_wztigo.template%%%360
+http://edubridge.com.cn/[a-z]{2,15}/Case/(swiss/)?20\d{10}.html%%%case_edubridge.template%%%360
+http://www.perspectiveedu.com/html/20\d{2}/chenggonganli_0802/\d{3,6}.html%%%case_perspectiveedu.template%%%360
+http://www.houdeliuxue.com/anli_show.php?id=\d{3,4}%%%case_houdeliuxue.template%%%360
+http://www.bybjy.com/20\d{2}/mingxiaooffer_\d{4}/\d{3,4}.html%%%case_bybjy.template%%%360
