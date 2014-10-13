@@ -66,6 +66,7 @@ public class TagDocController extends BaseController {
             map.put("url", resultDocument.getUrl() == null ? "" :resultDocument.getUrl());
             map.put("keyWord",resultDocument.getKeyWord() == null ? "" : resultDocument.getKeyWord());
             map.put("author", resultDocument.getUrl() == null ? "" : resultDocument.getAuthor());
+            map.put("issue",resultDocument.getIssue() ==null ? "" : resultDocument.getIssue());
             resultDocumentMapList.add(map);
         }
         renderJson(resultDocumentMapList);

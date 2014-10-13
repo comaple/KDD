@@ -104,6 +104,9 @@ public class ResultDocumentFilter {
         add(".");
         add("-");
 
+        add("留学");
+        add("学校");
+
     }};
 
     /**

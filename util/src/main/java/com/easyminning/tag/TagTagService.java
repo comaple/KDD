@@ -75,6 +75,20 @@ public class TagTagService extends AbstractService<TagTag> {
 
     }
 
+    public List<TagTag> findHotTag(Integer pageNo, Integer pageSize) {
+        VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
+        if (versionStamp == null) {
+            return new ArrayList<TagTag>();
+        }
+
+        QueryBuilder queryBuilder = QueryBuilder.start("versionStamp").is(versionStamp.getVersionStamp());
+        QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
+
+        List<TagTag> tagTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,TagTag.class);
+        return tagTagList;
+    }
+
+
     public List<TagTag> findTagByTag(String tagItem, Integer pageNo, Integer pageSize) {
         VersionStamp versionStamp = versionStampService.getLatestFinshedVersionStamp();
         if (versionStamp == null) {

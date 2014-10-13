@@ -34,6 +34,9 @@ public class StepTagController extends BaseController {
         List<StepTag> stepTagList = stepTagService.findStepTagByStep(stepItem, pageNo, pageSize);
         List<Map> result = new ArrayList<Map>();
         for (StepTag stepTag : stepTagList) {
+            if ("选国家".equals(stepItem)) { // 选国家，只选择weight为0.0的
+                if (stepTag.getWeight() != 0.0) break;
+            }
             Map<String,String> map = new HashMap<String,String>();
             map.put("stepItem", stepTag.getStepItem() == null ? "" : stepTag.getStepItem());
             map.put("tagItem", stepTag.getTagItem() == null ? "" : stepTag.getTagItem());

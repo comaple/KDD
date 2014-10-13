@@ -44,4 +44,27 @@ public class TagTagController extends BaseController {
         renderJson(result);
     }
 
+
+    /**
+     * 传tag名称
+     * @param
+     */
+    @RequestMapping(value = "/hottag", method = RequestMethod.GET)
+    public void test2(Integer pageNo, Integer pageSize) {
+        if (pageNo == null || pageNo < 0) pageNo = DEFAULT_PAGE_NO;
+        if (pageSize == null || pageSize < 0) pageSize = DEFAULT_PAGE_SIZE;
+        // List<TagTag> tagTagList = tagTagService.findTagByTag(tagItem,pageNo,pageSize);
+        List<TagTag> tagTagList = tagTagService.findHotTag(pageNo,pageSize);
+
+        List<Map> result = new ArrayList<Map>();
+        for (TagTag tagTag : tagTagList) {
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("tagItem", tagTag.getTagItem() == null ? "":tagTag.getTagItem());
+            map.put("tagItem1", tagTag.getTagItem1() == null ? "":tagTag.getTagItem1());
+            map.put("weight", tagTag.getWeight() == null ? "":tagTag.getWeight().toString());
+            result.add(map);
+        }
+        renderJson(result);
+    }
+
 }

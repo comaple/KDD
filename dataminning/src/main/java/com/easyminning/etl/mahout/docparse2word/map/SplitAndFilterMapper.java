@@ -105,22 +105,18 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 
             // 过滤掉一些分词
             if (!ResultDocumentFilter.filterLexeme(word)) continue;
+            stringBuilder.append(word + " ");
+
             if (targetMap.containsKey(word)) {
                 targetMap.put(word, targetMap.get(word) + 1d);
-                if (!HIGH_FREQUENCY_WORDS.contains(word)) {
-                    stringBuilder.append(word + " ");
-                }
-
-
             } else {
                 targetMap.put(word, 1d);
-
             }
         }
         //权重归一化处理
-        for (String word : targetMap.keySet()) {
-            targetMap.put(word, targetMap.get(word));
-        }
+//        for (String word : targetMap.keySet()) {
+//            targetMap.put(word, targetMap.get(word));
+//        }
 
         Double weight = similarity.Similarity(StepSeedCache.SEED_MAP, targetMap);
 
@@ -133,7 +129,6 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
         // 关键词
         List<TagDoc> tagDocList = new ArrayList<TagDoc>();
         for (String word : targetMap.keySet()) {
-            if (HIGH_FREQUENCY_WORDS.contains(word)) continue;
             TagDoc tagDoc = new TagDoc();
             tagDoc.setTagItem(word);
             tagDoc.setWeight(targetMap.get(word));
@@ -161,6 +156,7 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
 
         } else {
             context.write(documentWritable.getDocId(), documentWritable);
+            goodDocCount++;
         }
     }
 
@@ -210,9 +206,9 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
     protected void cleanup(Context context) throws IOException, InterruptedException {
         StringBuilder sb = new StringBuilder();
         sb.append("map文章总数：" + docCount);
-        sb.append("短文章数：" + shortDocCount);
-        sb.append("权重较小的文章数：" + shortWeightDocCount);
-        sb.append("好的文章数：" + goodDocCount);
+        sb.append("，短文章数：" + shortDocCount);
+        sb.append("，权重较小的文章数：" + shortWeightDocCount);
+        sb.append("，好的文章数：" + goodDocCount);
         LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"分词算法执行中，分词结果为: " + sb.toString()));
         super.cleanup(context);
     }
