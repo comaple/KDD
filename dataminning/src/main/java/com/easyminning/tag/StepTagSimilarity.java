@@ -27,6 +27,7 @@ public class StepTagSimilarity {
     private TagDocService tagDocService;
     private EditDistance editDistance;
     private StepTagService stepTagService;
+    private TagTagService tagTagService;
 
     public static StepTagSimilarity getInstance() {
         return stepTagSimilarity;
@@ -36,6 +37,7 @@ public class StepTagSimilarity {
         tagDocService = TagDocService.getInstance();
         editDistance = EditDistance.getIntance();
         stepTagService = StepTagService.getInstance();
+        tagTagService = TagTagService.getInstance();
     }
 
 
@@ -54,6 +56,28 @@ public class StepTagSimilarity {
         }
         stepTagService.saveList(stepTagList);
     }
+
+    public void analysis2(Path inputPath, Configuration conf) {
+        Map<String,Double> wordFrequency = this.getWordFrequency(inputPath, conf);
+        Set<String> words = wordFrequency.keySet();
+        List<StepTag> stepTagList = new ArrayList<StepTag>();
+        for (String word : words) {
+            if (word == null || "".equals(word.trim())) continue;
+            if (!TagFilter.filterTag(word)) continue;
+
+            tagTagService.findTagByTag(word,1,100);
+
+            List<StepTag> stepTagList1 = editDistance.getTagSimilarityStep(word);
+            for (StepTag temp : stepTagList1) {
+                temp.setTagFrequency(wordFrequency.get(word));
+            }
+            stepTagList.addAll(stepTagList1);
+        }
+        stepTagService.saveList(stepTagList);
+    }
+
+
+
 
     /**
      * 统计词的词频
