@@ -1,17 +1,12 @@
 package com.easyminning.tag;
 
 /**
- * Created with IntelliJ IDEA.
- * User: xdx
- * Date: 14-8-30
- * Time: 下午3:11
- * To change this template use File | Settings | File Templates.
+ * Created by Administrator on 2014/9/26.
  */
-public class TagTag extends BaseModel  implements Comparable  {
-
+public class HotTag extends BaseModel implements Comparable  {
     private String tagItem;
 
-    private String tagItem1;
+    private String tagInfo;
 
     private Double weight;
 
@@ -23,12 +18,12 @@ public class TagTag extends BaseModel  implements Comparable  {
         this.tagItem = tagItem;
     }
 
-    public String getTagItem1() {
-        return tagItem1;
+    public String getTagInfo() {
+        return tagInfo;
     }
 
-    public void setTagItem1(String tagItem1) {
-        this.tagItem1 = tagItem1;
+    public void setTagInfo(String tagInfo) {
+        this.tagInfo = tagInfo;
     }
 
     public Double getWeight() {
