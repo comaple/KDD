@@ -1,0 +1,4 @@
+title=(?is)<h1>.*?</h1>
+publishDate=(?is)<span class="pub-time">20\d{2}年\d{2}月\d{2}日
+author=(?is)<span class="auth">作者：<em>.*?</em></span>
+mainContent=(?is)<div id="aoji-article-main" class="aoji-article-main">.*?</div>

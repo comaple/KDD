@@ -1,0 +1,4 @@
+title=(?is)<h2 class="title_01">.*?</h2>
+publishDate=(?is)<p class="txt_time">20\d{2}-\d{2}-\d{2}\s+\d{1,2}:\d{1,2}:\d{1,2}<span>
+author=(?is)</span>来源：.*?</p>
+mainContent=(?is)<div class="pad_01">.*?</div>\s+<div class="zy_left fl_r">

@@ -1,0 +1,4 @@
+title=(?is)<h3>.*?</h3>
+publishDate=(?is)20\d{2}-\d{2}-\d{2}\s+\d{1,2}:\d{1,2}:\d{1,2}</li>
+author=(?is)<li>来源：.*?</li>
+mainContent=(?is)<div class="news_text">.*?</div>

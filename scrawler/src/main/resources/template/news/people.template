@@ -1,0 +1,4 @@
+title=(?is)<h1 id="p_title">.*?</h1>
+publishDate=(?is)<span id="p_publishtime">\d{4}年\d{2}月\d{2}日\s?\d{2}:\d{2}</span>
+author=(?is)<span id="p_origin">.*?<a href=".*?" target="_blank">.*?</a></span>
+mainContent=(?is)<div id="p_content">.*?align="center"?.*?</div>

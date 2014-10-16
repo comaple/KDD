@@ -1,0 +1,4 @@
+title=(?is)<h1>.*?</h1>
+publishDate=(?is)<span>20\d{2}年\d{2}月\d{2}日\s+\d{1,2}:\d{1,2}</span>
+author=(?is)<span>供稿人:.*?</span>
+mainContent=(?is)<div class="study-table">.*?</div>

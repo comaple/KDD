@@ -1,0 +1,4 @@
+title=(?is)<h1.*?>.*?</h1>
+publishDate=(?is)<span class="left f9">20\d{2}-\d{2}-\d{2}
+author=(?is)<span class="left f9">.*?</span>
+mainContent=(?is)<div class="text-in.*?articleContent">.*?</div>

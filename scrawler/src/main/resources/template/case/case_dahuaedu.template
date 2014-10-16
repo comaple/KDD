@@ -1,0 +1,4 @@
+title=(?is)<p class="con_title">.*?</p>
+publishDate=(?is)20\d{2}-\d{2}-\d{2}
+author=(?is)<p class="con_text">作者：.*?日期
+mainContent=(?is)<div class="arc_top">.*?<span style="color:#008000;"><strong>

@@ -1,0 +1,4 @@
+title=(?is)<td align="center" class="font16B">.*?</td>
+publishDate=(?is)\d{4}-\d{2}-\d{2}
+author=(?is)<span class="author">.*?</span>
+mainContent=(?is)<td valign="top" class="hui14">.*?</td>

@@ -1,0 +1,4 @@
+title=(?is)<h1 class="title"><a href=.*?>.*?</a></h1>
+publishDate=(?is)<span class="post-date">.*?</span>
+author=(?is)<span class="post-author"><a href=.*?>.*?</a></span>
+mainContent=(?is)<a class="addthis_counter addthis_pill_style"></a>.*?<div class="nr_related_placeholder".*?>

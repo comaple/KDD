@@ -1,0 +1,4 @@
+title=(?is)<h2>.*?</h2>
+publishDate=(?is)20\d{2}-\d{1,2}-\d{1,2}
+author=(?is)<span id="personName">编辑: .*?</span>
+mainContent=(?is)<div class="bianzhean">.*?<div class="nextxx" id="nextxx">
