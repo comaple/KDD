@@ -90,20 +90,24 @@ public class StepTagSimilarity {
                 tagtagListMap.add(temp);
             }
 //            Collections.sort(tagTagList);
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (TagTag tagTag : tagTagList) {
-//                sb.append(tagTag.getTagItem1());
-//                stringBuilder.append(tagTag.getTagItem1());
-//                sb.append(",");
-//            }
+            StringBuilder sb = new StringBuilder();
+            for (TagTag tagTag : tagTagList) {
+                sb.append(tagTag.getTagItem1());
+                sb.append(":");
+                sb.append(tagTag.getWeight());
+                sb.append(",");
+            }
+            if (sb.length() > 1) {
+                sb.deleteCharAt(sb.length()-1);
+            }
             //System.out.println(stringBuilder.toString());
             count++;
            // map.put("articleCount", wordFrequency.get(hotTag.getTagItem()));
            // map.put("relatedTag", sb.toString());
-            hotTag.setTagInfo(JSON.toJSONString(tagtagListMap));
+            hotTag.setTagInfo(sb.toString());
             result.add(hotTag);
             System.out.println(count);
-            if (count > 100) break;
+            if (count >= 100) break;
         }
 
         hotTagService.saveHotTagList(result);
@@ -219,7 +223,7 @@ public class StepTagSimilarity {
         new File("./bin").mkdirs();
         new File("./bin/winutils.exe").createNewFile();
         Configuration con = new Configuration();
-        con.set("fs.default.name", "hdfs://master:9000");
+        con.set("fs.default.name", "hdfs://localhost:9000");
         String sequenceFilePath = "/test";
         StepTagSimilarity.getInstance().analysis2(new Path(sequenceFilePath), con);
      //   Map wordFrequencyAndDocCount = StepTagSimilarity.getInstance().getWordFrequencyAndDocCount(new Path(sequenceFilePath),con);

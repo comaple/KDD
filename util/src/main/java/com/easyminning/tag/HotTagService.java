@@ -35,16 +35,16 @@ public class HotTagService extends AbstractService<HotTag> {
             log.error("versionstamp is null");
             return null ;
         }
-        QueryBuilder queryBuilder = QueryBuilder.start("versionStamp").is(versionStamp);
+        QueryBuilder queryBuilder = QueryBuilder.start("versionStamp").is(versionStamp.getVersionStamp());
         QueryBuilder queryBuilderSort = QueryBuilder.start("weight").is(-1);
-        List<HotTag> hotTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,pageNo,pageSize,HotTag.class);
+        List<HotTag> hotTagList = this.simpleMongoDBClient2.select(queryBuilder,queryBuilderSort,(pageNo-1)*pageSize,pageSize,HotTag.class);
         return hotTagList;
     }
 
     public void saveHotTagList( List<HotTag> hotTagList) {
         VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
-        versionStamp = new VersionStamp();
-        versionStamp.setVersionStamp("201409292144");
+       // versionStamp = new VersionStamp();
+       // versionStamp.setVersionStamp("201409292144");
         if (versionStamp == null) {
             log.error("versionstamp is null");
             return ;
