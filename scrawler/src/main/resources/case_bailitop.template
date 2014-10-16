@@ -1,4 +1,0 @@
-title=(?is)</a>\s+>.*?</li>
-publishDate=(?is)</span>20\d{2}-\d{1,2}-\d{1,2}</span></span>
-author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div class="contents">.*?<div class="btonbox">

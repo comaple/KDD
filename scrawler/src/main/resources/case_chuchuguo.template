@@ -1,4 +1,0 @@
-title=(?is)<div class="content_title">.*?</div>
-publishDate=(?is)20\d{2}-\d{2}-\d{2}</span>
-author=(?is)<span>作者：<font>.*?</font>
-mainContent=(?is)</script>\s+<div>\s+<p>.*?<div class="show_xsl">

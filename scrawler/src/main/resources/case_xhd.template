@@ -1,4 +1,0 @@
-title=(?is)<h1 class="article_title">.*?</h1>
-publishDate=(?is)<div class="article_time">20\d{2}-\d{2}-\d{2}<br>
-author=(?is)责编：.*?</div>
-mainContent=(?is)<div class="text">.*?<div class="part">.*?</div>

@@ -1,4 +1,0 @@
-title=(?is)<p class="texttitle">.*?</p>
-publishDate=(?is)<p>20\d{2}年\d{1,2}月\d{1,2}日</p>
-author=(?is)<p>责任编辑：.*?</p>
-mainContent=(?is)<div class="content">.*?</div>

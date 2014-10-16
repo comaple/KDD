@@ -1,4 +1,0 @@
-title=(?is)<div class="news_xxbt">.*?</div>
-publishDate=(?is)20\d{2}-\d{2}-\d{2}
-author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div class="news_xxnr" id="artibody">.*?</div>

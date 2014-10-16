@@ -1,4 +1,0 @@
-title=(?is)<p class="page_title">.*?</p>
-publishDate=(?is)20\d{2}-\d{2}-\d{2}
-author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div id="mcontent" class="page_wz">.*?<div class="page_610">

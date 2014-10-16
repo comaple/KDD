@@ -1,4 +1,0 @@
-title=(?is)<h1 class="title">.*?</h1>
-publishDate=(?is)<div class="info">\s+<span>\d{4}年\d{2}月\d{2}日</span>
-author=(?is)</span><span>来源：.*?</span><span>
-mainContent=(?is)<div class="content">.*?<div class="view_pages">

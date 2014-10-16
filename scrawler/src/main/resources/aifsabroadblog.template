@@ -1,4 +1,0 @@
-title=(?is)<h2 class="title"><a href=.*?>.*?</a></h2>
-publishDate=(?is)<div class="date"><span class="month">\w{3}</span><span class="day">\d{2}</span><span class="month">\d{4}</span></div>
-author=(?is)<li><span>Posted by</span>.*?</li>
-mainContent=(?is)<div class="post-content">.*?</div>

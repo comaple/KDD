@@ -136,10 +136,11 @@ public class ConfLoader {
     }
 
     public static void main(String []args){
-        System.out.println(ConfLoader.seedSet);
-        System.out.println(ConfLoader.positiveRegexSet);
-        System.out.println(ConfLoader.negativeRegexSet);
-        System.out.println(ConfLoader.topicRegexSet);
+        //System.out.println(ConfLoader.seedSet);
+        //System.out.println(ConfLoader.positiveRegexSet);
+        //System.out.println(ConfLoader.negativeRegexSet);
+        //System.out.println(ConfLoader.topicRegexSet);
+        //System.out.println(ConfLoader.caseTopicRegexSet);
         System.out.println(ConfLoader.templateMap);
         /*String s = "author=<span class=\"author\">.*?</span>";
         int index = s.indexOf('=');

@@ -1,4 +1,0 @@
-title=(?is)<div class="letitle">.*?</div>
-publishDate=(?is)<div class="fleft" style="margin-top:.*?">\d{4}-\d{2}-\d{2}
-author=(?is)<a href= http://www.533.com>533出国留学网</a>\s{4}.*?</div>
-mainContent=(?is)<div class="tex2" id="icontent">.*?(</div>|</p>)</div>

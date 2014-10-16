@@ -1,4 +1,0 @@
-title=(?is)<h1>.*?</h1>
-publishDate=(?is)<cite>\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}</cite>
-author=(?is)<a href="http://www.en.com.cn">.*?</a>
-mainContent=(?is)<div class="post_content">.*?</div>

@@ -1,4 +1,0 @@
-title=(?is)<h1 class="title_con" id="ctitle">.*?</h1>
-publishDate=(?is)<div class="ly_edu">\d{4}-\d{2}-\d{2}\s?\d{2}:\d{2}:\d{2}
-author=(?is)来源.*?<script.*?>
-mainContent=(?is)<div class="content_edu" id="morepage">.*?</div>

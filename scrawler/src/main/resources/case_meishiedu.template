@@ -1,4 +1,0 @@
-title=(?is)<h3>.*?</h3>
-publishDate=(?is)20\d{2}年\d{2}月\d{2}日
-author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div class="article">.*?</div>

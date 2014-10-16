@@ -1,4 +1,0 @@
-title=(?is)<p class="lvTitle">.*?</p>
-publishDate=(?is)<p class="lvTime"><span>\d{4}-\d{2}-\d{2}</span>
-author=(?is)<span class="name">.*?</span></p>
-mainContent=(?is)<div class="pb10 pt10">.*?</div>

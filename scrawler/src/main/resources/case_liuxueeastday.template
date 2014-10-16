@@ -1,4 +1,0 @@
-title=(?is)<div class="cen_bt">.*?</div>
-publishDate=(?is)20\d{2}-\d{2}-\d{2}
-author=(?is)<div class="cen_bjrs">.*?编辑
-mainContent=(?is)<div style="width:210px; height:310px; background:#c00; float:left;.*?"></div>.*?</P>\s+</div>

@@ -1,4 +1,0 @@
-title=(?is)<h1>.*?</h1>
-publishDate=(?is)20\d{2}年\d{2}月\d{2}日</td>
-author=(?is)来源：.*?</td>
-mainContent=(?is)<p><font face="楷体_GB2312">.*?<div class="y-box-5">

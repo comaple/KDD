@@ -1,4 +1,0 @@
-title=(?is)<h1 id="artibodyTitle".*?>.*?</h1>
-publishDate=(?is)<span id="pub_date">(\d{4}年\d{2}月\d{2}日)(\s?\d{2}:\d{2})?</span>
-author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div class="blkContainerSblkCon BSHARE_POP" id="artibody">.*?</div>
