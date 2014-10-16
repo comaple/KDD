@@ -71,7 +71,7 @@ public class TestStandardGenerator {
         }
 
         String ss = "2012-9";//
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.ENGLISH);
         try {
             System.out.println(sdf.parse(ss));
         } catch (ParseException e) {
@@ -91,7 +91,7 @@ public class TestStandardGenerator {
     public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.bybjy.com/2014/mingxiaooffer_0415/684.html");
+        HttpGet httpget = new HttpGet("http://www.eduglobal.com/can/Article/106595/");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
