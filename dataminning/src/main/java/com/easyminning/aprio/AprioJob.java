@@ -54,6 +54,7 @@ public class AprioJob extends AbstractJob {
 
         this.getConf().set("mapred.map.tasks","10");
         this.getConf().set("mapred.reduce.tasks","10");
+        this.getConf().set("inputPath", getInputPath().toString());
         Job job = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class,
                 AprioMaper.class, Text.class, DoubleWritable.class, AprioReducer.class,
                 Text.class, NullWritable.class, TextOutputFormat.class);

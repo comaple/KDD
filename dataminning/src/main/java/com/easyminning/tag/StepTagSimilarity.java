@@ -1,5 +1,6 @@
 package com.easyminning.tag;
 
+import com.alibaba.fastjson.JSON;
 import com.easyminning.aprio.TagFilter;
 import com.easyminning.etl.mahout.util.distance.EditDistance;
 import org.apache.hadoop.conf.Configuration;
@@ -7,10 +8,6 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
-import org.apache.hadoop.io.SequenceFile;
-import org.apache.hadoop.io.Writable;
-import org.apache.hadoop.util.ReflectionUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -83,16 +80,14 @@ public class StepTagSimilarity {
             if (hotTag == null || "".equals(hotTag.getTagItem().trim())) continue;
             if (!TagFilter.filterTag(hotTag.getTagItem())) continue;
 
-            List<TagTag> tagTagList = tagTagService.findTagByTag(hotTag.getTagItem(),1,100);
+            List<TagTag> tagTagList = tagTagService.findTagByTag(hotTag.getTagItem(), 1, 100);
 
-            StringBuilder sb = new StringBuilder();
+           // StringBuilder sb = new StringBuilder();
+            List<Map> tagtagListMap = new ArrayList<Map>();
             for (TagTag tagTag : tagTagList) {
-                sb.append(tagTag.getTagItem1());
-                sb.append(":");
-                sb.append(tagTag.getWeight() );
-//                sb.append(tagTag.getWeight()/docCount * Math.log(docCount/wordFrequency.get(tagTag.getTagItem1())));
-//                tagTag.setWeight(tagTag.getWeight()/docCount * Math.log(docCount/wordFrequency.get(tagTag.getTagItem1())));
-                sb.append(",");
+                Map temp = new HashMap();
+                temp.put(tagTag.getTagItem1(), tagTag.getWeight());
+                tagtagListMap.add(temp);
             }
 //            Collections.sort(tagTagList);
 //            StringBuilder stringBuilder = new StringBuilder();
@@ -103,12 +98,14 @@ public class StepTagSimilarity {
 //            }
             //System.out.println(stringBuilder.toString());
             count++;
-            map.put("articleCount", wordFrequency.get(hotTag.getTagItem()));
-            map.put("relatedTag", sb.toString());
-            hotTag.setTagInfo(map.toString());
+           // map.put("articleCount", wordFrequency.get(hotTag.getTagItem()));
+           // map.put("relatedTag", sb.toString());
+            hotTag.setTagInfo(JSON.toJSONString(tagtagListMap));
             result.add(hotTag);
+            System.out.println(count);
             if (count > 100) break;
         }
+
         hotTagService.saveHotTagList(result);
 
     }
@@ -120,7 +117,7 @@ public class StepTagSimilarity {
      * @param conf
      * @return
      */
-    public   Map getWordFrequencyAndDocCount(Path path, Configuration conf) {
+    public Map getWordFrequencyAndDocCount(Path path, Configuration conf) {
         Map wordFrequencyAndDocCount = new HashMap();
         Map<String,Double> res = new HashMap<String, Double>();
         int count = 0;
@@ -225,9 +222,9 @@ public class StepTagSimilarity {
         con.set("fs.default.name", "hdfs://master:9000");
         String sequenceFilePath = "/test";
         StepTagSimilarity.getInstance().analysis2(new Path(sequenceFilePath), con);
-        Map wordFrequencyAndDocCount = StepTagSimilarity.getInstance().getWordFrequencyAndDocCount(new Path(sequenceFilePath),con);
-       Map wordFrequency = (Map<String,Double>)wordFrequencyAndDocCount.get("wordFrequency");
-        int docCount = (Integer)wordFrequencyAndDocCount.get("docCount");
+     //   Map wordFrequencyAndDocCount = StepTagSimilarity.getInstance().getWordFrequencyAndDocCount(new Path(sequenceFilePath),con);
+      // Map wordFrequency = (Map<String,Double>)wordFrequencyAndDocCount.get("wordFrequency");
+       // int docCount = (Integer)wordFrequencyAndDocCount.get("docCount");
 //        System.out.println(docCount);
     }
 

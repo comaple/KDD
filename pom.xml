@@ -12,6 +12,7 @@
     <properties>
         <Project.Compiler>UTF-8</Project.Compiler>
         <spring.version>3.2.2.RELEASE</spring.version>
+        <hadoop2.version>2.4.1</hadoop2.version>
     </properties>
 
     <modules>
@@ -114,11 +115,6 @@
             <version>1.1.41</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-core</artifactId>
-            <version>1.2.1</version>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -136,6 +132,48 @@
             <groupId>com.xunlei.IKAnalyzer</groupId>
             <artifactId>IKAnalyzer</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <!-- hadoop1 -->
+        <!--
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-core</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        -->
+
+
+        <!-- hadoop2 -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-minicluster</artifactId>
+            <version>${hadoop2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-assemblies</artifactId>
+            <version>${hadoop2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-maven-plugins</artifactId>
+            <version>${hadoop2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>${hadoop2.version}</version>
         </dependency>
 
     </dependencies>
