@@ -107,10 +107,14 @@ public class StepTagSimilarity {
             hotTag.setTagInfo(sb.toString());
             result.add(hotTag);
             System.out.println(count);
-            if (count >= 100) break;
+            if (count> 0 && count % 100 == 0 ) {
+                hotTagService.saveHotTagList(result);
+                result.clear();
+            }
+            if (count >= 1000) break;
         }
 
-        hotTagService.saveHotTagList(result);
+        //hotTagService.saveHotTagList(result);
 
     }
 

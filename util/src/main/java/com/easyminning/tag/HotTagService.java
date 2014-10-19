@@ -43,8 +43,8 @@ public class HotTagService extends AbstractService<HotTag> {
 
     public void saveHotTagList( List<HotTag> hotTagList) {
         VersionStamp versionStamp = versionStampService.getUnFinshedVersionStamp();
-       // versionStamp = new VersionStamp();
-       // versionStamp.setVersionStamp("201409292144");
+//        versionStamp = new VersionStamp();
+//        versionStamp.setVersionStamp("201410190000");
         if (versionStamp == null) {
             log.error("versionstamp is null");
             return ;

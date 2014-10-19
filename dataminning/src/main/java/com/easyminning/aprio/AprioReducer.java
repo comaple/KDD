@@ -29,9 +29,9 @@ public class AprioReducer extends Reducer<Text,DoubleWritable,Text,NullWritable>
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-       // Map wordFrequencyAndDocCount = StepTagSimilarity.getInstance().getWordFrequencyAndDocCount(new Path(context.getConfiguration().get("inputPath")),context.getConfiguration());
-       // wordFrequency = (Map<String,Double>)wordFrequencyAndDocCount.get("wordFrequency");
-        //docCount = (Integer)wordFrequencyAndDocCount.get("docCount");
+        Map wordFrequencyAndDocCount = StepTagSimilarity.getInstance().getWordFrequencyAndDocCount(new Path(context.getConfiguration().get("inputPath")),context.getConfiguration());
+        wordFrequency = (Map<String,Double>)wordFrequencyAndDocCount.get("wordFrequency");
+        docCount = (Integer)wordFrequencyAndDocCount.get("docCount");
 
     }
 
@@ -49,6 +49,7 @@ public class AprioReducer extends Reducer<Text,DoubleWritable,Text,NullWritable>
         tagTag.setTagItem1(key.toString().split(",")[1]);
       //  sumWeight = sumWeight;///docCount * Math.log(docCount/wordFrequency.get(tagTag.getTagItem1()));
         tagTag.setWeight(sumWeight);
+        tagTag.setDocCount(wordFrequency.get(tagTag.getTagItem()));
 
         tagTagList.add(tagTag);
         context.write(new Text(key.toString()+ ":" +  sumWeight),NullWritable.get());

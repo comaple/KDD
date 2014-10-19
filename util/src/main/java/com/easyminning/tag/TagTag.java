@@ -15,6 +15,8 @@ public class TagTag extends BaseModel  implements Comparable  {
 
     private Double weight;
 
+    private Double docCount;
+
     public String getTagItem() {
         return tagItem;
     }
@@ -37,6 +39,14 @@ public class TagTag extends BaseModel  implements Comparable  {
 
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public Double getDocCount() {
+        return docCount;
+    }
+
+    public void setDocCount(Double docCount) {
+        this.docCount = docCount;
     }
 
     @Override
