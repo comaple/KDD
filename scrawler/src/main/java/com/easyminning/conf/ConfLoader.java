@@ -21,8 +21,8 @@ public class ConfLoader {
     public static HashSet<String> repeatableRegexSet = new HashSet<String>();
     public static HashSet<String> positiveRegexSet = new HashSet<String>();
     public static HashSet<String> negativeRegexSet = new HashSet<String>();
-    public static HashSet<String> topicRegexSet = new HashSet<String>();
-    public static HashSet<String> caseTopicRegexSet = new HashSet<String>();
+    //public static HashSet<String> topicRegexSet = new HashSet<String>();
+    //public static HashSet<String> caseTopicRegexSet = new HashSet<String>();
     //<使用模板的url正则,模板文件>
     public static HashMap<String,HashMap<String,String>> templateMap = new HashMap<String, HashMap<String,String>>();
     public static HashMap<String,Integer> urlTimeSpanMap = new HashMap<String, Integer>();
@@ -94,6 +94,7 @@ public class ConfLoader {
                 reader.close();
             }
 
+            repeatableRegexSet.addAll(seedSet);
             positiveRegexSet.addAll(seedSet);
             positiveRegexSet.addAll(repeatableRegexSet);
             positiveRegexSet.addAll(urlTimeSpanMap.keySet());

@@ -5,6 +5,7 @@ package com.easyminning.extractor;
  */
 public class Article {
 
+    public static String TYPE_NO = "0";
     public static String TYPE_NEWS = "1";
     public static String TYPE_CASE = "2";
     public static String TYPE_QUESTION = "3";

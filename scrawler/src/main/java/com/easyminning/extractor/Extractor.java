@@ -88,17 +88,11 @@ public abstract class Extractor {
             }
         }
 
-        if(!articleFlag.equals("1")){//如果不是新闻资讯,做案例过滤
+        if(articleFlag.equals(Article.TYPE_CASE)){//如果案例过滤
             flag = caseFilter.filter(article);
             if (!flag) {
-                if(articleFlag.equals("2")) {//前面判断是案例
-                    conDiscardUrls.add(page.url);
-                    return null;
-                }else if (articleFlag.equals("3")){//前面判断既是案例又是新闻
-                    articleFlag = "1";
-                }
-            }else{
-                articleFlag = "2";
+                conDiscardUrls.add(page.url);
+                return null;
             }
         }
         article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例
@@ -141,10 +135,20 @@ public abstract class Extractor {
     //返回值 0:非主题页，1:新闻资讯文章，2:案例，3:既匹配新闻又匹配案例
     public static String isArticlePage(String url){
 
-        String type = Article.TYPE_NEWS;
+        String type = Article.TYPE_NO;
 
-        if (ConfLoader.urlTypeMap.containsKey(url)) {
+        /*if (ConfLoader.urlTypeMap.containsKey(url)) {
             type = ConfLoader.urlTypeMap.get(url);
+        }*/
+        Pattern p = null;
+        Matcher m = null;
+        for (String topicRegx : ConfLoader.urlTypeMap.keySet()){
+            p = Pattern.compile(topicRegx);
+            m = p.matcher(url);
+            if(m.find()){
+                type = ConfLoader.urlTypeMap.get(topicRegx);
+                break;
+            }
         }
         return type;
 
