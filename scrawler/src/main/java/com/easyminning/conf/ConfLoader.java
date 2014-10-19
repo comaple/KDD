@@ -62,28 +62,22 @@ public class ConfLoader {
         try {
             seedSet = analyzeConf(ConfConstant.SEEDS, ConfConstant.ObjectSplit, prop, seedSet);
             repeatableRegexSet = analyzeConf(ConfConstant.REPEATABLEREGEX,ConfConstant.ObjectSplit,prop,repeatableRegexSet);
-            positiveRegexSet = analyzeConf(ConfConstant.POSITIVEREGEX, ConfConstant.ObjectSplit, prop, positiveRegexSet);
+           // positiveRegexSet = analyzeConf(ConfConstant.POSITIVEREGEX, ConfConstant.ObjectSplit, prop, positiveRegexSet);
             negativeRegexSet = analyzeConf(ConfConstant.NEGATIVEREGEX, ConfConstant.ObjectSplit, prop, negativeRegexSet);
-            topicRegexSet = analyzeConf(ConfConstant.TOPICREGEX, ConfConstant.ObjectSplit, prop, topicRegexSet);
-            caseTopicRegexSet = analyzeConf(ConfConstant.CASETOPICREGEX, ConfConstant.ObjectSplit, prop, caseTopicRegexSet);
+            //topicRegexSet = analyzeConf(ConfConstant.TOPICREGEX, ConfConstant.ObjectSplit, prop, topicRegexSet);
+            //caseTopicRegexSet = analyzeConf(ConfConstant.CASETOPICREGEX, ConfConstant.ObjectSplit, prop, caseTopicRegexSet);
 
             Integer defaultTimeSpan = Integer.parseInt(getProperty(ConfConstant.TIMESPAN, "30"));
             HashSet<String> templateSet = new HashSet<String>();
             templateSet = analyzeConf(ConfConstant.TEMPLATES, ConfConstant.ObjectSplit, prop, templateSet);
+
             for (String template : templateSet) {
                 String[] regFiles = template.split(ConfConstant.TemplateSplit);
                 if(regFiles.length <= 1){
                     continue;
-                }else if(regFiles.length == 2){
-                    urlTimeSpanMap.put(regFiles[0],defaultTimeSpan);
-                }else if(regFiles.length == 3){
-                    urlTimeSpanMap.put(regFiles[0],Integer.parseInt(regFiles[2]));
-                } else if(regFiles.length == 3){
-                    urlTypeMap.put(regFiles[0], Article.TYPE_NEWS);
-                } else if(regFiles.length == 4){
-                    urlTypeMap.put(regFiles[0], regFiles[3]);
                 }
-
+                urlTimeSpanMap.put(regFiles[0],Integer.parseInt(regFiles[2]));
+                urlTypeMap.put(regFiles[0], regFiles[3]);
                 InputStream inputStream = ConfLoader.class.getClassLoader().getResourceAsStream(regFiles[1]);
                 if (inputStream == null) {
                     Log.Infos("info", "file:" + regFiles[1] + " not exists");
@@ -99,6 +93,11 @@ public class ConfLoader {
                 templateMap.put(regFiles[0], regs);
                 reader.close();
             }
+
+            positiveRegexSet.addAll(seedSet);
+            positiveRegexSet.addAll(repeatableRegexSet);
+            positiveRegexSet.addAll(urlTimeSpanMap.keySet());
+
         }catch(Exception e) {
             e.printStackTrace();
         }
