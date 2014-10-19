@@ -65,18 +65,18 @@ public class AprioJob extends AbstractJob {
         LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"aprior 算法执行结束，执行结果为:" + res));
 
         System.out.println("******** 计算步骤和标签相似度************");
-//        StepTagSimilarity.getInstance().analysis(getInputPath(), this.getConf());
-//
-//        System.out.println("********* 计算热门标签 *****************");
-//        StepTagSimilarity.getInstance().analysis2(getInputPath(),this.getConf());
-//
-//        System.out.println("********** 删除重复文章*************");
-//        // 删除重复数据
-//        DuplicateDocFilter.filter();
-//
-//        System.out.println("*********** 更新版本号***********");
-//        //  更新版本号为已经完成
-//        VersionStampService.getInstance().updateUnFinishedVersion();
+        StepTagSimilarity.getInstance().analysis(getInputPath(), this.getConf());
+
+        System.out.println("********* 计算热门标签 *****************");
+        StepTagSimilarity.getInstance().analysis2(getInputPath(),this.getConf());
+
+        System.out.println("********** 删除重复文章*************");
+        // 删除重复数据
+        DuplicateDocFilter.filter();
+
+        System.out.println("*********** 更新版本号***********");
+        //  更新版本号为已经完成
+        VersionStampService.getInstance().updateUnFinishedVersion();
 
         LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"算法执行结束,更新版本号"));
         return res;
