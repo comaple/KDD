@@ -1,5 +1,6 @@
 package com.easyminning.conf;
 
+import com.easyminning.extractor.Article;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.configuration.reloading.ReloadingStrategy;
@@ -25,6 +26,11 @@ public class ConfLoader {
     //<使用模板的url正则,模板文件>
     public static HashMap<String,HashMap<String,String>> templateMap = new HashMap<String, HashMap<String,String>>();
     public static HashMap<String,Integer> urlTimeSpanMap = new HashMap<String, Integer>();
+
+    /**
+     * url type
+     */
+    public static HashMap<String,String> urlTypeMap = new HashMap<String, String>();
 
     public static PropertiesConfiguration prop = null;
 
@@ -72,6 +78,10 @@ public class ConfLoader {
                     urlTimeSpanMap.put(regFiles[0],defaultTimeSpan);
                 }else if(regFiles.length == 3){
                     urlTimeSpanMap.put(regFiles[0],Integer.parseInt(regFiles[2]));
+                } else if(regFiles.length == 3){
+                    urlTypeMap.put(regFiles[0], Article.TYPE_NEWS);
+                } else if(regFiles.length == 4){
+                    urlTypeMap.put(regFiles[0], regFiles[3]);
                 }
 
                 InputStream inputStream = ConfLoader.class.getClassLoader().getResourceAsStream(regFiles[1]);
@@ -103,7 +113,9 @@ public class ConfLoader {
         String proValue = getProperty(proKey,null);
         if(proValue != null) {
             String[] values = proValue.split(objectSplit);
+
             for (String value : values) {
+
                 //propSet.add(value.trim());
                 File file = new File(ConfLoader.class.getClassLoader().getResource(value).toURI());
                 if(!file.exists()){

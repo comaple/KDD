@@ -1,1 +1,2 @@
 ########留学问答，模板文件，文章页正则%%%模板文件%%%该主题抓近多少天的文章########
+http://zhidao.zinch.cn/questions\?page=\d{1,}%%%template/case/case_eic.template%%%360

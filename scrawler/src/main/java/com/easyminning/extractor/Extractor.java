@@ -140,29 +140,37 @@ public abstract class Extractor {
 
     //返回值 0:非主题页，1:新闻资讯文章，2:案例，3:既匹配新闻又匹配案例
     public static String isArticlePage(String url){
-        String articleFlag = "0";
-        Pattern p = null;
-        Matcher m = null;
-        for (String topicRegx : ConfLoader.caseTopicRegexSet){
-            p = Pattern.compile(topicRegx);
-            m = p.matcher(url);
-            if(m.find()){
-                articleFlag = "2";
-                break;
-            }
-        }
 
-        for (String topicRegx : ConfLoader.topicRegexSet){
-            p = Pattern.compile(topicRegx);
-            m = p.matcher(url);
-            if(m.find()){
-                if(articleFlag.equals("2"))
-                    articleFlag = "3";
-                else
-                    articleFlag = "1";
-                break;
-            }
+        String type = Article.TYPE_NEWS;
+
+        if (ConfLoader.urlTypeMap.containsKey(url)) {
+            type = ConfLoader.urlTypeMap.get(url);
         }
-        return articleFlag;
+        return type;
+
+//        String articleFlag = "0";
+//        Pattern p = null;
+//        Matcher m = null;
+//        for (String topicRegx : ConfLoader.caseTopicRegexSet){
+//            p = Pattern.compile(topicRegx);
+//            m = p.matcher(url);
+//            if(m.find()){
+//                articleFlag = "2";
+//                break;
+//            }
+//        }
+//
+//        for (String topicRegx : ConfLoader.topicRegexSet){
+//            p = Pattern.compile(topicRegx);
+//            m = p.matcher(url);
+//            if(m.find()){
+//                if(articleFlag.equals("2"))
+//                    articleFlag = "3";
+//                else
+//                    articleFlag = "1";
+//                break;
+//            }
+//        }
+//        return articleFlag;
     }
 }
