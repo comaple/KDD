@@ -42,6 +42,7 @@ public class TagTagController extends BaseController {
             map.put("tagItem", tagTag.getTagItem() == null ? "":tagTag.getTagItem());
             map.put("tagItem1", tagTag.getTagItem1() == null ? "":tagTag.getTagItem1());
             map.put("weight", tagTag.getWeight() == null ? "":tagTag.getWeight().toString());
+            map.put("docCount",tagTag.getDocCount() == null ? "":tagTag.getDocCount().toString());
             result.add(map);
         }
         renderJson(result);
