@@ -1,0 +1,4 @@
+title=<div class="content">.*<h1>.*</h1>
+publishDate=<span class="created">.*</span>
+author=
+mainContent=<div id="ssubject-content">.*</div>
