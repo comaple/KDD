@@ -26,3 +26,8 @@ http://www.nihaowang.com/news/news-\d{4,5}.html%%%template/news/nihaowang.templa
 http://www.gter.net/a-\d{5}-1.html%%%template/news/gter.template%%%30%%%1
 http://liuxue.eol.cn/dongtai_\d{4,5}/20\d{6}/t20\d{6}_\d{7}.shtml%%%template/news/liuxueeol.template%%%30%%%1
 http://www.eduglobal.com/(can|uk|usa|aus|asia)/Article/\d{6,8}/%%%template/news/eduglobal.template%%%30%%%1
+http://www.igo99.cn/ielts/[a-z]{2,15}/\d{6,8}.shtml%%%template/news/igo99.template%%%30%%%1
+http://www.igo.cn/2010/news/lxxw/[a-z]{2,10}/20\d{2}/\d{1,2}/\d{1,2}/\d{6,7}.shtml%%%template/news/igo.template%%%30%%%1
+http://www.zmnedu.com/news/[a-z]{2,15}/\d{5,7}.html%%%template/news/zmnedu.template%%%30%%%1
+http://news.tiandaoedu.com/[a-z]{2,15}/\d{6,7}.html%%%template/news/tiandaoedu.template%%%30%%%1
+http://liuxue.xhd.cn/(liuxuezixun/)?[a-z]{2,15}/\d{3,6}.html%%%template/news/xhdliuxue.template%%%30%%%1

@@ -1,0 +1,4 @@
+title=(?is)<div class="detailCon">\s+<h1>.*?</h1>
+publishDate=(?is)20\d{2}-\d{1,2}-\d{1,2}
+author=(?is)来源：<span class="red">.*?</span>
+mainContent=(?is)<div class="case-article">.*?</div>\s+<div class="share">
