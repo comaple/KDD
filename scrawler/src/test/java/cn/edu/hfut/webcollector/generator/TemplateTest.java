@@ -5,6 +5,9 @@ import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Article;
 import com.easyminning.extractor.TemplateExtractor;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,8 +16,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Administrator on 2014/10/21.
@@ -42,6 +49,33 @@ public class TemplateTest {
         System.out.println("author:" + article.author + ",publishdate:" + article.publishDate+",title:" + article.title + "article.context:" + article.context);
     }
 
+
+    @Test
+    public void testTemplate2() throws Exception {
+        HashMap<String,String> regexMap = new HashMap<String, String>();
+        String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/question/";
+        File file = new File(path,"gter.template");
+        String testUrl ="http://ask.gter.net/show/1210-1.html";
+
+        List<String> list = FileUtils.readLines(file);
+
+        for (String str : list) {
+            int index = str.indexOf('=');
+            regexMap.put(str.substring(0,index).trim(),str.substring(index + 1).trim());
+        }
+;
+        TemplateExtractor templateExtractor = new TemplateExtractor(regexMap);
+
+        Page page = new Page();
+        page.url = testUrl;
+        page.html = getUrlContent(testUrl);
+
+
+        Article article = templateExtractor.extractArticle(page);
+
+        System.out.println("author:" + article.author + ",publishdate:" + article.publishDate+",title:" + article.title + "article.context:" + article.context);
+    }
+
     private String getUrlContent(String url) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,  120000);//连接时间120s
@@ -50,7 +84,7 @@ public class TemplateTest {
         try {
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
-            String body = EntityUtils.toString(entity, "GBK");
+            String body = EntityUtils.toString(entity, "UTF-8");
             return body;
         } catch (Exception e) {
             e.fillInStackTrace();
