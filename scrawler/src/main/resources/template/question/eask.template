@@ -1,4 +1,4 @@
 title=(?is)<div class="question_blcok">\s*<h4>.*?</h4>
 publishDate=(?is)20\d{2}-\d{2}-\d{2}
 author=
-mainContent="(?is)<div class=\"q_text\">.*?</div>\\s*<h4>")
+mainContent=(?is)<div class="q_text">.*?</div>\s*<h4>

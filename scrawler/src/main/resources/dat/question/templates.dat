@@ -1,4 +1,7 @@
 ########留学问答，模板文件，文章页正则%%%模板文件%%%该主题抓近多少天的文章########
 http://zhidao.zinch.cn/node/\d{1,}%%%template/question/zinch.template%%%360%%%3
 http://www.liuxue360.com/faq/question-\d{1,}.html%%%template/question/liuxue360.template%%%360%%%3
-http://eask.eduwo.com/eask/easkquestion_view.htm?tquestionsid=\d{1,}%%%template/question/eask.template%%%360%%%3
+http://eask.eduwo.com/eask/easkquestion_view.htm\?tquestionsid=\d{1,}%%%template/question/eask.template%%%360%%%3
+http://faq.en.com.cn/question-\d{1,}.html%%%template/question/faqen.template%%%360%%%3
+http://www.sharewithu.com/qa/problem.php\?id=\d{1,}&.*%%%template/question/sharewithu.template%%%360%%%3
+http://ask.533.com/answer/\d{1,}.html%%%template/question/533.template%%%360%%%3

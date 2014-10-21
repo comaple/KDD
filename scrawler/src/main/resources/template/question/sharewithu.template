@@ -1,0 +1,4 @@
+title=(?is)<div class="problem_content">.*?</div>
+publishDate=(?is)<span class="problem_info_time">.*?</span>
+author=
+mainContent=(?is)<div class="problem_content">.*?</div>
