@@ -5,6 +5,7 @@ import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Article;
 import com.easyminning.extractor.TemplateExtractor;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,7 +15,9 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/10/21.
