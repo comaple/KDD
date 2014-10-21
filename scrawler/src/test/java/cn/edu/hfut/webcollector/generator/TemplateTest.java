@@ -5,9 +5,6 @@ import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Article;
 import com.easyminning.extractor.TemplateExtractor;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,12 +13,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by Administrator on 2014/10/21.
@@ -54,8 +47,8 @@ public class TemplateTest {
     public void testTemplate2() throws Exception {
         HashMap<String,String> regexMap = new HashMap<String, String>();
         String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/question/";
-        File file = new File(path,"gter.template");
-        String testUrl ="http://ask.gter.net/show/1210-1.html";
+        File file = new File(path,"533.template");
+        String testUrl ="http://ask.533.com/answer/1148.html";
 
         List<String> list = FileUtils.readLines(file);
 
@@ -84,7 +77,7 @@ public class TemplateTest {
         try {
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
-            String body = EntityUtils.toString(entity, "UTF-8");
+            String body = EntityUtils.toString(entity, "GBK");
             return body;
         } catch (Exception e) {
             e.fillInStackTrace();
