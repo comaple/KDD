@@ -48,8 +48,11 @@ public class SplitReducer extends Reducer<Text, DocumentWritable, Text, Text> {
         //写mongodb
         resultDocumentList.add(resultDocument);
 
-        //写reduce 文件
-        context.write(doc.getDocId(), doc.getResult());
+        // 问答文章不进行分析
+        if (!doc.getType().toString().equals("3")) {
+            //写reduce 文件
+            context.write(doc.getDocId(), doc.getResult());
+        }
     }
 
     @Override

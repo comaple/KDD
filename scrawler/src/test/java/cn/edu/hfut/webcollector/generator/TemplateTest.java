@@ -50,8 +50,8 @@ public class TemplateTest {
     public void testTemplate2() throws Exception {
         HashMap<String,String> regexMap = new HashMap<String, String>();
         String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/question/";
-        File file = new File(path,"533.template");
-        String testUrl ="http://ask.533.com/answer/1148.html";
+        File file = new File(path,"xhd.template");
+        String testUrl ="http://liuxue.xhd.cn/dayi/xinjiapo/1040.html";
 
         List<String> list = FileUtils.readLines(file);
 
@@ -80,7 +80,7 @@ public class TemplateTest {
         try {
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
-            String body = EntityUtils.toString(entity, "GBK");
+            String body = EntityUtils.toString(entity, "UTF-8");
             return body;
         } catch (Exception e) {
             e.fillInStackTrace();

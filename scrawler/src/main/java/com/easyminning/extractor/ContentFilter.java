@@ -21,9 +21,13 @@ public class ContentFilter implements Filter {
             Log.Infos("extraterror","extrat failure,some attr is null:" + article.url);
             return false;
         }
-        if (article.context == null || article.context.length() < CONTENT_LENGTH) {
-            Log.Infos("extraterror","extrat context too small:" + article.url);
-            return false;
+
+        // 问答比较短，不经常长度校验
+        if ("3".equals(article.type)) {
+            if (article.context == null || article.context.length() < CONTENT_LENGTH) {
+                Log.Infos("extraterror","extrat context too small:" + article.url);
+                return false;
+            }
         }
 
         return true;
