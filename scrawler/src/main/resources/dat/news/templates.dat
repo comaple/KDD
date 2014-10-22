@@ -31,3 +31,5 @@ http://www.igo.cn/2010/news/lxxw/[a-z]{2,10}/20\d{2}/\d{1,2}/\d{1,2}/\d{6,7}.sht
 http://www.zmnedu.com/news/[a-z]{2,15}/\d{5,7}.html%%%template/news/zmnedu.template%%%30%%%1
 http://news.tiandaoedu.com/[a-z]{2,15}/\d{6,7}.html%%%template/news/tiandaoedu.template%%%30%%%1
 http://liuxue.xhd.cn/(liuxuezixun/)?[a-z]{2,15}/\d{3,6}.html%%%template/news/xhdliuxue.template%%%30%%%1
+http://www.yiyiarts.com/index.php/Index/news_info/id/\d{3,6}%%%template/news/yiyiarts.template%%%30%%%1
+http://www.liuxue51.net/NewsDetail-\d{6,8}.html%%%template/news/liuxue51.template%%%30%%%1
