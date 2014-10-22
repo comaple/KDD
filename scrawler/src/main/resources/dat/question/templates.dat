@@ -6,3 +6,5 @@ http://faq.en.com.cn/question-\d{1,}.html%%%template/question/faqen.template%%%3
 http://www.sharewithu.com/qa/problem.php\?id=\d{1,}&.*%%%template/question/sharewithu.template%%%360%%%3
 http://ask.533.com/answer/\d{1,}.html%%%template/question/533.template%%%360%%%3
 http://ask.gter.net/show/.*.html%%%template/question/gter.template%%%360%%%3
+http://ask.tiandaoedu.com/arc.php\?id={1,}%%%template/question/tiandaoedu.template%%%360%%%3
+http://liuxue.xhd.cn/dayi/\w+/\d{1,}.html%%%template/question/xhd.template%%%360%%%3

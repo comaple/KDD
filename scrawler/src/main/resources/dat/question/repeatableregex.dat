@@ -4,3 +4,5 @@ http://www.liuxue360.com/faq/list-\d{1,}.html
 http://faq.en.com.cn/list-\d{1,}.html
 http://www.sharewithu.com/qa\?p=\d{1,}
 http://ask.gter.net/index/init/page/\d{1,}.html
+http://ask.tiandaoedu.com/index.php\?mun=4581&id=&page=\d{1,}
+http://www.eduau.com/article-fid-100-\d{1,}.html
