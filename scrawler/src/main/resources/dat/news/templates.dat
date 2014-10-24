@@ -33,3 +33,13 @@ http://news.tiandaoedu.com/[a-z]{2,15}/\d{6,7}.html%%%template/news/tiandaoedu.t
 http://liuxue.xhd.cn/(liuxuezixun/)?[a-z]{2,15}/\d{3,6}.html%%%template/news/xhdliuxue.template%%%30%%%1
 http://www.yiyiarts.com/index.php/Index/news_info/id/\d{3,6}%%%template/news/yiyiarts.template%%%30%%%1
 http://www.liuxue51.net/NewsDetail-\d{6,8}.html%%%template/news/liuxue51.template%%%30%%%1
+http://edu.dzwww.com/lxym/lxzx/20\d{4}/t20\d{6}_\d{8}.html%%%template/news/dzwww.template%%%30%%%1
+http://www.oxbridgedu.org/(us|uk|aus|can|au)/news/(20\d{11}|20\d{5}/\d{6}).html%%%template/news/oxbridgedu.template%%%30%%%1
+http://[a-z]{1,10}.strong-study.com/\d{6}.html%%%template/news/strongstudy.template%%%30%%%1
+http://www.educationusa.com.cn/news/dynamic/content_\d{4,7}.html%%%template/news/educationusa.template%%%30%%%1
+http://abroad.2500sz.com/cglx/lxzx/20\d{2}-\d{1,2}-\d{1,2}/\d{7,9}.shtml%%%template/news/abroad2500sz.template%%%30%%%1
+http://www.jsj.edu.cn/news/\d{1}/\d{3,4}.shtml%%%template/news/jsjedu.template%%%30%%%1
+http://www.indexedu.net/xinwen/20\d{10}.html%%%template/news/indexedu.template%%%30%%%1
+http://www.usaer.net/(life|visa|application)/([a-z]{2,15}/)?\d{6,8}.html%%%template/news/usaer.template%%%30%%%1
+http://liuxue.jpwind.com/(Liuxue|huaren|Ganchu|select)/20\d{12}.html%%%template/news/liuxuejpwind.template%%%30%%%1
+http://www.chinadaily.com.cn/language_tips/edu/20\d{2}-\d{2}/\d{2}/content_\d{8}.htm%%%template/news/chinadaily.template%%%30%%%1
