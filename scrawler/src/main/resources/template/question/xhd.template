@@ -1,4 +1,4 @@
 title=(?is)<div class="title_info">\s+<h1 >.*?</h1>
-publishDate=(?is)(时间：)(20\d{2}-\d{2}-\d{2})%%%2
+publishDate=(?is)(时间：)(20\d{2}-\d{1,2}-\d{1,2})%%%2
 author=
 mainContent=(?is)<div class="title_info">\s+<h1 >.*?</h1>

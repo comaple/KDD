@@ -1,4 +1,4 @@
 title=(?is)<div class="q_con">\s*<p class="yh">.*?</p>
-publishDate=(?is)(<span>\s+时间：)(20\d{2}-\d{2}-\d{2})%%%2
+publishDate=(?is)(<span>\s+时间：)(20\d{2}-\d{1,2}-\d{1,2})%%%2
 author=
 mainContent=(?is)<div class="q_con">\s+<p class="yh">.*?</p>
