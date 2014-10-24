@@ -3,7 +3,10 @@ package com.easyminning.extractor;
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import cn.edu.hfut.dmic.webcollector.util.Log;
 import com.easyminning.conf.ConfLoader;
+import com.easyminning.tag.LogRecord;
+import com.easyminning.tag.LogRecordService;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,6 +55,7 @@ public abstract class Extractor {
         }
         if(null == extractor){
             //判断page解析是否有对应的模式可以使用
+            /*
             HashMap<String,String> templateReg = useTemplate(page.url);
             if(null == templateReg || templateReg.size() <= 0) {
                 //System.out.println("###############StatisticsExtractor###############");
@@ -61,6 +65,11 @@ public abstract class Extractor {
                 extractor = new TemplateExtractor(templateReg);
             }
             pageExtrators.put(comPath,extractor);
+            */
+
+            HashMap<String,String> templateReg = useTemplate(page.url);
+            extractor = new TemplateExtractor(templateReg);
+            pageExtrators.put(comPath,extractor);
         }
         Log.Infos("info","extrat url:" + page.url);
 
@@ -69,6 +78,7 @@ public abstract class Extractor {
             article = extractor.extractArticle(page);
         }
         //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
+        /*
         if((article == null || (article.context == null || article.context.equals(""))
                 || article.publishDate == null) &&
                 extractor instanceof TemplateExtractor){
@@ -77,6 +87,16 @@ public abstract class Extractor {
             if(article.context != null && !article.context.equals("")) {
                 pageExtrators.put(comPath, extractor);
             }
+        }
+        */
+
+        if(article == null || article.context == null ||
+                article.context.equals("")|| article.publishDate == null){
+            Log.Infos("extrator failure:",page.url);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),
+                    "模板抽取失败,url:"+page.url));
+            return null;
         }
 
         boolean flag = true;
