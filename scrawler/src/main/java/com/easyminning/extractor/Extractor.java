@@ -102,6 +102,7 @@ public abstract class Extractor {
                 }
             }
             if (log.isWarnEnabled()) {
+                    if (article.context  == null) article.context = "";
                     int len = article.context.length() >= 30 ? 30 : article.context.length();
                     log.warn("模板解析错误：url:" + article.url + ",title:" + article.title +
                             ",publishDate:" + article.publishDate + ",content" + article.context.substring(0, len));
