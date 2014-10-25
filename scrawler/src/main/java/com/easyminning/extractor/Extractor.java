@@ -92,10 +92,10 @@ public abstract class Extractor {
 
         if(article == null || article.context == null ||
                 article.context.equals("")|| article.publishDate == null){
-            Log.Infos("extrator failure:",page.url);
+            Log.Infos("extrator failure:",page.url+"  type:"+articleFlag);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),
-                    "模板抽取失败,url:"+page.url));
+                    "模板抽取失败,url:"+page.url + " 类型为:"+articleFlag));
             return null;
         }
 
@@ -122,7 +122,8 @@ public abstract class Extractor {
         Log.Infos("info","article url:" + article.url);
         Log.Infos("info","article title:" + article.title);
         Log.Infos("info","article publishdate:" + article.publishDate);
-        Log.Infos("info","article part content:" + article.context.substring(0,30) + "...");
+        int len = article.context.length() >= 30 ? 30 : article.context.length();
+        Log.Infos("info","article part content:" + article.context.substring(0,len) + "...");
         return article;
     }
 
