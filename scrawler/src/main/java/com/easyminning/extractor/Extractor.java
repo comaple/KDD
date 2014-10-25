@@ -1,12 +1,10 @@
 package com.easyminning.extractor;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
-import cn.edu.hfut.dmic.webcollector.util.Log;
 import com.easyminning.conf.ConfLoader;
-import com.easyminning.tag.LogRecord;
-import com.easyminning.tag.LogRecordService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +13,8 @@ import java.util.regex.Pattern;
  * Created by jerry on 2014/8/30.
  */
 public abstract class Extractor {
+
+    private static Log log = LogFactory.getLog(Extractor.class);
 
     private static List<Filter> filterList = new ArrayList<Filter>(){{
         add(new ContentFilter());
@@ -31,6 +31,9 @@ public abstract class Extractor {
     public static HashSet<String> discardUrls = new HashSet<String>();
     public static Set<String> conDiscardUrls = Collections.synchronizedSet(discardUrls);
 
+    // url前缀->错类类型:1->内容为null,2->时间为null,3->时间和内容都为null,Integer存放类型错误的次数
+    public static Map<String,Map<String,Integer>> errorUrls = new HashMap<String,Map<String,Integer>>();
+
     public abstract Article extractArticle(Page page);
 
     public static Article extract(Page page){
@@ -45,85 +48,105 @@ public abstract class Extractor {
 
         if(ARTICLENUM == 0){
             pageExtrators.clear();//某个周期清空一次，可使得最新的模板及时得到更新
+            errorUrls.clear();
         }
 
         Extractor extractor = null;
         String comPath = getUrlCommonPath(page.url);
+
         //判断是否有缓存抽取器
         if(pageExtrators.containsKey(comPath)){
             extractor = pageExtrators.get(comPath);
         }
         if(null == extractor){
-            //判断page解析是否有对应的模式可以使用
-            /*
-            HashMap<String,String> templateReg = useTemplate(page.url);
-            if(null == templateReg || templateReg.size() <= 0) {
-                //System.out.println("###############StatisticsExtractor###############");
-                extractor = new StatisticsExtractor();
-            }else{
-                //System.out.println("###############TemplateExtractor###############");
-                extractor = new TemplateExtractor(templateReg);
-            }
-            pageExtrators.put(comPath,extractor);
-            */
-
             HashMap<String,String> templateReg = useTemplate(page.url);
             extractor = new TemplateExtractor(templateReg);
             pageExtrators.put(comPath,extractor);
         }
-        Log.Infos("info","extrat url:" + page.url);
 
         Article article = null;
         if(null != extractor) {
             article = extractor.extractArticle(page);
         }
-        //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
-        /*
-        if((article == null || (article.context == null || article.context.equals(""))
-                || article.publishDate == null) &&
-                extractor instanceof TemplateExtractor){
-            extractor = new StatisticsExtractor();
-            article = extractor.extractArticle(page);
-            if(article.context != null && !article.context.equals("")) {
-                pageExtrators.put(comPath, extractor);
-            }
-        }
-        */
 
+        //如果用模板抽取出的文章为空，那尝试使用统计方法抽取。可防止页面模板发生了变化而抽取不出内容
+        Integer errorTime = 0;
         if(article == null || article.context == null ||
                 article.context.equals("")|| article.publishDate == null){
-            Log.Infos("extrator failure:",page.url+"  type:"+articleFlag);
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            LogRecordService.getInstance().save(new LogRecord("1",df.format(new Date()),
-                    "模板抽取失败,url:"+page.url + " 类型为:"+articleFlag));
+            Map<String,Integer> typeErrorMap = errorUrls.get(comPath);
+            if (typeErrorMap == null) {
+                typeErrorMap = new HashMap<String,Integer>();
+                errorUrls.put(comPath,typeErrorMap);
+            }
+
+            if (article == null || ((article.context == null || article.context.equals(""))&& article.publishDate == null)){
+                errorTime = typeErrorMap.get("3");
+                if (errorTime == null) {
+                    typeErrorMap.put("3", 0);
+                } else {
+                    typeErrorMap.put("3", errorTime+1);
+                }
+            } else if (article.context == null || article.context.equals("")) {
+                errorTime = typeErrorMap.get("1");
+                if (errorTime == null) {
+                    typeErrorMap.put("1", 0);
+                } else {
+                    typeErrorMap.put("1", errorTime+1);
+                }
+            } else if (article.publishDate == null) {
+                errorTime = typeErrorMap.get("2");
+                if (errorTime == null) {
+                    typeErrorMap.put("2", 0);
+                } else {
+                    typeErrorMap.put("2", errorTime+1);
+                }
+            }
+            if (log.isWarnEnabled()) {
+                    int len = article.context.length() >= 30 ? 30 : article.context.length();
+                    log.warn("模板解析错误：url:" + article.url + ",title:" + article.title +
+                            ",publishDate:" + article.publishDate + ",content" + article.context.substring(0, len));
+            }
+            conDiscardUrls.add(page.url);
             return null;
+
         }
+
 
         boolean flag = true;
         for(Filter filter : filterList) {
             flag = filter.filter(article);
             if (!flag) {
                 conDiscardUrls.add(page.url);
+                if (log.isInfoEnabled()) {
+                    int len = article.context.length() >= 30 ? 30 : article.context.length();
+                    log.info("被过滤器拦截：url:" + article.url + ",title:" + article.title +
+                            ",publishDate:" + article.publishDate + ",content" + article.context.substring(0,len));
+                }
                 return null;
             }
         }
-
         if(articleFlag.equals(Article.TYPE_CASE)){//如果案例过滤
             flag = caseFilter.filter(article);
             if (!flag) {
+                if (log.isInfoEnabled()) {
+                    int len = article.context.length() >= 30 ? 30 : article.context.length();
+                    log.info("被案例拦截器过滤器拦截：url:" + article.url + ",title:" + article.title +
+                            ",publishDate:" + article.publishDate + ",content" + article.context.substring(0,len));
+                }
                 conDiscardUrls.add(page.url);
                 return null;
             }
         }
-        article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例
 
+        article.type = articleFlag;//文章类型 1新闻资讯和其他 2案例，3问答
         ARTICLENUM++;
         FileWriter.getInstance().writeArticle(article);
-        Log.Infos("info","article url:" + article.url);
-        Log.Infos("info","article title:" + article.title);
-        Log.Infos("info","article publishdate:" + article.publishDate);
-        int len = article.context.length() >= 30 ? 30 : article.context.length();
-        Log.Infos("info","article part content:" + article.context.substring(0,len) + "...");
+
+        if (log.isDebugEnabled()) {
+            int len = article.context.length() >= 30 ? 30 : article.context.length();
+            log.debug("正常采集, url:" + article.url + ",title:" + article.title +
+                    ",publishDate:" + article.publishDate + ",content" + article.context.substring(0,len));
+        }
         return article;
     }
 
@@ -154,13 +177,8 @@ public abstract class Extractor {
     }
 
     //返回值 0:非主题页，1:新闻资讯文章，2:案例，3:既匹配新闻又匹配案例
-    public static String isArticlePage(String url){
-
+    private static String isArticlePage(String url){
         String type = Article.TYPE_NO;
-
-        /*if (ConfLoader.urlTypeMap.containsKey(url)) {
-            type = ConfLoader.urlTypeMap.get(url);
-        }*/
         Pattern p = null;
         Matcher m = null;
         for (String topicRegx : ConfLoader.urlTypeMap.keySet()){
@@ -172,30 +190,5 @@ public abstract class Extractor {
             }
         }
         return type;
-
-//        String articleFlag = "0";
-//        Pattern p = null;
-//        Matcher m = null;
-//        for (String topicRegx : ConfLoader.caseTopicRegexSet){
-//            p = Pattern.compile(topicRegx);
-//            m = p.matcher(url);
-//            if(m.find()){
-//                articleFlag = "2";
-//                break;
-//            }
-//        }
-//
-//        for (String topicRegx : ConfLoader.topicRegexSet){
-//            p = Pattern.compile(topicRegx);
-//            m = p.matcher(url);
-//            if(m.find()){
-//                if(articleFlag.equals("2"))
-//                    articleFlag = "3";
-//                else
-//                    articleFlag = "1";
-//                break;
-//            }
-//        }
-//        return articleFlag;
     }
 }
