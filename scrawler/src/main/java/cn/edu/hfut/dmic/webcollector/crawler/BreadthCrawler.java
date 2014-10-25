@@ -185,6 +185,9 @@ public class BreadthCrawler {
                 break;
             }
             try {
+                // 解析错误情况
+                LogRecordService.getInstance().save(new LogRecord("4",df.format(new Date()),Extractor.errorUrls.toString()));
+
                 //睡眠一个interval时间 1小时
                 int interval = Integer.parseInt(ConfLoader.getProperty(ConfConstant.INTERVAL,"3600000"));
                 Log.Infos("info","sleep " + interval + " mills...");
@@ -193,15 +196,7 @@ public class BreadthCrawler {
                 e.printStackTrace();
             }
         }
-        /*for (int i = 0; i < depth; i++) {
-           if(status==STOPED){
-               break;
-           }
-            Log.Infos("info","starting depth "+(i+1));
-            Generator generator=getGenerator();
-            fetcher=getFecther();
-            fetcher.fetchAll(generator);
-        }*/
+
     }
 
     /**
