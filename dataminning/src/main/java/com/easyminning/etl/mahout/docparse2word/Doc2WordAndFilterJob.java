@@ -61,6 +61,7 @@ public class Doc2WordAndFilterJob extends AbstractJob {
             Job combineJob = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitAndFilterMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
             combineJob.getConfiguration().set(Constant.THRSHOLD, getOption(threshold, "-1"));
             combineJob.getConfiguration().set(Constant.RESULT_NUM, getOption(finalDocNum, "2000"));
+            combineJob.setNumReduceTasks(20);
             res = combineJob.waitForCompletion(true) == true ? 0 : -1;
         } else {
             Job combineJob_1 = prepareJob(getInputPath(), getOutputPath(), TextInputFormat.class, SplitMapper.class, Text.class, DocumentWritable.class, SplitReducer.class, Text.class, Text.class, SequenceFileOutputFormat.class);
