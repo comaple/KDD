@@ -1,0 +1,4 @@
+title=(?is)<div class="biaoti">\s+<h1>.*?</h1>
+publishDate=(?is)</strong>20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}</span>
+author=(?is)<span><strong>来源：</strong>.*?</span>
+mainContent=(?is)<div class="biaoti_2">.*?</div>

@@ -33,3 +33,10 @@ http://news.tiandaoedu.com/[a-z]{2,15}/\d{6,7}.html%%%template/news/tiandaoedu.t
 http://liuxue.xhd.cn/(liuxuezixun/)?[a-z]{2,15}/\d{3,6}.html%%%template/news/xhdliuxue.template%%%1000%%%1
 http://www.yiyiarts.com/index.php/Index/news_info/id/\d{3,6}%%%template/news/yiyiarts.template%%%1000%%%1
 http://www.liuxue51.net/NewsDetail-\d{6,8}.html%%%template/news/liuxue51.template%%%1000%%%1
+http://edu.dzwww.com/lxym/lxzx/20\d{4}/t20\d{6}_\d{8}.html%%%template/news/dzwww.template%%%1000%%%1
+http://www.oxbridgedu.org/(us|uk|aus|can|au)/news/%%%template/news/oxbridgedu.template%%%1000%%%1
+http://news.strong-study.com/\d{6}.html%%%template/news/strongstudy.template%%%1000%%%1
+http://www.educationusa.com.cn/news/(visa|rules|dynamic|schools)/content_\d{4,6}.html%%%template/news/educationusa.template%%%1000%%%1
+http://www.cieol.com.cn/zixun/hot/20\d{2}/\d{4}/\d{5}.html%%%template/news/cieol.template%%%1000%%%1
+http://abroad.2500sz.com/cglx/lxzx/20\d{2}-\d{2}-\d{2}/\d{7}.shtml%%%template/news/2500sz.template%%%1000%%%1
+http://www.jsj.edu.cn/news/\d{1,3}/\d{3,5}.shtml%%%template/news/jsj.template%%%1000%%%1
