@@ -34,6 +34,8 @@ public abstract class Extractor {
     // url前缀->错类类型:1->内容为null,2->时间为null,3->时间和内容都为null,Integer存放类型错误的次数
     public static Map<String,Map<String,Integer>> errorUrls = new HashMap<String,Map<String,Integer>>();
 
+    private static Pattern domainPattern = Pattern.compile("(?<=http://|\\.)[^.]*?\\.(com|cn|net|org|biz|info|cc|tv)",Pattern.CASE_INSENSITIVE);
+
     public abstract Article extractArticle(Page page);
 
     public static Article extract(Page page){
@@ -76,7 +78,7 @@ public abstract class Extractor {
             Map<String,Integer> typeErrorMap = errorUrls.get(comPath);
             if (typeErrorMap == null) {
                 typeErrorMap = new HashMap<String,Integer>();
-                errorUrls.put(comPath,typeErrorMap);
+                errorUrls.put(getDomain(comPath),typeErrorMap);
             }
 
             if (article == null || ((article.context == null || article.context.equals(""))&& article.publishDate == null)){
@@ -155,6 +157,12 @@ public abstract class Extractor {
         String comPath = url;
         comPath = url.substring(0,url.lastIndexOf('/'));
         return comPath;
+    }
+
+    public static String getDomain(String url){
+        Matcher matcher = domainPattern.matcher(url);
+        matcher.find();
+        return matcher.group();
     }
 
     //使用最长的正则匹配，如果某域名有个模板匹配，当需要为该域名下某些网页定制模板时
