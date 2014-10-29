@@ -40,3 +40,7 @@ http://www.educationusa.com.cn/news/(visa|rules|dynamic|schools)/content_\d{4,6}
 http://www.cieol.com.cn/zixun/hot/20\d{2}/\d{4}/\d{5}.html%%%template/news/cieol.template%%%1000%%%1
 http://abroad.2500sz.com/cglx/lxzx/20\d{2}-\d{2}-\d{2}/\d{7}.shtml%%%template/news/2500sz.template%%%1000%%%1
 http://www.jsj.edu.cn/news/\d{1,3}/\d{3,5}.shtml%%%template/news/jsj.template%%%1000%%%1
+http://www.indexedu.net/[a-z]{2,15}/[a-z]{2,15}/20\d{10}.html%%%template/news/indexedu.template%%%1000%%%1
+http://(apply|www).usaer.net/[a-z]{2,15}/([a-z]{2,15}/)?\d{6}.html%%%template/news/usaer.template%%%1000%%%1
+http://liuxue.jpwind.com/Liuxue/20\d{12}.html%%%template/news/jpwind.template%%%1000%%%1
+http://www.chinadaily.com.cn/language_tips/edu/20\d{2}-\d{2}/\d{2}/content_\d{8}.htm%%%template/news/chinadaily.template%%%1000%%%1
