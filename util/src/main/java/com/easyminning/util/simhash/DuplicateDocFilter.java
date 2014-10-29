@@ -152,8 +152,9 @@ public class DuplicateDocFilter {
                // System.out.println("update resultdocument: " + resultDocument.getDocId() + "->" + resultDocument.getRepeatCount());
             }
         }
-      //  ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
-        //System.out.println("delete: " + deleteDocIds);
+        System.out.println("update repeat doc... ");
+        ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
+        System.out.println("delete repeat doc... ");
         ResultDocumentService.getInstance().deleteDocIds(deleteDocIds);
 
         LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"删除重复文章数：" + deleteDocIds.size()));
