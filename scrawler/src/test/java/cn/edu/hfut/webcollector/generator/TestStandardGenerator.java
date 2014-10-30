@@ -95,7 +95,7 @@ public class TestStandardGenerator {
     public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.xueau.com/language/00260056.html");
+        HttpGet httpget = new HttpGet("http://www.prepedu.cn/a/meiguo/meiguoyuanxiaopaiming/zhuanyejieshao/benk/2014/1029/21029.html");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));
