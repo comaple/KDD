@@ -85,13 +85,17 @@ public class TestStandardGenerator {
         if(m.find()){
             System.out.println(m.group());
         }
+
+        String context = "sss";
+        int len = context.length() >= 30 ? 30 : context.length();
+        System.out.println(context.substring(0,len));
     }
     
     @Test
     public void test1() throws Exception{//http://www.chuchuguo.com/scholarship/anli/show/37038/
 
         HttpClient hc = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://www.chinadaily.com.cn/language_tips/edu/2014-03/12/content_17340508.htm");
+        HttpGet httpget = new HttpGet("http://www.0060.cn/portal.php?mod=view&aid=771");
         // 设置参数
         String str = EntityUtils.toString(new UrlEncodedFormEntity(new ArrayList<NameValuePair>(), "utf-8"));
         httpget.setURI(new URI(httpget.getURI().toString() + "?" + str));

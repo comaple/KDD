@@ -40,7 +40,7 @@ public class DuplicateDocFilter {
     public static  String getAnasysisDocHash(ResultDocument resultDocument) {
         String docHash = "";
         try {
-            SimHash hash = new SimHash(resultDocument.getResult(),true);
+            SimHash hash = new SimHash(resultDocument.getDocContent(),true);
             docHash = hash.getStrSimHash();
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,8 +116,9 @@ public class DuplicateDocFilter {
                 if (resultDocumentList == null) continue;
 
                 for (ResultDocument temp : resultDocumentList) {
+                    if (temp.getDocId().equals(resultDocument.getDocId())) continue;
                     int distance = SimHash.getDistance(temp.getFingerMsg(),resultDocument.getFingerMsg());
-                    if (distance<=3) {
+                    if (distance<=0) {
                         repeat = true;
                         deleteDocIds.add(resultDocument.getDocId());
                         resultDocumentMap.get(temp.getDocId()).
@@ -151,8 +152,9 @@ public class DuplicateDocFilter {
                // System.out.println("update resultdocument: " + resultDocument.getDocId() + "->" + resultDocument.getRepeatCount());
             }
         }
+        System.out.println("update repeat doc... ");
         ResultDocumentService.getInstance().updateDocRepeatCount(updateResultDocumentList);
-        //System.out.println("delete: " + deleteDocIds);
+        System.out.println("delete repeat doc... ");
         ResultDocumentService.getInstance().deleteDocIds(deleteDocIds);
 
         LogRecordService.getInstance().save(new LogRecord("2", DateUtil.getCurrentFriendlyTime(),"删除重复文章数：" + deleteDocIds.size()));

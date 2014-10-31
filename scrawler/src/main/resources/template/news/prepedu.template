@@ -1,4 +1,4 @@
-title=(?is)<div class="end-box"><h2>.*?</h2>
+title=(?is)<h2>.*?</h2>
 publishDate=(?is)20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}
 author=(?is)<span class="author">.*?</span>
-mainContent=(?is)<div id="Content">.*?</div>
+mainContent=(?is)<div class="Con">.*?</div>

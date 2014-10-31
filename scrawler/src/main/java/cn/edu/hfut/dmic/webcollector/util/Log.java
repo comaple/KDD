@@ -38,8 +38,11 @@ public class Log {
 //        defaultLogger.addAppender(ca);
     }
 
+    public static final int DEBUG = 0;
     public static final int INFO = 1;
     public static final int ERROR = 2;
+
+
 
     private static void sends(int type, String... infos) {
         if (handler == null) {
@@ -47,7 +50,11 @@ public class Log {
             for (String info : infos) {
                 infostr += info + " ";
             }
+
             switch (type) {
+                case Log.DEBUG:
+                    defaultLogger.debug(infostr);
+                    break;
                 case Log.INFO:
                     defaultLogger.info(infostr);
                     break;
@@ -62,29 +69,4 @@ public class Log {
             handler.sendMessage(msg);
         }
     }
-
-    /*
-     public static  Logger fetch_logger=Logger.getLogger("fetcher");
-     public static  Logger task_logger=Logger.getLogger("task");
-     static{
-     fetch_logger.addAppender(new ConsoleAppender());
-     task_logger.addAppender(new ConsoleAppender());
-     }
-
-     public static Logger getFetch_logger() {
-     return fetch_logger;
-     }
-
-     public static void setFetch_logger(Logger fetch_logger) {
-     Log.fetch_logger = fetch_logger;
-     }
-
-     public static Logger getTask_logger() {
-     return task_logger;
-     }
-
-     public static void setTask_logger(Logger task_logger) {
-     Log.task_logger = task_logger;
-     }
-     */
 }

@@ -1,0 +1,4 @@
+title=(?is)<div class="con_left1_title">\s+<p>.*?</p>
+publishDate=(?is)20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}
+author=(?is)<span class="author">.*?</span>
+mainContent=(?is)<div class="con_left1r2">.*?</div>
