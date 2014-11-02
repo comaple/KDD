@@ -55,3 +55,15 @@ http://www.rliuxue.com/viewnews-\d{4,6}.html%%%template/news/rliuxue.template%%%
 http://www.liuxue55.com/viewnews-\d{4,6}.html%%%template/news/liuxue55.template%%%1000%%%1
 http://www.77liuxue.com/[a-z]{2,10}/[a-z]{2,15}/\d{4,7}.html%%%template/news/77liuxue.template%%%1000%%%1
 http://www.51liucheng.com/youxue/\d{5,7}.html%%%template/news/51liucheng.template%%%1000%%%1
+http://www.233.com/ielts/liuxue/zixun/20\d{6}/\d{9}.html%%%template/news/233.template%%%1000%%%1
+http://www.haoxuee.com/liuxue/[a-z]{2,15}/\d{6}.html%%%template/news/haoxuee.template%%%1000%%%1
+http://www.619edu.com/news/show/\d{2,5}/%%%template/news/619edu.template%%%1000%%%1
+http://www.edu-315.com/viewnews-\d{4,6}.html%%%template/news/edu315.template%%%1000%%%1
+http://www.swliuxue.com/newsdetail-\d{5,7}.html%%%template/news/swliuxue.template%%%1000%%%1
+http://www.shanghailiuxue.org/viewnews-\d{3,5}.html%%%template/news/shanghailiuxue_org.template%%%1000%%%1
+http://www.shanghailiuxue.com/viewnews-\d{3,5}.html%%%template/news/shanghailiuxue_com.template%%%1000%%%1
+http://(www|[a-z]{2,15}).shenyuan.org/newsdetail-\d{5}.html%%%template/news/shenyuan.template%%%1000%%%1
+http://www.818chuguo.net/liuxuezixun/20\d{6}/\d{8}.shtml%%%template/news/818chuguo.template%%%1000%%%1
+http://www.cedca.cn/special/20\d{8}.html%%%template/news/cedca_special.template%%%1000%%%1
+http://www.cedca.cn/reading/highschool/20\d{10}.html%%%template/news/cedca_reading.template%%%1000%%%1
+http://visa.100xiao.com/[a-z]{2,10}/\d{6}.html%%%template/news/100xiao.template%%%1000%%%1

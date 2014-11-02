@@ -1,0 +1,4 @@
+title=(?is)<h3>.*?</h3>
+publishDate=(?is)<span class="con_coninfor">20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}
+author=(?is)编辑：.*?</span>
+mainContent=(?is)<div class="contents_p">.*?</div>

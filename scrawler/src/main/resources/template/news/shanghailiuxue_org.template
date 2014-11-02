@@ -1,0 +1,4 @@
+title=(?is)<div class="cneter_guide_title">\s+<h1>.*?</h1>
+publishDate=(?is)20\d{2}-\d{2}-\d{2}</li>
+author=(?is)<li>作者：.*?</li>
+mainContent=(?is)<div class="cneter_guide_tetx">.*?</div>

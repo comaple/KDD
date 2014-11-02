@@ -1,0 +1,4 @@
+title=(?is)<div class="new">\s+<h1>.*?</h1>
+publishDate=(?is)<span>20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}</span>
+author=(?is)<span>编辑：.*?</span>
+mainContent=(?is)<div class="nn">.*?</div>

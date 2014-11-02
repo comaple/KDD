@@ -1,0 +1,4 @@
+title=(?is)<h1 id="Title">.*?</h1>
+publishDate=(?is)<span id="pubtime_baidu">20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}</span>
+author=(?is)<span id="author_baidu">.*?</span>
+mainContent=(?is)<div class="ArtM Pr30 Cf" id="Content">.*?</div>
