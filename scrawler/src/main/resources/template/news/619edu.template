@@ -1,0 +1,4 @@
+title=(?is)<h1 class="ph hm">.*?</h1>
+publishDate=(?is)20\d{2}-\d{2}-\d{2}<span class="pipe">
+author=(?is)<span class="author">.*?</span>
+mainContent=(?is)<div class="content" id="article">.*?</div>
