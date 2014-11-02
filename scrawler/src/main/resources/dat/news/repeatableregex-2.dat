@@ -1,0 +1,2 @@
+########留学资讯，可重复抓取的url，一般是种子url，但与seeds.dat不同的是，这里面可以使用正则，seeds.dat里没有正则###
+http://(eng|us|au|nz|ca|ie).cctiedu.com/(zixun|liuxuezixun|LXzixun)/

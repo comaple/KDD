@@ -1,0 +1,5 @@
+title=(?is)<div class="articletitle">\s+<h1>.*?</h1>
+publishDate=(?is)\d{4}-\d{1,2}-\d{1,2}
+author=
+mainContent=(?is)<div class="articlecontent">.*?</P></p>
+

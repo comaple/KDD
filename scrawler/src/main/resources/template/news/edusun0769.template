@@ -1,0 +1,4 @@
+title=(?is)<div id="Ctitle" .*?</div>
+publishDate=(?is)\d{4}年\d{1,2}月\d{1,2}日
+author=
+mainContent=(?is)<div class=TRS_Editor><P _fckxhtmljob="1">.*?</div>

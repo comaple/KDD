@@ -1,0 +1,4 @@
+title=(?is)<h1 class="wzhh5" style="text-align: center;">.*?</h1>
+publishDate=(?is)<i>(\d{4}-\d{1,2}-\d{1,2})
+author=
+mainContent=(?is)<div class="neist">\s+<div>.*?</div>

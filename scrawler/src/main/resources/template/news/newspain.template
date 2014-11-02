@@ -1,0 +1,5 @@
+title=(?is)<div id="the_title">.*?</div>
+publishDate=(?is)allownull
+author=
+mainContent=(?is)<div id="news_tit2">.*?</div>
+

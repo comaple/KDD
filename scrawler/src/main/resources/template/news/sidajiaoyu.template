@@ -1,0 +1,4 @@
+title=(?is)<div class="lf_Container">\s+<h1>.*?</h1>
+publishDate=(?is)\d{4}-\d{1,2}-\d{1,2}
+author=
+mainContent=(?is)(<div class="main_article">.*?)(更多留学事宜请拨打免费咨询热线：)%%%1

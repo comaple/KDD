@@ -1,0 +1,5 @@
+title=(?is)<h1 class="detailstitle">.*?</h1>
+publishDate=(?is)\d{4}年\d{1,2}月\d{1,2}日
+author=
+mainContent=(?is)<div class="details_body">.*?</div>
+

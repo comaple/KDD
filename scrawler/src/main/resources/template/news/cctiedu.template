@@ -1,0 +1,4 @@
+title=(?is) <div class="title">.*?</div>
+publishDate=(?is)(时间:)</small>(\d{4}-\d{1,2}-\d{1,2})%%%2
+author=
+mainContent=(?is) <div class="content">.*?</table>\s+</div>

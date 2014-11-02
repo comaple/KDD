@@ -1,0 +1,4 @@
+title=(?is)<div id="CLM_one">.*?</div>
+publishDate=(?is)(发布时间:)(\d{4}-\d{1,2}-\d{1,2}</span>)%%%2
+author=
+mainContent=(?is)(<div class="center_main">.*?)(推荐阅读：)%%%1

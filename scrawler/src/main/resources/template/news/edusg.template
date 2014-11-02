@@ -1,0 +1,4 @@
+title=(?is)<div class="main article">.*?</h1>
+publishDate=(?is)(时间：)<span>(\d{4}年\d{1,2}月\d{1,2}日</span>)%%%2
+author=
+mainContent=(?is)(<div id="content"><P>.*?)(推荐阅读：</P>)%%%1
