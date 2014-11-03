@@ -1,0 +1,5 @@
+title=(?is)<div class="dtitle"><H1>.*?</H1></div>
+publishDate=(?is)(日期：)(\d{4}-\d{1,2}-\d{1,2})%%%2
+author=
+mainContent=(?is)<div class="dconntent">.*?</div>\s+<div class="dshare">
+

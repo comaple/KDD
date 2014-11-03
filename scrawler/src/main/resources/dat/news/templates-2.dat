@@ -8,4 +8,6 @@ http://www.jiaowaiedu.com/article/\d{1,}.html%%%template/news/jiaowaiedu.templat
 http://www.newspain.cn/Html/News/\d{1,}.html%%%template/news/newspain.template%%%1000%%%1
 http://www.edusg.com.cn/news/.+html%%%template/news/edusg.template%%%1000%%%1
 http://www.sidajiaoyu.com/zxzx/\w{1,}/\d{1,}/%%%template/news/sidajiaoyu.template%%%1000%%%1
+http://www.yilu365.com/liuxue/\w{1,}/\d{1,}.asp/%%%template/news/yilu365.template%%%1000%%%1
+http://www.bole.me/article/\d{1,}.html%%%template/news/boleme.template%%%1000%%%1
 

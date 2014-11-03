@@ -1,0 +1,4 @@
+title=(?is)<div class="news_text">\s+<h3>.*?</h3>
+publishDate=(?is)(发表时间:)(\d{4}-\d{1,2}-\d{1,2})%%%2
+author=
+mainContent=(?is)<li>(发表时间:.*?</ul>)(.*?)(</div>\s+</div>\s+</div>)%%%2
