@@ -4,6 +4,7 @@ import cn.edu.hfut.dmic.webcollector.model.Page;
 import com.easyminning.conf.ConfConstant;
 import com.easyminning.conf.ConfLoader;
 import com.easyminning.extractor.Article;
+import com.easyminning.extractor.Extractor;
 import com.easyminning.extractor.TemplateExtractor;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014/10/21.
@@ -49,28 +51,29 @@ public class TemplateTest {
     @Test
     public void testTemplate2() throws Exception {
         HashMap<String,String> regexMap = new HashMap<String, String>();
-        String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/question/";
-        File file = new File(path,"faqen.template");
-        String testUrl ="http://faq.en.com.cn/question-00216156.html";
+        String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/news/";
+        File file = new File(path,"sidajiaoyu.template");
+        String testUrl ="http://www.sidajiaoyu.com/zxzx/ygzx/35960/";
 
         List<String> list = FileUtils.readLines(file);
 
         for (String str : list) {
+            if (str == null || "".equals(str.trim()))continue;
             int index = str.indexOf('=');
             regexMap.put(str.substring(0,index).trim(),str.substring(index + 1).trim());
-        }
-;
+        };
         TemplateExtractor templateExtractor = new TemplateExtractor(regexMap);
 
         Page page = new Page();
         page.url = testUrl;
         page.html = getUrlContent(testUrl);
+        System.out.println(page.html);
 
 
         Article article = templateExtractor.extractArticle(page);
 
         System.out.println("author:" + article.author + ",publishdate:" + article.publishDate+",title:"
-                + article.title + "context:" + article.context + ",tagContext:" + article.contextWithTag);
+                + article.title + ",content:" + article.context + ",tagContext:" + article.contextWithTag);
     }
 
     private String getUrlContent(String url) {
@@ -81,12 +84,51 @@ public class TemplateTest {
         try {
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
-            String body = EntityUtils.toString(entity, "GBK");
+            String body = EntityUtils.toString(entity, "gbk");
             return body;
         } catch (Exception e) {
             e.fillInStackTrace();
         }
         return "";
+    }
+
+
+    @Test
+    public void test2()  throws Exception {
+        HashMap<String,String> regexMap = new HashMap<String, String>();
+        String path = "/Volumes/work/KDD/KDD2/scrawler/src/main/resources/template/question/";
+        File file = new File(path,"faqen.template");
+        String testUrl ="http://faq.en.com.cn/question-00216156.html";
+
+        List<String> list = FileUtils.readLines(file);
+
+        for (String str : list) {
+            int index = str.indexOf('=');
+            regexMap.put(str.substring(0,index).trim(),str.substring(index + 1).trim());
+        };
+      // TemplateExtractor templateExtractor = new TemplateExtractor(regexMap);
+
+        Page page = new Page();
+        page.url = testUrl;
+        page.html = getUrlContent(testUrl);
+
+        ConfLoader confLoader = new ConfLoader();
+
+        Article article = Extractor.extract(page);
+        System.out.println("==========="+page.content+"======");
+
+     //   Article article = templateExtractor.extractArticle(page);
+    }
+
+    //
+    @Test
+    public void test4() {
+        Map<String,Map<String,Integer>> stringMapMap = new HashMap<String, Map<String, Integer>>();
+        Map<String,Integer> res = new HashMap<String, Integer>();
+        res.put("key", 1);
+        stringMapMap.put("str", res);
+
+        System.out.println(stringMapMap);
     }
 
 }
