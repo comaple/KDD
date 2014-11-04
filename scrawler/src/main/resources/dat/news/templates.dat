@@ -67,3 +67,15 @@ http://www.818chuguo.net/liuxuezixun/20\d{6}/\d{8}.shtml%%%template/news/818chug
 http://www.cedca.cn/special/20\d{8}.html%%%template/news/cedca_special.template%%%1000%%%1
 http://www.cedca.cn/reading/highschool/20\d{10}.html%%%template/news/cedca_reading.template%%%1000%%%1
 http://visa.100xiao.com/[a-z]{2,10}/\d{6}.html%%%template/news/100xiao.template%%%1000%%%1
+http://edu.sun0769.com/abroad/news/\d{5,7}/.+shtml%%%template/news/edusun0769.template%%%1000%%%1
+http://(usa|uk|ca|japan|au|nz).bailitop.com/news/\d{6,8}/\d{1,}.html%%%template/news/bailitop.template%%%1000%%%1
+http://(eng|us|au|nz|ca|ie).cctiedu.com/(zixun|liuxuezixun|LXzixun)/\d{1,}.html%%%template/news/cctiedu.template%%%1000%%%1
+http://www.idp.cn/(aozhou|meiguo|yingguo|jianada|xinxilan)/(liuxuefeiyong|zhengcequshi|shenghuojiuye|paihangbang|haiwairexun|liuxuexinwen)/\d{1,}.html%%%template/news/idp.template%%%1000%%%1
+http://www.liuxuesg.com/html/(shichengxinwen|qianzhengshenqing|shichengshenghuo|studysg|churujingxinxi)/.*html%%%template/news/liuxuesg.template%%%1000%%%1
+http://www.bjrcedu.com/news/\d{6,8}/\d{1,}.shtml%%%template/news/liuxuesg.template%%%1000%%%1
+http://www.jiaowaiedu.com/article/\d{1,}.html%%%template/news/jiaowaiedu.template%%%1000%%%1
+http://www.newspain.cn/Html/News/\d{1,}.html%%%template/news/newspain.template%%%1000%%%1
+http://www.edusg.com.cn/news/.+html%%%template/news/edusg.template%%%1000%%%1
+http://www.sidajiaoyu.com/zxzx/\w{1,}/\d{1,}/%%%template/news/sidajiaoyu.template%%%1000%%%1
+http://www.yilu365.com/liuxue/\w{1,}/\d{1,}.asp/%%%template/news/yilu365.template%%%1000%%%1
+http://www.bole.me/article/\d{1,}.html%%%template/news/boleme.template%%%1000%%%1
