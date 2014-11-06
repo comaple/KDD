@@ -89,9 +89,14 @@ public class SplitAndFilterMapper extends Mapper<LongWritable, Text, Text, Docum
             return;
         }
 
-        //  // 问答比较短，不经常长度校验
+        //  // 问答比较短，长度校验变小
         if (!"3".equals(documentWritable.getType().toString())) {
             if (documentWritable.getDocContent().getLength() < CONTENT_MIN_LENGTH) {
+                shortDocCount++;
+                return;
+            }
+        } else {
+            if (documentWritable.getDocContent().getLength() < 4) {
                 shortDocCount++;
                 return;
             }
